@@ -44,6 +44,9 @@ class Member
         return $this->id;
     }
 
+    /**
+     * @return Collection<int, MemberVote>
+     */
     public function getMemberVotes(): Collection
     {
         return $this->memberVotes;

@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
+use App\Repository\MemberVoteRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: MemberVoteRepository::class)]
 #[ORM\Table]
 class MemberVote
 {
@@ -19,11 +20,11 @@ class MemberVote
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Member::class, inversedBy: 'memberVotes')]
+    #[ORM\ManyToOne(targetEntity: Member::class, inversedBy: 'memberVotes', fetch: 'EAGER')]
     #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id')]
     private ?Member $member = null;
 
-    #[ORM\ManyToOne(targetEntity: Vote::class, inversedBy: 'membersVotes')]
+    #[ORM\ManyToOne(targetEntity: Vote::class, inversedBy: 'membersVote', fetch: 'EAGER')]
     #[ORM\JoinColumn(name: 'vote_id', referencedColumnName: 'id')]
     private ?Vote $vote = null;
 
