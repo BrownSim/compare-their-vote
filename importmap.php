@@ -25,4 +25,27 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
+    'bootstrap' => [
+        'version' => '5.3.3',
+    ],
+    '@popperjs/core' => [
+        'version' => '2.11.8',
+    ],
+    'bootstrap/dist/css/bootstrap.min.css' => [
+        'version' => '5.3.3',
+        'type' => 'css',
+    ],
+    'tom-select' => [
+        'version' => '2.3.1',
+    ],
+    'tom-select/dist/css/tom-select.bootstrap5.min.css' => [
+        'version' => '2.3.1',
+        'type' => 'css',
+    ],
+    'chart.js' => [
+        'version' => '4.4.3',
+    ],
+    '@kurkle/color' => [
+        'version' => '0.3.2',
+    ],
 ];

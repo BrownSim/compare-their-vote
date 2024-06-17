@@ -1,0 +1,37 @@
+{% block collection_widget %}
+    <div class="collection-widget">
+        <div class="form-group row">
+            <div class="col-12 collection-list" {% if prototype is defined %}data-prototype="{{ form_widget(form.vars.prototype)|e('html_attr') }}"{% endif %} {{ block('widget_attributes') }} data-index="{{ value|length }}">
+                {% for child in form %}
+                    {{ form_widget(child) }}
+                {% endfor %}
+            </div>
+        </div>
+        {% if form.vars.allow_add %}
+            <button type="button" class="btn btn-primary btn-add-collection">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                </svg>
+                {{ label_add|default(false) is not same as(false) ? (translation_domain is same as(false) ? label_add : label_add|trans({}, translation_domain)) -}}
+            </button>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block collection_entry_widget %}
+    <div class="collection-item row">
+        {% if form.parent.vars.allow_delete %}
+            <div class="col-auto d-flex">
+                <button type="button" class="btn btn-link btn-remove-collection">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+        {% endif %}
+        <div class="col">
+            {{ form_widget(form) }}
+        </div>
+    </div>
+{% endblock %}

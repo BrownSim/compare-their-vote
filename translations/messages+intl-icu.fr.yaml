@@ -1,0 +1,12 @@
+similar_vote_rate: >-
+    {nb, plural,
+        =0    {{rate}% de vote commun sur un total de # vote} 
+        one   {{rate}% de vote commun sur un total de # vote} 
+        other {{rate}% de vote commun sur un total de # votes}
+    }
+
+vote_value:
+    for: Pour
+    against: Contre
+    not_vote: Abstention
+    miss: N'a pas voté
