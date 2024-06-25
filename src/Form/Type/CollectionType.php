@@ -33,8 +33,8 @@ class CollectionType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['labelAdd'] = $options['label_add'];
-        $view->vars['labelRemove'] = $options['label_remove'];
+        $view->vars['label_add'] = $options['label_add'];
+        $view->vars['label_remove'] = $options['label_remove'];
     }
 
     /**

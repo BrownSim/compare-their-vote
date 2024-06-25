@@ -29,7 +29,7 @@ class MemberManager
                 $votes[$memberVote->getVote()->getId()] = $memberVote;
             }
 
-            foreach ($memberVoteRepository->findFeaturedVotesByMember($item, [], array_keys($votes)) as $memberVote) {
+            foreach ($memberVoteRepository->findFeaturedVotesByMember($item, $voteValues, array_keys($votes)) as $memberVote) {
                 $vote2[$memberVote->getVote()->getId()] = $memberVote;
             }
 

@@ -5,8 +5,17 @@ similar_vote_rate: >-
         other {{rate}% de vote commun sur un total de # votes}
     }
 
+vote_value_label: Valeur du vote
 vote_value:
     for: Pour
     against: Contre
     not_vote: Abstention
     miss: N'a pas voté
+
+same_vote: Vote similaire
+different_vote: Vote différent
+add_member: Ajouter un membre
+add_members: Ajouter des membres
+choice_member: Choisir un membre
+search: Chercher
+list_difference_vote: Liste des votes divergents

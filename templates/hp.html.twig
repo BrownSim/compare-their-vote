@@ -4,10 +4,10 @@
     <div class="container">
         {% if form is defined %}
             {{ form_start(form) }}
-            {{ form_row(form.mainMember) }}
-            {{ form_row(form.member) }}
+            {{ form_row(form.mainMember, {'attr': {'data-select': ''}}) }}
+            {{ form_row(form.member, {'attr': {'data-select': ''}}) }}
             {{ form_row(form.members) }}
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn btn-primary">{{ 'search'|trans }}</button>
             {{ form_end(form) }}
         {% endif %}
 
@@ -17,14 +17,14 @@
                     <div class="col-xl">
                         <h4>{{ comparison.member.firstName }} {{ comparison.member.lastName }} <br> {{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}</h4>
                         {{ 'similar_vote_rate'|trans({'rate': comparison.data.rate.same|round, 'nb': comparison.data.total}) }}
-                        <div style="width: 200px;height: 200px">
+                        <div style="width: 300px;height: 300px" class="my-4">
                             <canvas data-chart-type="doughnut" data-value="{{ comparison.data|chart_pie_this }}"></canvas>
                         </div>
-                        <div class="accordion" id="{{ key }}-vote-detail-accordion">
+                        <div class="accordion accordion-transparent mt-4" id="{{ key }}-vote-detail-accordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{ key }}-vote-detail" aria-expanded="false" aria-controls="{{ key }}-vote-detail">
-                                        Liste des votes divergeant
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ key }}-vote-detail" aria-expanded="false" aria-controls="{{ key }}-vote-detail">
+                                        {{ 'list_difference_vote'|trans }}
                                     </button>
                                 </h2>
                                 <div id="{{ key }}-vote-detail" class="accordion-collapse collapse" data-bs-parent="#{{ key }}-vote-detail-accordion">
@@ -41,7 +41,6 @@
                                                         {{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}
                                                         <span class="badge bg-danger">{{ memberVote.comparedMemberVoteValue }}</span>
                                                     </p>
-
                                                 </li>
                                             {% endfor %}
                                         </ul>

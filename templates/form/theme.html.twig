@@ -9,29 +9,45 @@
         </div>
         {% if form.vars.allow_add %}
             <button type="button" class="btn btn-primary btn-add-collection">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                </svg>
-                {{ label_add|default(false) is not same as(false) ? (translation_domain is same as(false) ? label_add : label_add|trans({}, translation_domain)) -}}
+                {% set hasLabel = label_add|default(false) is not same as(false) %}
+                {% if hasLabel %}
+                    {{ label_add|default(false) is not same as(false) ? (translation_domain is same as(false) ? label_add : label_add|trans({}, translation_domain)) -}}
+                {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                {% endif %}
             </button>
         {% endif %}
     </div>
 {% endblock %}
 
 {% block collection_entry_widget %}
-    <div class="collection-item row">
+    <div class="collection-item mb-3">
         {% if form.parent.vars.allow_delete %}
-            <div class="col-auto d-flex">
-                <button type="button" class="btn btn-link btn-remove-collection">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="8" y1="12" x2="16" y2="12"></line>
-                    </svg>
-                </button>
-            </div>
+            <div class="input-group">
         {% endif %}
-        <div class="col">
-            {{ form_widget(form) }}
+        {{ form_widget(form) }}
+        {% if form.parent.vars.allow_delete %}
+            <button type="button" class="btn btn-danger btn-remove-collection">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                </svg>
+            </button>
         </div>
+        {% endif %}
     </div>
+{% endblock %}
+
+{% block _member_search_voteValue_widget %}
+    <div class="btn-group" role="group">
+        {% for child in form.children %}
+            {{ form_widget(child) }}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block _member_search_voteValue_entry_widget %}
+    <input {{ block('widget_attributes') }} type="checkbox" class="btn-check" {{ false == checked ?: 'checked' }} autocomplete="off" value="{{ value }}">
+    <label class="btn btn-primary" for="{{ id }}">{{ label|trans }}</label>
 {% endblock %}

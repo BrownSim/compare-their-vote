@@ -36,6 +36,10 @@ window.addEventListener('load', function () {
             data: data
         });
     });
+
+    document.querySelectorAll('[data-select]').forEach(el  => {
+        new TomSelect(el, {});
+    });
 });
 
 
