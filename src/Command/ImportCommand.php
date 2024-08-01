@@ -7,6 +7,7 @@ namespace App\Command;
 use App\Api\HowTheyVote\Client;
 use App\Entity\Member;
 use App\Entity\MemberVote;
+use App\Entity\Session;
 use App\Entity\Vote;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -43,6 +44,7 @@ class ImportCommand extends Command
             $this->progressBarVote->advance();
         }
 
+        $this->updateSession();
         $this->progressBarVote->finish();
 
         return Command::SUCCESS;
@@ -103,7 +105,7 @@ class ImportCommand extends Command
         return $vote;
     }
 
-    public function createOrFindMember($data): Member
+    private function createOrFindMember($data): Member
     {
         $member = $this->em->getRepository(Member::class)->findOneBy(['mepId' => $data['id']]);
 
@@ -121,5 +123,58 @@ class ImportCommand extends Command
         $this->em->persist($member);
 
         return $member;
+    }
+
+    private function updateSession(): void
+    {
+        $lastSession = $this->client->getListSessions(1, 1, 'desc', Client::SESSION_STATUS_PAST);
+
+        if (empty($lastSession['results'])) {
+            $session = $this->em->getRepository(Session::class)->findOneBy(['status' => Session::SESSION_STATUS_LAST]);
+            if (null !== $session) {
+                $this->em->remove($session);
+            }
+        } else {
+            $startAt = new \DateTime($lastSession['results']['0']['start_date']);
+            $endDAt = new \DateTime($lastSession['results']['0']['end_date']);
+
+            $session = $this->em->getRepository(Session::class)->findOneBy(['status' => Session::SESSION_STATUS_LAST]);
+            $session = null === $session ? new Session() : $session;
+            $session
+                ->setStartAt($startAt)
+                ->setEndAt($endDAt)
+                ->setStatus(Session::SESSION_STATUS_LAST)
+            ;
+
+            if ($session->getId() === null) {
+                $this->em->persist($session);
+            }
+        }
+
+        $nextSession = $this->client->getListSessions(1, 10, 'desc', Client::SESSION_STATUS_UPCOMING);
+        if (empty($nextSession['results'])) {
+            $session = $this->em->getRepository(Session::class)->findOneBy(['status' => Session::SESSION_STATUS_NEXT]);
+            if (null !== $session) {
+                $this->em->remove($session);
+            }
+        } else {
+            $startAt = new \DateTime($nextSession['results']['0']['start_date']);
+            $endDAt = new \DateTime($nextSession['results']['0']['end_date']);
+
+            $session = $this->em->getRepository(Session::class)->findOneBy(['status' => Session::SESSION_STATUS_NEXT]);
+            $session = null === $session ? new Session() : $session;
+            $session
+                ->setStartAt($startAt)
+                ->setEndAt($endDAt)
+                ->setStatus(Session::SESSION_STATUS_NEXT)
+            ;
+
+            if ($session->getId() === null) {
+                $this->em->persist($session);
+            }
+        }
+
+
+        $this->em->flush();
     }
 }
