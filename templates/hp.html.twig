@@ -6,6 +6,13 @@
     <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
+
+    <div class="container">
+        <div class="col-12 text-center">
+            <h2 class="h5 my-5">The last plenary session was held from {{ lastSession.startAt|date('M d')}} to {{ lastSession.endAt|date('M d')}}.</h2>
+        </div>
+    </div>
+
     <div class="container">
         {% if form is defined %}
             {{ form_start(form) }}

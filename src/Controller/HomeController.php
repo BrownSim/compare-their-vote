@@ -2,16 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Session;
 use App\Form\Type\MemberSearchType;
 use App\Manager\MemberManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
-    public function __construct()
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {
     }
 
     #[Route('', name: 'hp')]
@@ -34,6 +37,7 @@ class HomeController extends AbstractController
 
         return $this->render('hp.html.twig', [
             'form' => $form->createView(),
+            'lastSession' => $this->em->getRepository(Session::class)->findOneBy(['status' => Session::SESSION_STATUS_LAST])
         ]);
     }
 }
