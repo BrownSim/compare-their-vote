@@ -20,6 +20,8 @@ class HomeController extends AbstractController
     #[Route('', name: 'hp')]
     public function home(Request $request, MemberManager $memberManager)
     {
+        $lastSession = $this->em->getRepository(Session::class)->findOneBy(['status' => Session::SESSION_STATUS_LAST]);
+
         $form = $this->createForm(MemberSearchType::class);
         $form->handleRequest($request);
 
@@ -32,12 +34,13 @@ class HomeController extends AbstractController
             return $this->render('hp.html.twig', [
                 'data' => $data,
                 'form' => $form->createView(),
+                'lastSession' => $lastSession,
             ]);
         }
 
         return $this->render('hp.html.twig', [
             'form' => $form->createView(),
-            'lastSession' => $this->em->getRepository(Session::class)->findOneBy(['status' => Session::SESSION_STATUS_LAST])
+            'lastSession' => $lastSession,
         ]);
     }
 }
