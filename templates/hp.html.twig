@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
     <div class="container">
         {% if form is defined %}
             {{ form_start(form) }}
@@ -16,10 +21,8 @@
                 {% for key, comparison in data %}
                     <div class="col-xl">
                         <h4>{{ comparison.member.firstName }} {{ comparison.member.lastName }} <br> {{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}</h4>
-                        {{ 'similar_vote_rate'|trans({'rate': comparison.data.rate.same|round, 'nb': comparison.data.total}) }}
-                        <div style="width: 300px;height: 300px" class="my-4">
-                            <canvas data-chart-type="doughnut" data-value="{{ comparison.data|chart_pie_this }}"></canvas>
-                        </div>
+                        {{ 'similar_vote_rate'|trans({'rate': comparison.data.rate.same|round(2), 'nb': comparison.data.total}) }}
+                        <div style="width: 400px;height: 400px" class="my-4" data-chart-type="doughnut" data-value="{{ comparison.data|chart_pie_this }}"></div>
                         <div class="accordion accordion-transparent mt-4" id="{{ key }}-vote-detail-accordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">

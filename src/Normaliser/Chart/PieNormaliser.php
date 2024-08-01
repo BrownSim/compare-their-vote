@@ -13,18 +13,15 @@ class PieNormaliser
 
     public function voteToPie(array $data): array
     {
-        $labels = [
-            'labels' => [
-                $this->translator->trans(id: 'same_vote'),
-                $this->translator->trans(id: 'different_vote'),
-            ]
+        return [
+            'dataset' => [
+            [
+                'category' => $this->translator->trans(id: 'same_vote'),
+                'value' => $data['same'],
+            ], [
+                'category' => $this->translator->trans(id: 'different_vote'),
+                'value' => $data['difference'],
+            ]]
         ];
-        $dataset = [
-            'datasets' =>[
-                ['data' => [$data['same'], $data['difference']]],
-
-        ]];
-
-        return array_merge($labels, $dataset);
     }
 }

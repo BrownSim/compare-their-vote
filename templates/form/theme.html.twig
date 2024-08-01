@@ -49,5 +49,5 @@
 
 {% block _member_search_voteValue_entry_widget %}
     <input {{ block('widget_attributes') }} type="checkbox" class="btn-check" {{ false == checked ?: 'checked' }} autocomplete="off" value="{{ value }}">
-    <label class="btn btn-primary" for="{{ id }}">{{ label|trans }}</label>
+    <label class="btn btn-outline-primary" for="{{ id }}">{{ label|trans }}</label>
 {% endblock %}

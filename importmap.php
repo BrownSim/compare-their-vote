@@ -42,10 +42,4 @@ return [
         'version' => '2.3.1',
         'type' => 'css',
     ],
-    'chart.js' => [
-        'version' => '4.4.3',
-    ],
-    '@kurkle/color' => [
-        'version' => '0.3.2',
-    ],
 ];

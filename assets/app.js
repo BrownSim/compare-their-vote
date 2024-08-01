@@ -11,8 +11,6 @@ import 'tom-select/dist/css/tom-select.bootstrap5.min.css';
 import TomSelect from 'tom-select';
 import 'bootstrap';
 
-import { registerables, Chart } from 'chart.js';
-
 import './js/collection.js';
 import './styles/app.css';
 
@@ -28,20 +26,66 @@ window.addEventListener('load', function () {
         });
     });
 
-    Chart.register(...registerables);
     document.querySelectorAll('[data-chart-type]').forEach(el => {
         let data = JSON.parse(el.dataset.value);
-        new Chart(el, {
-            type: el.dataset.chartType,
-            data: data
-        });
+        chartDonuts(el, data)
     });
 
     document.querySelectorAll('[data-select]').forEach(el  => {
         new TomSelect(el, {});
     });
-});
 
+    function chartDonuts(el, data) {
+        am5.ready(function() {
+            var root = am5.Root.new(el);
+
+            root.setThemes([
+                am5themes_Animated.new(root)
+            ]);
+
+            root.container.set('layout', root.verticalLayout);
+
+            var chartContainer = root.container.children.push(am5.Container.new(root, {
+                layout: root.horizontalLayout,
+                width: am5.p100,
+                height: am5.p100
+            }));
+
+            var chart = chartContainer.children.push(
+                am5percent.PieChart.new(root, {
+                    endAngle: 270,
+                    innerRadius: am5.percent(60)
+                })
+            );
+
+            var series = chart.series.push(
+                am5percent.PieSeries.new(root, {
+                    valueField: 'value',
+                    categoryField: 'category',
+                    endAngle: 270,
+                    alignLabels: false
+                })
+            );
+
+            series.slices.template.setAll({
+                cornerRadius: 8
+            })
+
+            series.labels.template.set("visible", false);
+            series.data.setAll(data.dataset);
+
+            var legend = root.container.children.push(am5.Legend.new(root, {
+                x: am5.percent(50),
+                centerX: am5.percent(50)
+            }));
+
+            legend.data.setAll(series.dataItems);
+
+            series.appear(1000, 100);
+
+        });
+    }
+});
 
 
 

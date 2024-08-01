@@ -3,10 +3,6 @@
     --bs-body-font-family: "Raleway", sans-serif;
 }
 
-html {
-    padding-left: calc(100vw - 100%);
-}
-
 .btn-primary {
     --bs-btn-bg: #001489;
     --bs-btn-border-color: #001489;
