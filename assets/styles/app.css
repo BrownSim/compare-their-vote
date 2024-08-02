@@ -3,6 +3,20 @@
     --bs-body-font-family: "Raleway", sans-serif;
 }
 
+html, body {
+    min-height: 100vh;
+}
+
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+footer {
+    padding: 24px;
+    text-align: center;
+}
+
 .btn-primary {
     --bs-btn-bg: #001489;
     --bs-btn-border-color: #001489;
@@ -48,4 +62,16 @@
         border-top-left-radius: 6px !important;
         border-bottom-left-radius: 6px !important;
     }
+}
+
+.btn-github svg {
+    width: 30px;
+    height: 30px;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: rgb(0, 20, 137);
+    --bs-btn-active-bg: rgb(0, 20, 137);
+    --bs-btn-border-color: rgb(0, 20, 137);
+    --bs-btn-active-border-color: rgb(0, 20, 137);
 }

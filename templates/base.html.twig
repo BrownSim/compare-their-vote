@@ -14,7 +14,9 @@
     </head>
     <body>
         {{ include('_header.html.twig') }}
-        {% block body %}{% endblock %}
+        <main>
+            {% block body %}{% endblock %}
+        </main>
         {{ include('_footer.html.twig') }}
     </body>
 </html>
