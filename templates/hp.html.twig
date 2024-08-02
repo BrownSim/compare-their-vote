@@ -9,6 +9,7 @@
 
     <div class="container">
         <div class="col-12 text-center">
+            <h1>Compare how Members of the European Parliament vote.</h1>
             <h2 class="h5 my-5">The last plenary session was held from {{ lastSession.startAt|date('M d')}} to {{ lastSession.endAt|date('M d')}}.</h2>
         </div>
     </div>
@@ -24,13 +25,16 @@
                 <button type="submit" class="btn btn-primary">{{ 'search'|trans }}</button>
                 {{ form_end(form) }}
             {% endif %}
-
-            {% if data is defined %}
+        </div>
+        {% if data is defined %}
+            <div class="row mt-5">
                 {% for key, comparison in data %}
                     <div class="col-xl">
-                        <h4>{{ comparison.member.firstName }} {{ comparison.member.lastName }} <br> {{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}</h4>
-                        {{ 'similar_vote_rate'|trans({'rate': comparison.data.rate.same|round(2), 'nb': comparison.data.total}) }}
-                        <div style="width: 400px;height: 400px" class="my-4" data-chart-type="doughnut" data-value="{{ comparison.data|chart_pie_this }}"></div>
+                        <div class="text-center">
+                            <h4>{{ comparison.member.firstName }} {{ comparison.member.lastName }} <br> {{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}</h4>
+                            {{ 'similar_vote_rate'|trans({'rate': comparison.data.rate.same|round(2), 'nb': comparison.data.total}) }}
+                        </div>
+                        <div style="width: 400px;height: 400px" class="my-5 mx-auto" data-chart-type="doughnut" data-value="{{ comparison.data|chart_pie_this }}"></div>
                         <div class="accordion accordion-transparent mt-4" id="{{ key }}-vote-detail-accordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -42,7 +46,7 @@
                                     <div class="accordion-body">
                                         <ul class="list-group list-group-flush">
                                             {% for memberVote in comparison.data.difference_detail %}
-                                                <li class="list-group-item">
+                                                <li class="list-group-item p-0">
                                                     <p>{{ memberVote.voteItem.vote.title }}</p>
                                                     <p>
                                                         {{ comparison.member.firstName }} {{ comparison.member.lastName }}
@@ -61,7 +65,7 @@
                         </div>
                     </div>
                 {% endfor %}
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
