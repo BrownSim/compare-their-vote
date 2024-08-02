@@ -10,10 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table]
 class MemberVote
 {
-    public const VOTE_FOR = 1;
-    public const VOTE_AGAINST = 2;
-    public const VOTE_ABSTENTION = 3;
-    public const VOTE_DID_NOT_VOTE = 4;
+    public const VOTE_FOR = 'FOR';
+    public const VOTE_AGAINST = 'AGAINST';
+    public const VOTE_ABSTENTION = 'ABSTENTION';
+    public const VOTE_DID_NOT_VOTE = 'DID_NOT_VOTE';
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]

@@ -3,6 +3,7 @@
 namespace App\Form\Type;
 
 use App\Entity\Member;
+use App\Entity\MemberVote;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -50,10 +51,10 @@ class MemberSearchType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'choices' => [
-                     'vote_value.for' => 'FOR',
-                     'vote_value.against' => 'AGAINST',
-                     'vote_value.miss' => 'ABSTENTION',
-                     'vote_value.not_vote' => 'DID_NOT_VOTE',
+                     'vote_value.for' => MemberVote::VOTE_FOR,
+                     'vote_value.against' => MemberVote::VOTE_AGAINST,
+                     'vote_value.miss' => MemberVote::VOTE_ABSTENTION,
+                     'vote_value.not_vote' => MemberVote::VOTE_DID_NOT_VOTE,
                 ],
             ])
         ;
