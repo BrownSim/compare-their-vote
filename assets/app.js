@@ -68,6 +68,11 @@ window.addEventListener('load', function () {
                 })
             );
 
+            series.get("colors").set("colors", [
+                am5.color('#67B7DC'),
+                am5.color('#DC6788'),
+            ]);
+
             series.children.push(am5.Label.new(root, {
                 centerX: am5.percent(50),
                 centerY: am5.percent(50),
