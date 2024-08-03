@@ -31,7 +31,7 @@ window.addEventListener('load', function () {
         chartDonuts(el, data)
     });
 
-    document.querySelectorAll('[data-select]').forEach(el  => {
+    document.querySelectorAll('select').forEach(el  => {
         new TomSelect(el, {});
     });
 
@@ -43,7 +43,7 @@ window.addEventListener('load', function () {
                 am5themes_Animated.new(root)
             ]);
 
-            root.container.set('layout', root.verticalLayout);
+            root.container.set("layout", root.verticalLayout);
 
             var chartContainer = root.container.children.push(am5.Container.new(root, {
                 layout: root.horizontalLayout,
@@ -60,29 +60,36 @@ window.addEventListener('load', function () {
 
             var series = chart.series.push(
                 am5percent.PieSeries.new(root, {
-                    valueField: 'value',
-                    categoryField: 'category',
+                    valueField: "value",
+                    categoryField: "category",
                     endAngle: 270,
                     alignLabels: false
                 })
             );
 
+            series.children.push(am5.Label.new(root, {
+                centerX: am5.percent(50),
+                centerY: am5.percent(50),
+                text: "First: {valueSum}",
+                populateText: true,
+                fontSize: "1.5em"
+            }));
+
             series.slices.template.setAll({
                 cornerRadius: 8
             })
 
-            series.labels.template.set("visible", false);
+            series.states.create("hidden", {
+                endAngle: -90
+            });
+
+            series.labels.template.setAll({
+                textType: "circular"
+            });
+
             series.data.setAll(data.dataset);
 
-            var legend = root.container.children.push(am5.Legend.new(root, {
-                x: am5.percent(50),
-                centerX: am5.percent(50)
-            }));
-
-            legend.data.setAll(series.dataItems);
-
             series.appear(1000, 100);
-
         });
     }
 });

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
+{% import 'common/macro/vote_value_translation.html.twig' as translation %}
 
 {% block body %}
-
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
@@ -18,8 +18,8 @@
         <div class="row">
             {% if form is defined %}
                 {{ form_start(form) }}
-                {{ form_row(form.mainMember, {'attr': {'data-select': ''}}) }}
-                {{ form_row(form.member, {'attr': {'data-select': ''}}) }}
+                {{ form_row(form.mainMember) }}
+                {{ form_row(form.member) }}
                 {{ form_row(form.members) }}
                 {{ form_row(form.voteValue) }}
                 <button type="submit" class="btn btn-primary">{{ 'search'|trans }}</button>
@@ -35,27 +35,46 @@
                             {{ 'similar_vote_rate'|trans({'rate': comparison.data.rate.same|round(2), 'nb': comparison.data.total}) }}
                         </div>
                         <div style="width: 400px;height: 400px" class="my-5 mx-auto" data-chart-type="doughnut" data-value="{{ comparison.data|chart_pie_this }}"></div>
-                        <div class="accordion accordion-transparent mt-4" id="{{ key }}-vote-detail-accordion">
+                        <div class="accordion accordion-transparent mt-4" id="{{ key }}vote-detail-accordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ key }}-vote-detail" aria-expanded="false" aria-controls="{{ key }}-vote-detail">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ key }}-different-vote-detail" aria-expanded="false" aria-controls="{{ key }}-vote-detail">
                                         {{ 'list_difference_vote'|trans }}
                                     </button>
                                 </h2>
-                                <div id="{{ key }}-vote-detail" class="accordion-collapse collapse" data-bs-parent="#{{ key }}-vote-detail-accordion">
+                                <div id="{{ key }}-different-vote-detail" class="accordion-collapse collapse" data-bs-parent="#{{ key }}vote-detail-accordion">
                                     <div class="accordion-body">
                                         <ul class="list-group list-group-flush">
                                             {% for memberVote in comparison.data.difference_detail %}
                                                 <li class="list-group-item p-0">
-                                                    <p>{{ memberVote.voteItem.vote.title }}</p>
-                                                    <p>
-                                                        {{ comparison.member.firstName }} {{ comparison.member.lastName }}
-                                                        <span class="badge bg-primary">{{ memberVote.mainMemberVoteValue }}</span>
+                                                    <p class="mt-4">{{ memberVote.voteItem.vote.title }}</p>
+                                                    <p class="d-flex justify-content-between">
+                                                        <span>{{ comparison.member.firstName }} {{ comparison.member.lastName }}</span>
+                                                        <span class="badge bg-primary">{{ translation.vote_value_translation(memberVote.mainMemberVoteValue) }}</span>
                                                     </p>
-                                                    <p>
-                                                        {{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}
-                                                        <span class="badge bg-danger">{{ memberVote.comparedMemberVoteValue }}</span>
+                                                    <p class="d-flex justify-content-between">
+                                                        <span>{{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}</span>
+                                                        <span class="badge bg-danger">{{ translation.vote_value_translation(memberVote.comparedMemberVoteValue) }}</span>
                                                     </p>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ key }}-same-vote-detail" aria-expanded="false" aria-controls="{{ key }}-vote-detail">
+                                        {{ 'list_difference_vote'|trans }}
+                                    </button>
+                                </h2>
+                                <div id="{{ key }}-same-vote-detail" class="accordion-collapse collapse" data-bs-parent="#{{ key }}vote-detail-accordion">
+                                    <div class="accordion-body">
+                                        <ul class="list-group list-group-flush">
+                                            {% for memberVote in comparison.data.same_detail %}
+                                                <li class="list-group-item p-0">
+                                                    <p class="my-4">{{ memberVote.voteItem.vote.title }}</p>
                                                 </li>
                                             {% endfor %}
                                         </ul>

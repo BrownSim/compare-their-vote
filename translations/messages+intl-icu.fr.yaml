@@ -7,10 +7,10 @@ similar_vote_rate: >-
 
 vote_value_label: Valeur du vote
 vote_value:
-    for: Pour
-    against: Contre
+    for: For
+    against: Agasint
     not_vote: Abstention
-    miss: N'a pas voté
+    miss: Did not vote
 
 same_vote: Vote similaire
 different_vote: Vote différent

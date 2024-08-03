@@ -69,7 +69,7 @@ class MemberManager
 
             if ($mainMemberVote->getValue() === $comparedMemberVote->getValue()) {
                 $results['same'] += 1;
-                $results['same_detail'][] = $item;
+                $results['same_detail'][] = ['voteItem' => $item];
             } else {
                 $results['difference'] += 1;
                 $results['difference_detail'][] = [

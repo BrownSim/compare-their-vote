@@ -12,6 +12,10 @@ body {
     grid-template-rows: auto 1fr auto;
 }
 
+main {
+    margin-top: 24px;
+}
+
 footer {
     padding: 24px;
     text-align: center;
