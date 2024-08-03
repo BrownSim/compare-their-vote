@@ -28,14 +28,15 @@ window.addEventListener('load', function () {
 
     document.querySelectorAll('[data-chart-type]').forEach(el => {
         let data = JSON.parse(el.dataset.value);
-        chartDonuts(el, data)
+        let title = el.dataset.title;
+        chartDonuts(el, data, title)
     });
 
     document.querySelectorAll('select').forEach(el  => {
         new TomSelect(el, {});
     });
 
-    function chartDonuts(el, data) {
+    function chartDonuts(el, data, title) {
         am5.ready(function() {
             var root = am5.Root.new(el);
 
@@ -43,7 +44,7 @@ window.addEventListener('load', function () {
                 am5themes_Animated.new(root)
             ]);
 
-            root.container.set("layout", root.verticalLayout);
+            root.container.set('layout', root.verticalLayout);
 
             var chartContainer = root.container.children.push(am5.Container.new(root, {
                 layout: root.horizontalLayout,
@@ -60,8 +61,8 @@ window.addEventListener('load', function () {
 
             var series = chart.series.push(
                 am5percent.PieSeries.new(root, {
-                    valueField: "value",
-                    categoryField: "category",
+                    valueField: 'value',
+                    categoryField: 'category',
                     endAngle: 270,
                     alignLabels: false
                 })
@@ -70,21 +71,21 @@ window.addEventListener('load', function () {
             series.children.push(am5.Label.new(root, {
                 centerX: am5.percent(50),
                 centerY: am5.percent(50),
-                text: "First: {valueSum}",
+                text: title,
                 populateText: true,
-                fontSize: "1.5em"
+                fontSize: '1.5em'
             }));
 
             series.slices.template.setAll({
                 cornerRadius: 8
             })
 
-            series.states.create("hidden", {
+            series.states.create('hidden', {
                 endAngle: -90
             });
 
             series.labels.template.setAll({
-                textType: "circular"
+                textType: 'circular'
             });
 
             series.data.setAll(data.dataset);

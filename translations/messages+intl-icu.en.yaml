@@ -1,0 +1,27 @@
+similar_vote_rate: >-
+    {nb, plural,
+        =0    {{rate}% similar vote from a total of # vote} 
+        one   {{rate}% similar vote from a total of # vote}  
+        other {{rate}% similar votes from a total of # votes} 
+    }
+
+vote_value_label: Vote value
+vote_value:
+    for: For
+    against: Agasint
+    not_vote: Abstention
+    miss: Did not vote
+vote: >-
+    {nb, plural,
+        =0    {# vote} 
+        one   {# vote}  
+        other {# votes} 
+    }
+same_vote: Same vote
+different_vote: Different vote
+add_member: Add member
+add_members: Add members
+choice_member: Choice member
+search: Search
+list_difference_vote: List of different votes
+list_same_vote: List of similar votes
