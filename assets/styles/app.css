@@ -1,5 +1,5 @@
 :root {
-    --bs-primary-rgb: 0, 20, 137;
+    --bs-primary-rgb: 61, 81, 160;
     --bs-body-font-family: "Raleway", sans-serif;
 }
 
@@ -12,6 +12,10 @@ body {
     grid-template-rows: auto 1fr auto;
 }
 
+header nav {
+    background: #3d52a0;
+}
+
 main {
     margin-top: 24px;
 }
@@ -22,12 +26,12 @@ footer {
 }
 
 .btn-primary {
-    --bs-btn-bg: #001489;
-    --bs-btn-border-color: #001489;
-    --bs-btn-hover-bg: #000a4f;
-    --bs-btn-hover-border-color: #000a4f;
-    --bs-btn-active-bg: #000a4f;
-    --bs-btn-active-border-color: #000a4f;
+    --bs-btn-bg: #3d52a0;
+    --bs-btn-border-color: #3d52a0;
+    --bs-btn-hover-bg: #2a396e;
+    --bs-btn-hover-border-color: #2a396e;
+    --bs-btn-active-bg: #2a396e;
+    --bs-btn-active-border-color: #2a396e;
 }
 
 @font-face {
@@ -74,8 +78,8 @@ footer {
 }
 
 .btn-outline-primary {
-    --bs-btn-color: rgb(0, 20, 137);
-    --bs-btn-active-bg: rgb(0, 20, 137);
-    --bs-btn-border-color: rgb(0, 20, 137);
-    --bs-btn-active-border-color: rgb(0, 20, 137);
+    --bs-btn-color: #3d52a0;
+    --bs-btn-active-bg: #3d52a0;
+    --bs-btn-border-color: #3d52a0;
+    --bs-btn-active-border-color: #3d52a0;
 }
