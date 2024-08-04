@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>About</h1>
+                <p class="h4">CompareTheirVote makes easy to compare MPs' votes with each other.</p>
+                <div class="accordion accordion-faq mt-5" id="accordion-faq">
+                    {% for item in items %}
+                        {{ include('faq/_item.html.twig', {'show': false}) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

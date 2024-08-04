@@ -83,3 +83,23 @@ footer {
     --bs-btn-border-color: #3d52a0;
     --bs-btn-active-border-color: #3d52a0;
 }
+
+.accordion-faq {
+    .accordion-item {
+        border: 0;
+    }
+
+    .accordion-button {
+        padding-left: 0;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background: unset;
+    }
+
+    .accordion-body {
+        padding-left: 0;
+    }
+}
+
+

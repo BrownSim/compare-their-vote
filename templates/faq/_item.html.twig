@@ -1,0 +1,12 @@
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button {{ show ? '' : 'collapsed' }}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-faq-{{ item.id }}" aria-expanded="{{ show ? 'true' : 'false' }}" aria-controls="collapse-faq-{{ item.id }}">
+            {{ item.title }}
+        </button>
+    </h2>
+    <div id="collapse-faq-{{ item.id }}" class="accordion-collapse collapse {{ show ? ' show' : '' }}" data-bs-parent="#accordion-faq">
+        <div class="accordion-body">
+            {{ item.content|raw|nl2br }}
+        </div>
+    </div>
+</div>
