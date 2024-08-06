@@ -2,11 +2,6 @@
 {% import 'common/macro/vote_value_translation.html.twig' as translation %}
 
 {% block body %}
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-
-
     <div class="container">
         <div class="col-12 text-center">
             <h1>Compare how Members of the European Parliament vote.</h1>
@@ -95,4 +90,11 @@
             </div>
         {% endif %}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 {% endblock %}
