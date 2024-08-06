@@ -6,19 +6,25 @@ similar_vote_rate: >-
         one   {{rate}% similar vote from a total of # vote}  
         other {{rate}% similar votes from a total of # votes} 
     }
-
+hp_title: Compare how Members of the European Parliament vote
+hp_last_vote: The last plenary session was held from {start} to {to}
 vote_value_label: Vote value
 vote_value:
     for: For
     against: Agasint
     not_vote: Abstention
     miss: Did not vote
-vote: >-
+vote_label: >-
     {nb, plural,
         =0    {# vote} 
         one   {# vote}  
         other {# votes} 
     }
+vote:
+    title: Title
+    ref: Reference
+    description: Description
+
 same_vote: Same vote
 different_vote: Different vote
 add_member: Add member

@@ -4,8 +4,8 @@
 {% block body %}
     <div class="container">
         <div class="col-12 text-center">
-            <h1>Compare how Members of the European Parliament vote.</h1>
-            <h2 class="h5 my-5">The last plenary session was held from {{ lastSession.startAt|date('M d')}} to {{ lastSession.endAt|date('M d')}}.</h2>
+            <h1>{{ 'hp_title'|trans }}</h1>
+            <h2 class="h5 my-5">{{ 'hp_last_vote'|trans({'start': lastSession.startAt|date('M d'), 'to': lastSession.endAt|date('M d')}) }}</h2>
         </div>
     </div>
 
@@ -29,7 +29,7 @@
                             <h4>{{ comparison.member.firstName }} {{ comparison.member.lastName }} <br> {{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}</h4>
                             {{ 'similar_vote_rate'|trans({'rate': comparison.data.rate.same|round(2), 'nb': comparison.data.total}) }}
                         </div>
-                        <div style="width: 400px;height: 400px" class="my-5 mx-auto" data-chart-type="doughnut" data-value="{{ comparison.data|chart_pie_this }}" data-title="{{ 'vote'|trans({'nb': comparison.data.total}) }}"></div>
+                        <div style="width: 400px;height: 400px" class="my-5 mx-auto" data-chart-type="doughnut" data-value="{{ comparison.data|chart_pie_this }}" data-title="{{ 'vote_label'|trans({'nb': comparison.data.total}) }}"></div>
                         <div class="accordion accordion-transparent mt-4" id="{{ key }}vote-detail-accordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -43,9 +43,9 @@
                                             {% for memberVote in comparison.data.difference_detail %}
                                                 <li class="list-group-item p-0">
                                                     <p class="mt-4">
-                                                        <span>Title : {{ memberVote.voteItem.vote.title }}</span><br />
-                                                        <small class="text-muted">Reference : {{ memberVote.voteItem.vote.reference }}</small><br>
-                                                        <small class="text-muted">Description : {{ memberVote.voteItem.vote.description }}</small>
+                                                        <span>{{ 'vote.title'|trans }}: {{ memberVote.voteItem.vote.title }}</span><br />
+                                                        <small class="text-muted">{{ 'vote.ref'|trans }}: {{ memberVote.voteItem.vote.reference }}</small><br>
+                                                        <small class="text-muted">{{ 'vote.description'|trans }} {{ memberVote.voteItem.vote.description }}</small>
                                                     </p>
                                                     <p class="d-flex justify-content-between">
                                                         <span>{{ comparison.member.firstName }} {{ comparison.member.lastName }}</span>
@@ -74,9 +74,9 @@
                                             {% for memberVote in comparison.data.same_detail %}
                                                 <li class="list-group-item p-0">
                                                     <p class="my-4">
-                                                        <span>Title : {{ memberVote.voteItem.vote.title }}</span><br />
-                                                        <small class="text-muted">Reference : {{ memberVote.voteItem.vote.reference }}</small><br>
-                                                        <small class="text-muted">Description : {{ memberVote.voteItem.vote.description }}</small>
+                                                        <span>{{ 'vote.title'|trans }}: {{ memberVote.voteItem.vote.title }}</span><br />
+                                                        <small class="text-muted">{{ 'vote.ref'|trans }}: {{ memberVote.voteItem.vote.reference }}</small><br>
+                                                        <small class="text-muted">{{ 'vote.description'|trans }}: {{ memberVote.voteItem.vote.description }}</small>
                                                     </p>
                                                 </li>
                                             {% endfor %}
