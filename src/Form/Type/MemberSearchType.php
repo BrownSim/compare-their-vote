@@ -41,7 +41,7 @@ class MemberSearchType extends AbstractType
                 'label' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label_add' => 'add_members',
+                'label_add' => 'add_member',
                 'constraints' => [
                     new Count(max: 3),
                 ]
