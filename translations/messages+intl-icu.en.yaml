@@ -1,3 +1,5 @@
+meta:
+    description: Compare Members of the European Parliament votes with each other
 similar_vote_rate: >-
     {nb, plural,
         =0    {{rate}% similar vote from a total of # vote} 
