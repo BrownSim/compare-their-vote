@@ -29,7 +29,7 @@
         {% if data is defined %}
             <div class="row mt-5">
                 {% for key, comparison in data %}
-                    <div class="col-xl">
+                    <div class="col-xl mt-5">
                         <div class="text-center">
                             <h4>{{ comparison.member.firstName }} {{ comparison.member.lastName }} <br> {{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}</h4>
                             {{ 'similar_vote_rate'|trans({'rate': comparison.data.rate.same|round(2), 'nb': comparison.data.total}) }}

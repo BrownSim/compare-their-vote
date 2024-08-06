@@ -1,6 +1,8 @@
 :root {
     --bs-primary-rgb: 61, 81, 160;
     --bs-body-font-family: "Raleway", sans-serif;
+    --bs-link-color: #fff;
+    --bs-link-hover-color: #fff;
 }
 
 html, body {
@@ -72,9 +74,9 @@ footer {
     }
 }
 
-.btn-github svg {
-    width: 30px;
-    height: 30px;
+.main-footer .btn {
+    text-decoration: none;
+    font-size: 14px;
 }
 
 .btn-outline-primary {
@@ -87,10 +89,18 @@ footer {
 .accordion-faq {
     .accordion-item {
         border: 0;
+        border-radius: 0;
+        border-bottom: solid 1px;
+        border-color: var(--bs-gray-300);
+
+        &:last-child {
+            border: 0;
+        }
     }
 
     .accordion-button {
         padding-left: 0;
+        font-weight: 600;
     }
 
     .accordion-button:not(.collapsed) {
@@ -102,4 +112,6 @@ footer {
     }
 }
 
-
+.ts-dropdown [data-selectable] .highlight {
+    background: #d2e0ff;
+}
