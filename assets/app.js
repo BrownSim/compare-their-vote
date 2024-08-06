@@ -14,6 +14,8 @@ import 'bootstrap';
 import './js/collection.js';
 import './styles/app.css';
 
+const tomSelectConfig = {maxOptions: 10000};
+
 window.addEventListener('load', function () {
     'use strict';
 
@@ -21,7 +23,7 @@ window.addEventListener('load', function () {
         el.addEventListener('collection-append-new-item', (event) => {
             let select = event.detail.querySelector('select');
             if (null !== select) {
-                new TomSelect(select, {});
+                new TomSelect(select, tomSelectConfig);
             }
         });
     });
@@ -33,7 +35,7 @@ window.addEventListener('load', function () {
     });
 
     document.querySelectorAll('select').forEach(el  => {
-        new TomSelect(el, {});
+        new TomSelect(el, tomSelectConfig);
     });
 
     function chartDonuts(el, data, title) {
