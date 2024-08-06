@@ -33,3 +33,5 @@ choice_member: Choice member
 search: Search
 list_difference_vote: List of different votes
 list_same_vote: List of similar votes
+main_member: Main member
+member: Member

@@ -16,6 +16,7 @@ class MemberSearchType extends AbstractType
     {
         $builder
             ->add('mainMember', EntityType::class, [
+                'label' => 'main_member',
                 'class' => Member::class,
                 'placeholder' => 'choice_member',
                 'choice_label' => function (?Member $member): string {
@@ -23,6 +24,7 @@ class MemberSearchType extends AbstractType
                 },
             ])
             ->add('member', EntityType::class, [
+                'label' => 'member',
                 'class' => Member::class,
                 'choice_label' => function (?Member $member): string {
                     return $member ? $member->getFirstName() . ' ' . $member->getLastName() : '';
