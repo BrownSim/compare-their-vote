@@ -43,12 +43,6 @@ class MemberManager
         return $data;
     }
 
-    /**
-     * @param MemberVote[] $array1
-     * @param MemberVote[] $array2
-     *
-     * @return array
-     */
     public function compareArray(array $array1, array $array2): array
     {
         $results = [
