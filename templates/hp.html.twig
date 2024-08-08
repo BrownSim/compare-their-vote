@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% import 'common/macro/vote_value_translation.html.twig' as translation %}
+{% import 'common/macro/vote_value.html.twig' as voteValue %}
 
 {% block body %}
     <div class="container">
@@ -56,6 +57,14 @@
                                                         <span>{{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}</span>
                                                         <span class="badge bg-danger">{{ translation.vote_value_translation(memberVote.comparedMemberVoteValue) }}</span>
                                                     </p>
+                                                    <p>
+                                                        <span>{{ comparison.member.group.label }} ({{ comparison.member.firstName }} {{ comparison.member.lastName }})</span>
+                                                        {{ voteValue.vote_value_bar_chart(memberVote.mainMemberPoliticalGroupVoteValue.stats) }}
+                                                    </p>
+                                                    <p>
+                                                        <span>{{ comparison.memberCompared.group.label }} ({{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }})</span>
+                                                        {{ voteValue.vote_value_bar_chart(memberVote.comparedPoliticalGroupVoteValue.stats) }}
+                                                    </p>
                                                 </li>
                                             {% endfor %}
                                         </ul>
@@ -78,6 +87,14 @@
                                                         <span>{{ 'vote.title'|trans }}: {{ memberVote.voteItem.vote.title }}</span><br />
                                                         <small class="text-muted">{{ 'vote.ref'|trans }}: {{ memberVote.voteItem.vote.reference }}</small><br>
                                                         <small class="text-muted">{{ 'vote.description'|trans }}: {{ memberVote.voteItem.vote.description }}</small>
+                                                    </p>
+                                                    <p>
+                                                        <span>{{ comparison.member.group.label }} ({{ comparison.member.firstName }} {{ comparison.member.lastName }})</span>
+                                                        {{ voteValue.vote_value_bar_chart(memberVote.mainMemberPoliticalGroupVoteValue.stats) }}
+                                                    </p>
+                                                    <p>
+                                                        <span>{{ comparison.memberCompared.group.label }} ({{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }})</span>
+                                                        {{ voteValue.vote_value_bar_chart(memberVote.comparedPoliticalGroupVoteValue.stats) }}
                                                     </p>
                                                 </li>
                                             {% endfor %}

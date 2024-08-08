@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MemberVoteRepository::class)]
 #[ORM\Table]
+#[ORM\Index(columns: ['member_id', 'vote_id', 'value'])]
 class MemberVote
 {
     public const VOTE_FOR = 'FOR';

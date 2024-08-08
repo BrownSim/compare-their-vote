@@ -133,3 +133,21 @@ footer {
         }
     }
 }
+
+.bar-chart {
+    height: 50px;
+    width: 100%;
+    display: flex;
+
+    .bar-chart-for {
+        background: #6794dc;
+    }
+
+    .bar-chart-against {
+        background: #dc6788;
+    }
+
+    .bar-chart-abstention {
+        background: #999;
+    }
+}
