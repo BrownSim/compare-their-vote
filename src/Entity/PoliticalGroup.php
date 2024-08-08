@@ -20,7 +20,14 @@ class PoliticalGroup
      * @var Collection<int, Member>
      */
     #[ORM\OneToMany(targetEntity: Member::class, mappedBy: 'group')]
+    #[ORM\OrderBy(['lastName' => 'ASC', 'firstName' => 'ASC'])]
     private Collection $members;
+
+    /**
+     * @var Collection<int, PoliticalGroupVote>
+     */
+    #[ORM\OneToMany(targetEntity: PoliticalGroupVote::class, mappedBy: 'politicalGroup', orphanRemoval: true)]
+    private Collection $politicalGroupVotes;
 
     #[ORM\Column(type: Types::STRING)]
     private ?string $code = null;
@@ -34,6 +41,7 @@ class PoliticalGroup
     public function __construct()
     {
         $this->members = new ArrayCollection();
+        $this->politicalGroupVotes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,6 +66,27 @@ class PoliticalGroup
     {
         $this->members->removeElement($member);
         $member->setGroup(null);
+
+        return $this;
+    }
+
+    public function getPoliticalGroupVotes(): Collection
+    {
+        return $this->politicalGroupVotes;
+    }
+
+    public function addPoliticalGroupVote(PoliticalGroupVote $politicalGroupVote): self
+    {
+        $this->politicalGroupVotes->add($politicalGroupVote);
+        $politicalGroupVote->setPoliticalGroup($this);
+
+        return $this;
+    }
+
+    private function removePoliticalGroupVote(PoliticalGroupVote $politicalGroupVote): self
+    {
+        $this->politicalGroupVotes->add($politicalGroupVote);
+        $politicalGroupVote->setPoliticalGroup(null);
 
         return $this;
     }

@@ -6,13 +6,13 @@ namespace App\Command;
 
 use App\Api\HowTheyVote\Client;
 use App\Entity\Country;
-use App\Entity\PoliticalGroup;
 use App\Entity\Member;
 use App\Entity\MemberVote;
+use App\Entity\PoliticalGroup;
+use App\Entity\PoliticalGroupVote;
 use App\Entity\Session;
 use App\Entity\Vote;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\TextUI\XmlConfiguration\Group;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -132,18 +132,44 @@ class ImportCommand extends Command
 
         if (isset($data['member_votes'])) {
             foreach ($data['member_votes'] as $memberVote) {
-                $member = $this->createOrFindMember($memberVote['member']);
-                $memberVote = (new MemberVote())
-                    ->setValue($memberVote['position'])
-                    ->setMember($member)
-                    ->setVote($vote)
-                ;
+                $this->createMemberVote($vote, $memberVote);
+            }
+        }
 
-                $this->em->persist($memberVote);
+        if (isset($data['stats']['by_group'])) {
+            foreach ($data['stats']['by_group'] as $statGroup) {
+                $this->createPoliticalGroupVote($vote, $statGroup);
             }
         }
 
         return $vote;
+    }
+
+    private function createPoliticalGroupVote(Vote $vote, array $statGroup): void
+    {
+        $politicalGroupVote = (new PoliticalGroupVote())
+            ->setVote($vote)
+            ->setPoliticalGroup($this->createOrFindGroup($statGroup['group']))
+            ->setStats([
+                'FOR' => $statGroup['stats']['FOR'],
+                'AGAINST' => $statGroup['stats']['AGAINST'],
+                'ABSTENTION' => $statGroup['stats']['ABSTENTION'],
+                'DID_NOT_VOTE' => $statGroup['stats']['DID_NOT_VOTE'],
+            ]);
+
+        $this->em->persist($politicalGroupVote);
+    }
+
+    private function createMemberVote(Vote $vote, array $data): void
+    {
+        $member = $this->createOrFindMember($data['member']);
+        $memberVote = (new MemberVote())
+            ->setValue($data['position'])
+            ->setMember($member)
+            ->setVote($vote)
+        ;
+
+        $this->em->persist($memberVote);
     }
 
     private function createOrFindMember($data): Member
