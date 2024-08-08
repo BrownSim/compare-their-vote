@@ -12,6 +12,7 @@
     <div class="container">
         <div class="row">
             {% if form is defined %}
+                <input type="hidden" data-members-detail="{{ members_tom_select() }}">
                 {{ form_start(form) }}
                 {{ form_row(form.mainMember) }}
                 {{ form_row(form.member) }}

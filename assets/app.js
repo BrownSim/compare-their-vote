@@ -14,7 +14,27 @@ import 'bootstrap';
 import './js/collection.js';
 import './styles/app.css';
 
-const tomSelectConfig = {maxOptions: 10000};
+const tomSelectConfig = {
+    maxOptions: 10000,
+    labelField: 'name',
+    searchField: 'name',
+    render: {
+        option: function(data, escape) {
+            return '<div>' +
+                    '<span class="pe-1">' + escape(data.name) + '</span>' + ' - ' +
+                    '<small class="ps-1 text-muted">' + escape(data.group) + '</small>' +
+                '</div>'
+            ;
+        },
+        item: function(data, escape) {
+            return '<div>' +
+                '<span class="pe-1">' + escape(data.name) + '</span>' + ' - ' +
+                '<small class="ps-1 text-muted">' + escape(data.group) + '</small>' +
+                '</div>'
+            ;
+        }
+    }
+};
 
 window.addEventListener('load', function () {
     'use strict';
@@ -23,7 +43,8 @@ window.addEventListener('load', function () {
         el.addEventListener('collection-append-new-item', (event) => {
             let select = event.detail.querySelector('select');
             if (null !== select) {
-                new TomSelect(select, tomSelectConfig);
+                let options = {options: tomSelectMembersData()};
+                new TomSelect(select, {...tomSelectConfig, ...options});
             }
         });
     });
@@ -35,8 +56,15 @@ window.addEventListener('load', function () {
     });
 
     document.querySelectorAll('select').forEach(el  => {
-        new TomSelect(el, tomSelectConfig);
+        let options = {options: tomSelectMembersData()};
+        new TomSelect(el, {...tomSelectConfig, ...options});
     });
+
+    function tomSelectMembersData() {
+        let data = document.querySelector('[data-members-detail]').getAttribute('data-members-detail');
+
+        return JSON.parse(data);
+    }
 
     function chartDonuts(el, data, title) {
         am5.ready(function() {
