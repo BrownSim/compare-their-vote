@@ -25,6 +25,9 @@ class Member
     #[ORM\ManyToOne(targetEntity: PoliticalGroup::class, inversedBy: 'members')]
     private ?PoliticalGroup $group = null;
 
+    #[ORM\ManyToOne(targetEntity: Country::class)]
+    private ?Country $country = null;
+
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $mepId = null;
 
@@ -79,6 +82,18 @@ class Member
     public function setGroup(?PoliticalGroup $group): self
     {
         $this->group = $group;
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
 
         return $this;
     }

@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Api\HowTheyVote\Client;
+use App\Entity\Country;
 use App\Entity\PoliticalGroup;
 use App\Entity\Member;
 use App\Entity\MemberVote;
 use App\Entity\Session;
 use App\Entity\Vote;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\TextUI\XmlConfiguration\Group;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -29,6 +31,8 @@ class ImportCommand extends Command
     private array $members = [];
 
     private array $votes = [];
+
+    private array $countries = [];
 
     public function __construct(
         private readonly Client $client,
@@ -83,6 +87,10 @@ class ImportCommand extends Command
 
         foreach ($this->em->getRepository(Vote::class)->findAll() as $vote) {
             $this->votes[$vote->getOfficialId()] = $vote;
+        }
+
+        foreach ($this->em->getRepository(Country::class) as $country) {
+            $this->countries[$country->getCode()] = $country;
         }
     }
 
@@ -144,31 +152,55 @@ class ImportCommand extends Command
             return $this->members[$data['id']];
         }
 
-        if (isset($this->politicalGroup[$data['group']['code']])) {
-            $group = $this->politicalGroup[$data['group']['code']];
-        } else {
-            $group = (new PoliticalGroup())
-                ->setCode($data['group']['code'])
-                ->setLabel($data['group']['label'])
-                ->setShortLabel($data['group']['short_label'])
-            ;
-
-            $this->em->persist($group);
-            $this->politicalGroup[$data['group']['code']] = $group;
-        }
-
         $member = (new Member())
             ->setMepId($data['id'])
             ->setFirstName($data['first_name'])
             ->setLastName($data['last_name'])
             ->setThumb($data['thumb_url'])
-            ->setGroup($group)
+            ->setGroup($this->createOrFindGroup($data['group']))
+            ->setCountry($this->createOrFindCountry($data['country']))
         ;
 
         $this->em->persist($member);
         $this->members[$data['id']] = $member;
 
         return $member;
+    }
+
+    private function createOrFindGroup(array $data): PoliticalGroup
+    {
+        if (isset($this->politicalGroup[$data['code']])) {
+            return $this->politicalGroup[$data['code']];
+        }
+
+        $group = (new PoliticalGroup())
+            ->setCode($data['code'])
+            ->setLabel($data['label'])
+            ->setShortLabel($data['short_label'])
+        ;
+
+        $this->em->persist($group);
+        $this->politicalGroup[$data['code']] = $group;
+
+        return $group;
+    }
+
+    private function createOrFindCountry(array $data): Country
+    {
+        if (isset($this->countries[$data['code']])) {
+            return $this->countries[$data['code']];
+        }
+
+        $country = (new Country())
+            ->setCode($data['code'])
+            ->setIsoAlpha($data['iso_alpha_2'])
+            ->setLabel($data['label'])
+        ;
+
+        $this->em->persist($country);
+        $this->countries[$data['code']] = $country;
+
+        return $country;
     }
 
     private function updateSession(): void
