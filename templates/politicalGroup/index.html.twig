@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% import 'common/macro/vote_value_translation.html.twig' as translation %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="accordion" id="list-groups">
+                    {% for group in groups %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#group-{{ group.id }}" aria-expanded="false" aria-controls="collapseOne">
+                                    {{ group.label }} ({{ group.members|length }})
+                                </button>
+                            </h2>
+                            <div id="group-{{ group.id }}" class="accordion-collapse collapse" data-bs-parent="#list-groups">
+                                <div class="accordion-body">
+                                    <ul class="list-group">
+                                        {% for member in group.members %}
+                                            <li class="list-group-item d-flex align-items-center">
+                                                <div class="avatar"><img src="https://howtheyvote.eu/{{ member.thumb }}" alt=""></div>
+                                                <p class="mb-0 ms-3">
+                                                    {{ member.firstName }} {{ member.lastName }} <br> <small class="text-muted">{{ member.country.label }}</small>
+                                                </p>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
