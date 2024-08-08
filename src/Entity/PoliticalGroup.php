@@ -2,17 +2,25 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table]
-class Group
+class PoliticalGroup
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
+
+    /**
+     * @var Collection<int, Member>
+     */
+    #[ORM\OneToMany(targetEntity: Member::class, mappedBy: 'group')]
+    private Collection $members;
 
     #[ORM\Column(type: Types::STRING)]
     private ?string $code = null;
@@ -23,9 +31,35 @@ class Group
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $shortLabel = null;
 
+    public function __construct()
+    {
+        $this->members = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(Member $member): self
+    {
+        $this->members->add($member);
+        $member->setGroup($this);
+
+        return $this;
+    }
+
+    private function removeMember(Member $member): self
+    {
+        $this->members->removeElement($member);
+        $member->setGroup(null);
+
+        return $this;
     }
 
     public function getCode(): ?string

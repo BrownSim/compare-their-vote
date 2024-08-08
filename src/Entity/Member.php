@@ -22,6 +22,9 @@ class Member
     #[ORM\OneToMany(targetEntity: MemberVote::class, mappedBy: 'member', orphanRemoval: true)]
     private Collection $memberVotes;
 
+    #[ORM\ManyToOne(targetEntity: PoliticalGroup::class, inversedBy: 'members')]
+    private ?PoliticalGroup $group = null;
+
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $mepId = null;
 
@@ -64,6 +67,18 @@ class Member
     {
         $this->memberVotes->removeElement($memberVote);
         $memberVote->setMember(null);
+
+        return $this;
+    }
+
+    public function getGroup(): ?PoliticalGroup
+    {
+        return $this->group;
+    }
+
+    public function setGroup(?PoliticalGroup $group): self
+    {
+        $this->group = $group;
 
         return $this;
     }

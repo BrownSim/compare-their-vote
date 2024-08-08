@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Api\HowTheyVote\Client;
+use App\Entity\PoliticalGroup;
 use App\Entity\Member;
 use App\Entity\MemberVote;
 use App\Entity\Session;
@@ -23,6 +24,12 @@ class ImportCommand extends Command
 
     private readonly ProgressBar $progressBarVote;
 
+    private array $politicalGroup = [];
+
+    private array $members = [];
+
+    private array $votes = [];
+
     public function __construct(
         private readonly Client $client,
         private readonly EntityManagerInterface $em,
@@ -34,20 +41,49 @@ class ImportCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->progressBarVote = new ProgressBar($output->section());
+        $this->loadData();
 
         $votes = $this->getAllVotes();
+        $this->progressBarVote = new ProgressBar($output->section());
         $this->progressBarVote->setMaxSteps(count($votes));
+
+        $iterator = 1;
 
         foreach ($this->getAllVotes() as $vote) {
             $this->createOrFindVote($vote);
             $this->progressBarVote->advance();
+            $iterator++;
+
+            if ($iterator === 100) {
+                $this->em->flush();
+                $iterator = 1;
+            }
         }
+
+        $this->em->flush();
 
         $this->updateSession();
         $this->progressBarVote->finish();
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * Preload data for optimize import speed
+     */
+    private function loadData(): void
+    {
+        foreach ($this->em->getRepository(Member::class)->findAll() as $member) {
+            $this->members[$member->getMepId()] = $member;
+        }
+
+        foreach ($this->em->getRepository(PoliticalGroup::class)->findAll() as $group) {
+            $this->politicalGroup[$group->getCode()] = $group;
+        }
+
+        foreach ($this->em->getRepository(Vote::class)->findAll() as $vote) {
+            $this->votes[$vote->getOfficialId()] = $vote;
+        }
     }
 
     private function getAllVotes(): array
@@ -69,10 +105,9 @@ class ImportCommand extends Command
     private function createOrFindVote(array $data): Vote
     {
         $data = $this->client->getVote((int) $data['id']);
-        $vote = $this->em->getRepository(Vote::class)->findOneBy(['officialId' => (int) $data['id']]);
 
-        if (null !== $vote) {
-            return $vote;
+        if (isset($this->votes[$data['id']])) {
+            return $this->votes[$data['id']];
         }
 
         $vote = (new Vote())
@@ -85,6 +120,7 @@ class ImportCommand extends Command
         ;
 
         $this->em->persist($vote);
+        $this->votes[$data['id']] = $vote;
 
         if (isset($data['member_votes'])) {
             foreach ($data['member_votes'] as $memberVote) {
@@ -99,18 +135,26 @@ class ImportCommand extends Command
             }
         }
 
-        $this->em->flush();
-        $this->em->clear();
-
         return $vote;
     }
 
     private function createOrFindMember($data): Member
     {
-        $member = $this->em->getRepository(Member::class)->findOneBy(['mepId' => $data['id']]);
+        if (isset($this->members[$data['id']])) {
+            return $this->members[$data['id']];
+        }
 
-        if (null !== $member) {
-            return $member;
+        if (isset($this->politicalGroup[$data['group']['code']])) {
+            $group = $this->politicalGroup[$data['group']['code']];
+        } else {
+            $group = (new PoliticalGroup())
+                ->setCode($data['group']['code'])
+                ->setLabel($data['group']['label'])
+                ->setShortLabel($data['group']['short_label'])
+            ;
+
+            $this->em->persist($group);
+            $this->politicalGroup[$data['group']['code']] = $group;
         }
 
         $member = (new Member())
@@ -118,9 +162,11 @@ class ImportCommand extends Command
             ->setFirstName($data['first_name'])
             ->setLastName($data['last_name'])
             ->setThumb($data['thumb_url'])
+            ->setGroup($group)
         ;
 
         $this->em->persist($member);
+        $this->members[$data['id']] = $member;
 
         return $member;
     }
