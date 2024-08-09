@@ -3,6 +3,7 @@
     --bs-body-font-family: "Raleway", sans-serif;
     --bs-link-color: #fff;
     --bs-link-hover-color: #fff;
+    --bs-danger-rgb: 220, 103, 136;
 }
 
 html, body {
@@ -135,7 +136,7 @@ footer {
 }
 
 .bar-chart {
-    height: 50px;
+    height: 30px;
     width: 100%;
     display: flex;
 

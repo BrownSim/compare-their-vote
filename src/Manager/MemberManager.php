@@ -4,15 +4,12 @@ namespace App\Manager;
 
 use App\Entity\Member;
 use App\Entity\MemberVote;
-use App\Entity\PoliticalGroupVote;
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MemberManager
 {
     public function __construct(
-       private readonly EntityManagerInterface $em
+        private readonly EntityManagerInterface $em
     ) {
     }
 
@@ -48,8 +45,6 @@ class MemberManager
 
     public function compareArray(array $array1, array $array2): array
     {
-        $politicalGroupVoteRepository = $this->em->getRepository(PoliticalGroupVote::class);
-
         $results = [
             'same' => 0,
             'same_detail' => [],
@@ -58,10 +53,6 @@ class MemberManager
             'total' => 0
         ];
 
-        /**
-         * @var int $key
-         * @var MemberVote $item
-         */
         foreach ($array1 as $key => $item) {
             if (false === isset($array2[$key])) {
                 continue;
@@ -72,21 +63,13 @@ class MemberManager
 
             if ($mainMemberVote->getValue() === $comparedMemberVote->getValue()) {
                 $results['same'] += 1;
-                $results['same_detail'][] = [
-                    'voteItem' => $item,
-                    'mainMemberVoteValue' => $item->getValue(),
-                    'mainMemberPoliticalGroupVoteValue' => $politicalGroupVoteRepository->findByGroupAndVote($mainMemberVote->getMember()->getGroup(), $item->getVote()),
-                    'comparedMemberVoteValue' => $comparedMemberVote->getValue(),
-                    'comparedPoliticalGroupVoteValue' => $politicalGroupVoteRepository->findByGroupAndVote($comparedMemberVote->getMember()->getGroup(), $item->getVote()),
-                ];
+                $results['same_detail'][] = ['voteItem' => $item];
             } else {
                 $results['difference'] += 1;
                 $results['difference_detail'][] = [
                     'voteItem' => $item,
                     'mainMemberVoteValue' => $item->getValue(),
-                    'mainMemberPoliticalGroupVoteValue' => $politicalGroupVoteRepository->findByGroupAndVote($mainMemberVote->getMember()->getGroup(), $item->getVote()),
-                    'comparedMemberVoteValue' => $comparedMemberVote->getValue(),
-                    'comparedPoliticalGroupVoteValue' => $politicalGroupVoteRepository->findByGroupAndVote($comparedMemberVote->getMember()->getGroup(), $item->getVote()),
+                    'comparedMemberVoteValue' => $comparedMemberVote->getValue()
                 ];
             }
 

@@ -1,14 +1,11 @@
-{% macro vote_value_bar_chart(voteStats) %}
-    {% set nbVote = 0 %}
-    {% for value, count in voteStats %}
-        {% if value != constant('App\\Entity\\MemberVote::VOTE_DID_NOT_VOTE') %}
-            {% set nbVote = nbVote + count %}
-        {% endif %}
-    {% endfor %}
-
-    <div class="bar-chart">
-        <div class="bar-chart-for" style="width: {{ attribute(voteStats, constant('App\\Entity\\MemberVote::VOTE_FOR')) * 100 / nbVote }}%;"></div>
-        <div class="bar-chart-against" style="width: {{ attribute(voteStats, constant('App\\Entity\\MemberVote::VOTE_AGAINST')) * 100 / nbVote }}%;"></div>
-        <div class="bar-chart-abstention" style="width: {{ attribute(voteStats, constant('App\\Entity\\MemberVote::VOTE_ABSTENTION')) * 100 / nbVote }}%;"></div>
-    </div>
+{% macro vote_value_badge(vote) %}
+    {% if vote == constant('App\\Entity\\MemberVote::VOTE_FOR') %}
+        <span class="badge bg-primary">{{ 'vote_value.for'|trans }}</span>
+    {% elseif vote == constant('App\\Entity\\MemberVote::VOTE_AGAINST') %}
+        <span class="badge bg-danger">{{ 'vote_value.against'|trans }}</span>
+    {% elseif vote == constant('App\\Entity\\MemberVote::VOTE_ABSTENTION') %}
+        <span class="badge bg-secondary">{{ 'vote_value.not_vote'|trans }}</span>
+    {% elseif vote == constant('App\\Entity\\MemberVote::VOTE_DID_NOT_VOTE') %}
+        <span class="badge bg-light">{{ 'vote_value.miss'|trans }}</span>
+    {% endif %}
 {% endmacro %}
