@@ -12,8 +12,8 @@ vote_value_label: Vote value
 vote_value:
     for: For
     against: Agasint
-    not_vote: Abstention
-    miss: Did not vote
+    not_vote: Did not vote
+    abstention: Abstention
 vote_label: >-
     {nb, plural,
         =0    {# vote} 

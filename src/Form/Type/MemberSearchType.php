@@ -56,7 +56,7 @@ class MemberSearchType extends AbstractType
                 'choices' => [
                      'vote_value.for' => MemberVote::VOTE_FOR,
                      'vote_value.against' => MemberVote::VOTE_AGAINST,
-                     'vote_value.miss' => MemberVote::VOTE_ABSTENTION,
+                     'vote_value.abstention' => MemberVote::VOTE_ABSTENTION,
                      'vote_value.not_vote' => MemberVote::VOTE_DID_NOT_VOTE,
                 ],
             ])
