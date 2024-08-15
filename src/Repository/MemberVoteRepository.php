@@ -14,6 +14,7 @@ class MemberVoteRepository extends EntityRepository
     public function findFeaturedVotesByMember(Member $member, array $voteValues = [], array $voteIds = []): array
     {
         $query = $this->createQueryBuilder('member_vote')
+            ->addSelect('vote')
             ->join('member_vote.vote', 'vote')
             ->where('vote.isFeatured = TRUE')
             ->andWhere('member_vote.member = :member')
