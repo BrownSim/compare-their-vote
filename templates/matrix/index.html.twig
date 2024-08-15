@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% set matrixSize = matrix|length %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 p-0" style="">
+                <div class="grid-container" style="grid-template-columns: 175px repeat({{ matrixSize }}, auto); grid-template-rows: 175px repeat({{ matrixSize }}, auto);">
+                    <div class="cell border-0" style="position: sticky; top: 0"></div>
+                    {% for key, line in matrix %}
+                        <div class="cell cell-identity border-top-0 d-flex" style="position: sticky; top: -20px; background: #fff; z-index: 10000">
+                            <p class="mx-auto mb-2 member-detail rotate">
+                                <span class="member-name">{{ attribute(members, key).lastName }}</span> <small>({{ attribute(members, key).group.shortLabel }})</small>
+                            </p>
+                        </div>
+                    {% endfor %}
+                    {% for key, line in matrix %}
+                        {% set newLine = true %}
+                        {% for el in line %}
+                            {% if newLine == true %}
+                                <div class="cell cell-identity d-flex border-start-0" style="position: sticky; left: -20px; background: #fff">
+                                    <p class="m-auto me-2 member-detail">
+                                        <span class="member-name">{{ attribute(members, key).lastName }}</span> <small>({{ attribute(members, key).group.shortLabel }})</small>
+                                    </p>
+                                </div>
+                                {% set newLine = false %}
+                            {% endif %}
+                            {% if el.rate is defined %}
+                                {% set cellClass = 'no-vote' %}
+                                {% if el.nb_vote > 0 %}
+                                    {% set cellClass = 'rate-' ~ el.rate|default(null)|round(-1) %}
+                                {% endif %}
+                                <div class="cell{% if el|length == 0 %} empty{% endif %} {{ cellClass }}">
+                                    <span class="fw-bold">{{ el.rate|default(null)|round }}%</span>
+                                </div>
+                            {% else %}
+                                <div class="cell empty"></div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
