@@ -31,11 +31,11 @@ class MemberToMemberVoteComparison
     private ?PoliticalGroup $groupMember2 = null;
 
     #[ORM\ManyToOne(targetEntity: Country::class)]
-    #[ORM\JoinColumn(name: 'country_member_1', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(name: 'country_member_1_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private ?Country $countryMember1 = null;
 
     #[ORM\ManyToOne(targetEntity: Country::class)]
-    #[ORM\JoinColumn(name: 'country_member_2', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(name: 'country_member_2_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private ?Country $countryMember2 = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
