@@ -22,7 +22,7 @@ class MemberVote
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Member::class, inversedBy: 'memberVotes', fetch: 'EAGER')]
-    #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Member $member = null;
 
     #[ORM\ManyToOne(targetEntity: Vote::class, inversedBy: 'membersVote', fetch: 'EAGER')]

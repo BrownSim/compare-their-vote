@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table]
+#[ORM\Index(columns: ['is_featured'])]
 class Vote
 {
     #[ORM\Id]
