@@ -53,6 +53,9 @@ class MemberManager
             'total' => 0
         ];
 
+        $array1 = array_intersect_key($array1, $array2);
+        $array2 = array_intersect_key($array2, $array1);
+
         foreach ($array1 as $key => $item) {
             if (false === isset($array2[$key])) {
                 continue;
@@ -76,8 +79,8 @@ class MemberManager
             $results['total'] += 1;
         }
 
-        $results['rate']['same'] = $results['same'] / $results['total'] * 100;
-        $results['rate']['difference'] = $results['difference'] / $results['total'] * 100;
+        $results['rate']['same'] = 0 === $results['same'] ? 0 : $results['same'] / $results['total'] * 100;
+        $results['rate']['difference'] = 0 === $results['difference'] ? 0 : $results['difference'] / $results['total'] * 100;
 
         return $results;
     }

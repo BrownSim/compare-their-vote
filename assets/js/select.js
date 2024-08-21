@@ -29,19 +29,29 @@ window.addEventListener('load', function () {
         el.addEventListener('collection-append-new-item', (event) => {
             let select = event.detail.querySelector('select');
             if (null !== select) {
-                let options = {options: tomSelectMembersData()};
-                new TomSelect(select, {...tomSelectConfig, ...options});
+                initTomSelect(select);
             }
         });
     });
 
     document.querySelectorAll('select').forEach(el  => {
-        let options = {options: tomSelectMembersData()};
-        new TomSelect(el, {...tomSelectConfig, ...options});
+        initTomSelect(el);
     });
 
-    function tomSelectMembersData() {
-        let data = document.querySelector('[data-members-detail]').getAttribute('data-members-detail');
+    function initTomSelect(el) {
+        let config = tomSelectConfig;
+        let options = {};
+        if (el.hasAttribute('data-custom-provider')) {
+            options = {options: tomSelectDataProvider(el.getAttribute('data-custom-provider'))};
+        } else {
+            config = {};
+        }
+
+        new TomSelect(el, {...config, ...options});
+    }
+
+    function tomSelectDataProvider(attr) {
+        let data = document.querySelector('[' + attr + ']').getAttribute(attr);
 
         return JSON.parse(data);
     }
