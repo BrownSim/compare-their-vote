@@ -25,6 +25,8 @@
         "@amcharts/amcharts5": "^5.10.1",
         "add": "^2.0.6",
         "bootstrap": "^5.3.3",
+        "sass": "^1.77.8",
+        "sass-loader": "^14.0.0",
         "tom-select": "^2.3.1",
         "yarn": "^1.22.22"
     }

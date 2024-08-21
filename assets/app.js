@@ -2,7 +2,7 @@ import './js/collection.js';
 import './js/select';
 import './js/chart';
 
-import './styles/app.css';
+import './scss/app.scss';
 
 window.addEventListener('load', function () {
     'use strict';

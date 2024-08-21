@@ -29,7 +29,7 @@
                             <h4>{{ comparison.member.firstName }} {{ comparison.member.lastName }} <br> {{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}</h4>
                             {{ 'similar_vote_rate'|trans({'rate': comparison.data.rate.same|round(2), 'nb': comparison.data.total}) }}
                         </div>
-                        <div style="width: 400px;height: 400px" class="my-5 mx-auto" data-chart-type="doughnut" data-value="{{ comparison.data|chart_pie_this }}" data-title="{{ 'vote_label'|trans({'nb': comparison.data.total}) }}"></div>
+                        <div class="my-5 mx-auto member-comparison-chart" data-chart-type="doughnut" data-value="{{ comparison.data|chart_pie_this }}" data-title="{{ 'vote_label'|trans({'nb': comparison.data.total}) }}"></div>
                         <div class="accordion accordion-transparent mt-4" id="{{ key }}vote-detail-accordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -90,11 +90,4 @@
             </div>
         {% endif %}
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 {% endblock %}

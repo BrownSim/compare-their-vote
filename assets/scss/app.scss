@@ -170,6 +170,10 @@ footer {
     aspect-ratio: 1;
     margin: auto;
 
+    @include media-breakpoint-down(md) {
+        max-width: 98vw;
+    }
+
     &::-webkit-scrollbar {
         width: 14px;
         height: 14px;
@@ -230,7 +234,7 @@ footer {
 
         &.cell-identity-top {
             position: sticky;
-            top: 0;
+            top: -1px;
             background: #fff;
             z-index: 2
         }
@@ -378,5 +382,15 @@ footer {
 
     footer, header {
         display: none;
+    }
+}
+
+.member-comparison-chart {
+    width: 400px;
+    height: 400px;
+
+    @include media-breakpoint-down(md) {
+        width: 300px;
+        height: 300px;
     }
 }
