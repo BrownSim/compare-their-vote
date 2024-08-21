@@ -1,3 +1,5 @@
+import 'bootstrap';
+
 import './js/collection.js';
 import './js/select';
 import './js/chart';

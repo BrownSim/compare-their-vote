@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "@amcharts/amcharts5": "^5.10.1",
+        "@popperjs/core": "^2.11.8",
         "add": "^2.0.6",
         "bootstrap": "^5.3.3",
         "sass": "^1.77.8",
