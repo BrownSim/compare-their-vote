@@ -35,3 +35,25 @@ list_difference_vote: List of different votes
 list_same_vote: List of similar votes
 main_member: Main member
 member: Member
+hp:
+    welcome:
+choice_country: Choose a country
+choice_group: Choose a political group
+matrix_type:
+    political_group: Political group
+    country: Country
+comparison_type: Comparison type
+political_group_choice: Political group
+country: Country
+political_group: Political group
+comparison_subtitle: The website offers you several ways to make comparisons between MPs.
+comparison_donuts:
+    text_1: You can select the M.P.s you wish to compare and have access to the concordant and divergent votes.
+    text_2: It's the best choice if you want the most detail
+comparison_matrix_correlation:
+    text_1: You can also choose to compare all MEPs by group or by country. This comparison will be illustrated by a correlation matrix.
+    text_2: It's the best choice if you want an overview
+try_it: Try it
+open_fullscreen: Open the map in a full screen
+compare: Compare
+vote_information: Votes where the MP was not present are not taken into account in the comparison.

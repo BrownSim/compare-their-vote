@@ -4,8 +4,6 @@
 :root {
     --bs-primary-rgb: 61, 81, 160;
     --bs-body-font-family: "Raleway", sans-serif;
-    --bs-link-color: #fff;
-    --bs-link-hover-color: #fff;
     --bs-danger-rgb: 220, 103, 136;
 }
 
@@ -29,6 +27,14 @@ main {
 footer {
     padding: 16px;
     text-align: center;
+
+    .btn-link {
+        color: #fff;
+
+        &:hover, &:active {
+            color: #fff !important;
+        }
+    }
 }
 
 .btn-primary {
@@ -157,11 +163,25 @@ footer {
 }
 
 .grid-container {
-    min-width: 100%;
     display: grid;
-    aspect-ratio: 1 / 1;
-    padding: 20px;
-    overflow: auto;
+    overflow: scroll !important;
+    max-height: 90vh;
+    max-width: 100%;
+    aspect-ratio: 1;
+    margin: auto;
+
+    &::-webkit-scrollbar {
+        width: 14px;
+        height: 14px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #3d52a0;
+    }
 
     .member-detail {
         font-size: 12px;
@@ -207,12 +227,42 @@ footer {
             display: block;
             margin: auto;
         }
+
+        &.cell-identity-top {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 2
+        }
+
+        &.cell-identity-left {
+            position: sticky;
+            left: 0;
+            background: #fff
+        }
+    }
+
+    .cell-hide {
+        position: sticky;
+        background: #fff;
+        top:  0;
+        left: 0;
+        z-index: 3;
     }
 
     .rate-0 {
-
+        background: rgb(199, 148, 70);
     }
+
+    .rate-5 {
+        background: rgb(199, 148, 70);
+    }
+
     .rate-10 {
+        background: rgb(200, 150, 72);
+    }
+
+    .rate-15 {
         background: rgb(200, 150, 72);
     }
 
@@ -220,19 +270,39 @@ footer {
         background: rgb(221, 189, 123);
     }
 
+    .rate-25 {
+        background: rgb(221, 189, 123);
+    }
+
     .rate-30 {
         background: rgb(221, 189, 123);
     }
 
+    .rate-35 {
+        background: rgb(221, 189, 123);
+    }
+
     .rate-40 {
-        background: rgb(238, 220, 175);
+        background: rgb(243, 230, 197);
+    }
+
+    .rate-45 {
+        background: rgb(244, 238, 220);
     }
 
     .rate-50 {
-        background: rgb(220, 238, 235);
+        background: rgb(237, 241, 234);
+    }
+
+    .rate-55 {
+        background: rgb(206, 235, 230);
     }
 
     .rate-60 {
+        background: rgb(193, 230, 225);
+    }
+
+    .rate-65 {
         background: rgb(127, 200, 190);
     }
 
@@ -240,18 +310,19 @@ footer {
         background: rgb(76, 166, 157);
     }
 
-    .rate-80 {
+    .rate-75 {
         background: rgb(57, 152, 143);
     }
 
-    .rate-90 {
-        background: rgb(0, 64, 52);
-        span {
-            color: #fff
-        }
+    .rate-80 {
+        background: rgb(59, 153, 145);
     }
 
-    .rate-100 {
+    .rate-85 {
+        background: rgb(59, 153, 145);
+    }
+
+    .rate-90, .rate-95, .rate-100 {
         background: rgb(0, 64, 52);
         span {
             color: #fff
@@ -261,12 +332,51 @@ footer {
     .no-vote {
         background: #999;
     }
+
+    .nb-vote {
+        font-size: 10px;
+    }
 }
 
+.hp-grid-container {
+    min-width: unset;
+    width: 350px;
+    margin: auto;
+    height: unset;
+}
 
-.grid-container:after {
-    content: "";
-    display: block;
-    height: 50px;
-    width: 100%;
+.fullscreen {
+    main {
+        margin: 0;
+        height: 100vh;
+    }
+
+    .grid-container {
+        margin: auto;
+        max-height: 98vh;
+        max-width: 98vw;
+        padding: 0;
+
+        &::-webkit-scrollbar {
+            width: unset;
+            height: unset;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: unset;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: unset;
+        }
+    }
+
+    .cell {
+        min-width: 25px;
+        min-height: 25px;
+    }
+
+    footer, header {
+        display: none;
+    }
 }

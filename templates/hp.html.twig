@@ -1,95 +1,73 @@
 {% extends 'base.html.twig' %}
-{% import 'common/macro/vote_value.html.twig' as voteValue %}
 
 {% block body %}
     <div class="container">
         <div class="col-12 text-center">
             <h1>{{ 'hp_title'|trans }}</h1>
-            <h2 class="h5 my-5">{{ 'hp_last_vote'|trans({'start': lastSession.startAt|date('M d'), 'to': lastSession.endAt|date('M d')}) }}</h2>
+            <h5 class="mb-5">{{ 'hp_last_vote'|trans({'start': lastSession.startAt|date('M d'), 'to': lastSession.endAt|date('M d Y')}) }}</h5>
         </div>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            {% if form is defined %}
-                <input type="hidden" data-members-detail="{{ members_tom_select() }}">
-                {{ form_start(form) }}
-                {{ form_row(form.mainMember) }}
-                {{ form_row(form.member) }}
-                {{ form_row(form.members) }}
-                {{ form_row(form.voteValue) }}
-                <button type="submit" class="btn btn-primary">{{ 'search'|trans }}</button>
-                {{ form_end(form) }}
-            {% endif %}
-        </div>
-        {% if data is defined %}
+        <div class="col-12">
+            <h4 class="text-center">{{ 'comparison_subtitle'|trans }}</h4>
             <div class="row mt-5">
-                {% for key, comparison in data %}
-                    <div class="col-xl mt-5">
-                        <div class="text-center">
-                            <h4>{{ comparison.member.firstName }} {{ comparison.member.lastName }} <br> {{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}</h4>
-                            {{ 'similar_vote_rate'|trans({'rate': comparison.data.rate.same|round(2), 'nb': comparison.data.total}) }}
-                        </div>
-                        <div style="width: 400px;height: 400px" class="my-5 mx-auto" data-chart-type="doughnut" data-value="{{ comparison.data|chart_pie_this }}" data-title="{{ 'vote_label'|trans({'nb': comparison.data.total}) }}"></div>
-                        <div class="accordion accordion-transparent mt-4" id="{{ key }}vote-detail-accordion">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ key }}-different-vote-detail" aria-expanded="false" aria-controls="{{ key }}-vote-detail">
-                                        {{ 'list_difference_vote'|trans }}
-                                    </button>
-                                </h2>
-                                <div id="{{ key }}-different-vote-detail" class="accordion-collapse collapse" data-bs-parent="#{{ key }}vote-detail-accordion">
-                                    <div class="accordion-body">
-                                        <ul class="list-group list-group-flush">
-                                            {% for memberVote in comparison.data.difference_detail %}
-                                                <li class="list-group-item p-0">
-                                                    <p class="mt-4">
-                                                        <span>{{ 'vote.title'|trans }}: {{ memberVote.voteItem.vote.title }}</span><br />
-                                                        <small class="text-muted">{{ 'vote.ref'|trans }}: {{ memberVote.voteItem.vote.reference }}</small><br>
-                                                        <small class="text-muted">{{ 'vote.description'|trans }} {{ memberVote.voteItem.vote.description }}</small>
-                                                    </p>
-                                                    <p class="d-flex justify-content-between">
-                                                        <span>{{ comparison.member.firstName }} {{ comparison.member.lastName }}</span>
-                                                        {{ voteValue.vote_value_badge(memberVote.mainMemberVoteValue) }}
-                                                    </p>
-                                                    <p class="d-flex justify-content-between">
-                                                        <span>{{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}</span>
-                                                        {{ voteValue.vote_value_badge(memberVote.comparedMemberVoteValue) }}
-                                                    </p>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="col-12 col-lg-6">
+                    <p>
+                        {{ 'comparison_donuts.text_1'|trans }}
+                        <br>
+                        <b>
+                            {{ 'comparison_donuts.text_2'|trans }}
+                        </b>
+                    </p>
+                    <a href="{{ path('member-to-member') }}" class="btn btn-sm btn-primary">{{ 'try_it'|trans}} &rarr;</a>
+                    <div style="width: 300px;height: 300px" class="my-5 mx-auto" data-chart-type="doughnut" data-value="{&quot;dataset&quot;:[{&quot;category&quot;:&quot;Same vote&quot;,&quot;value&quot;:263},{&quot;category&quot;:&quot;Different vote&quot;,&quot;value&quot;:38}]}" data-title="301 votes"></div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <p>
+                        {{ 'comparison_matrix_correlation.text_1'|trans }}
+                        <br>
+                        <b>
+                            {{ 'comparison_matrix_correlation.text_2'|trans }}
+                        </b>
+                    </p>
+                    <a href="{{ path('member-map') }}" class="btn btn-sm btn-primary">{{ 'try_it'|trans}} &rarr;</a>
 
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ key }}-same-vote-detail" aria-expanded="false" aria-controls="{{ key }}-vote-detail">
-                                        {{ 'list_same_vote'|trans }}
-                                    </button>
-                                </h2>
-                                <div id="{{ key }}-same-vote-detail" class="accordion-collapse collapse" data-bs-parent="#{{ key }}vote-detail-accordion">
-                                    <div class="accordion-body">
-                                        <ul class="list-group list-group-flush">
-                                            {% for memberVote in comparison.data.same_detail %}
-                                                <li class="list-group-item p-0">
-                                                    <p class="my-4">
-                                                        <span>{{ 'vote.title'|trans }}: {{ memberVote.voteItem.vote.title }}</span><br />
-                                                        <small class="text-muted">{{ 'vote.ref'|trans }}: {{ memberVote.voteItem.vote.reference }}</small><br>
-                                                        <small class="text-muted">{{ 'vote.description'|trans }}: {{ memberVote.voteItem.vote.description }}</small>
-                                                    </p>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                </div>
+                    {% set matrixSize = matrix|length %}
+                    <div class="grid-container hp-grid-container" style="grid-template-columns: 90px repeat({{ matrixSize }}, auto); grid-template-rows: 90px repeat({{ matrixSize }}, auto);">
+                        <div class="cell border-0" style="position: sticky; top: 0"></div>
+                        {% for key, line in matrix %}
+                            <div class="cell cell-identity border-top-0 d-flex" style="position: sticky; top: -20px; background: #fff; z-index: 10000">
+                                <p class="mx-auto mb-2 member-detail rotate">
+                                    <span class="member-name">{{ key }}</span>
+                                </p>
                             </div>
-                        </div>
+                        {% endfor %}
+                        {% for key, line in matrix %}
+                            {% set newLine = true %}
+                            {% for el in line %}
+                                {% if newLine == true %}
+                                    <div class="cell cell-identity d-flex border-start-0" style="position: sticky; left: -20px; background: #fff">
+                                        <p class="m-auto me-2 member-detail">
+                                            <span class="member-name">{{ key }}</span>
+                                        </p>
+                                    </div>
+                                    {% set newLine = false %}
+                                {% endif %}
+                                {% if el.rate is defined %}
+                                    {% set cellClass = 'no-vote' %}
+                                    {% if el.nb_vote > 0 %}
+                                        {% set cellClass = 'rate-' ~ el.rate|default(null)|round(-1) %}
+                                    {% endif %}
+                                    <div class="cell{% if el|length == 0 %} empty{% endif %} {{ cellClass }}">
+                                        <span class="fw-bold">{{ el.rate|default(null)|round }}%</span>
+                                    </div>
+                                {% else %}
+                                    <div class="cell empty"></div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                </div>
             </div>
-        {% endif %}
+        </div>
     </div>
 {% endblock %}
 
