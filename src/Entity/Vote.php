@@ -29,6 +29,17 @@ class Vote
     #[ORM\OneToMany(targetEntity: PoliticalGroupVote::class, mappedBy: 'vote', orphanRemoval: true)]
     private Collection $politicalGroupVote;
 
+    /**
+     * @var Collection<int, Country>
+     */
+    #[ORM\ManyToMany(targetEntity: Country::class, inversedBy: 'relatedVotes')]
+    #[ORM\JoinTable(name: 'votes_countries')]
+    private Collection $countries;
+
+    #[ORM\ManyToMany(targetEntity: GeoArea::class, inversedBy: 'votes')]
+    #[ORM\JoinTable(name: 'votes_geoareas')]
+    private Collection $geoAreas;
+
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $officialId = null;
 
@@ -49,6 +60,8 @@ class Vote
 
     public function __construct()
     {
+        $this->geoAreas = new ArrayCollection();
+        $this->countries = new ArrayCollection();
         $this->membersVote = new ArrayCollection();
         $this->politicalGroupVote = new ArrayCollection();
     }
@@ -96,6 +109,47 @@ class Vote
     {
         $this->politicalGroupVote->removeElement($politicalGroupVote);
         $politicalGroupVote->setVote(null);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Country>
+     */
+    public function getCountries(): Collection
+    {
+        return $this->countries;
+    }
+
+    public function addCountry(Country $country): self
+    {
+        $this->countries->add($country);
+
+        return $this;
+    }
+
+    public function removeCountry(Country $country): self
+    {
+        $this->countries->removeElement($country);
+
+        return $this;
+    }
+
+    public function getGeoAreas(): Collection
+    {
+        return $this->geoAreas;
+    }
+
+    public function addGeoArea(GeoArea $geoArea): self
+    {
+        $this->geoAreas->add($geoArea);
+
+        return $this;
+    }
+
+    public function removeGeoArea(GeoArea $geoArea): self
+    {
+        $this->geoAreas->removeElement($geoArea);
 
         return $this;
     }

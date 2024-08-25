@@ -29,10 +29,12 @@ class MemberMapController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('mapType')->getData() === 1) {
                 $politicalGroup = $form->get('group')->getData();
-                $data = $this->em->getRepository(MemberToMemberVoteComparison::class)->compareByGroup($politicalGroup);
-            } else {
                 $country = $form->get('country')->getData();
-                $data = $this->em->getRepository(MemberToMemberVoteComparison::class)->compareByCountry($country);
+                $data = $this->em->getRepository(MemberToMemberVoteComparison::class)->compareByGroup($politicalGroup, $country);
+            } else {
+                $mpCountry = $form->get('mpCountry')->getData();
+                $country = $form->get('country')->getData();
+                $data = $this->em->getRepository(MemberToMemberVoteComparison::class)->compareByCountry($mpCountry, $country);
             }
 
             $matrix = $this->matrixManager->generateMatrix($data);

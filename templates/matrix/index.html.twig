@@ -8,21 +8,26 @@
                     {{ 'vote_information'|trans }}
                 </h3>
                 {{ form_start(form) }}
-                    {% set countryAttr = {'data-country': ''} %}
+                    {% set mpCountryAttr = {'data-mpcountry': ''} %}
                     {% set groupAttr = {'data-group': ''} %}
+                    {% set countryAttr = {'data-related-country': '', 'style': 'display: none'} %}
 
                     {% if form.mapType.vars.value == 1 %}
-                        {% set countryAttr = countryAttr|merge({'style': 'display: none'}) %}
+                        {% set mpCountryAttr = mpCountryAttr|merge({'style': 'display: none'}) %}
+                        {% set countryAttr = {'data-related-country': ''} %}
                     {% elseif form.mapType.vars.value == 2 %}
                         {% set groupAttr = groupAttr|merge({'style': 'display: none'}) %}
+                        {% set countryAttr = {'data-related-country': ''} %}
                     {% else %}
                         {% set groupAttr = groupAttr|merge({'style': 'display: none'}) %}
-                        {% set countryAttr = countryAttr|merge({'style': 'display: none'}) %}
+                        {% set mpCountryAttr = mpCountryAttr|merge({'style': 'display: none'}) %}
                     {% endif %}
 
                     {{ form_row(form.mapType, {'attr': {'data-maptype': ''}}) }}
-                    {{ form_row(form.country, {'row_attr': countryAttr}) }}
+                    {{ form_row(form.mpCountry, {'row_attr': mpCountryAttr}) }}
                     {{ form_row(form.group, {'row_attr': groupAttr}) }}
+                    {{ form_row(form.country, {'row_attr': countryAttr}) }}
+
                     <button type="submit" class="btn btn-primary">{{ 'compare'|trans }}</button>
                 {{ form_end(form) }}
             </div>
@@ -50,7 +55,7 @@
                         {% endfor %}
                         {% for key, line in matrix %}
                             {% set newLine = true %}
-                            {% for el in line %}
+                            {% for key2, el in line %}
                                 {% if newLine == true %}
                                     <div class="cell cell-identity cell-identity-left border-start-0">
                                         <p class="m-auto me-2 member-detail">

@@ -6,6 +6,7 @@ namespace App\Command;
 
 use App\Api\HowTheyVote\Client;
 use App\Entity\Country;
+use App\Entity\GeoArea;
 use App\Entity\Member;
 use App\Entity\MemberVote;
 use App\Entity\PoliticalGroup;
@@ -33,6 +34,8 @@ class ImportCommand extends Command
     private array $votes = [];
 
     private array $countries = [];
+
+    private array $geoAreas = [];
 
     public function __construct(
         private readonly Client $client,
@@ -89,7 +92,7 @@ class ImportCommand extends Command
             $this->votes[$vote->getOfficialId()] = $vote;
         }
 
-        foreach ($this->em->getRepository(Country::class) as $country) {
+        foreach ($this->em->getRepository(Country::class)->findAll() as $country) {
             $this->countries[$country->getCode()] = $country;
         }
     }
@@ -126,6 +129,14 @@ class ImportCommand extends Command
             ->setIsFeatured($data['is_featured'])
             ->setTitle($data['display_title'])
         ;
+
+        foreach ($data['geo_areas'] as $geoAreaData) {
+            $vote->addGeoArea($this->createOrFindGeoArea($geoAreaData));
+        }
+
+        foreach ($this->findRelatedCountries($vote) as $relatedCountry) {
+            $vote->addCountry($relatedCountry);
+        }
 
         $this->em->persist($vote);
         $this->votes[$data['id']] = $vote;
@@ -229,6 +240,23 @@ class ImportCommand extends Command
         return $country;
     }
 
+    public function createOrFindGeoArea(array $data): GeoArea
+    {
+        if (isset($this->geoAreas[$data['code']])) {
+            return $this->geoAreas[$data['code']];
+        }
+
+        $geoArea = (new GeoArea())
+            ->setCode($data['code'])
+            ->setLabel($data['label'])
+        ;
+
+        $this->em->persist($geoArea);
+        $this->geoAreas[$data['code']] = $geoArea;
+
+        return $geoArea;
+    }
+
     private function updateSession(): void
     {
         $lastSession = $this->client->getListSessions(1, 1, 'desc', Client::SESSION_STATUS_PAST);
@@ -280,5 +308,26 @@ class ImportCommand extends Command
 
 
         $this->em->flush();
+    }
+
+    private function findRelatedCountries(Vote $vote): array
+    {
+        $relatedCountries = [];
+
+        foreach ($vote->getGeoAreas() as $geoArea) {
+            foreach ($this->countries as $country) {
+                if ($geoArea->getLabel() === $country->getLabel()) {
+                    $relatedCountries[$country->getLabel()] = $country;
+                }
+            }
+        }
+
+        foreach ($this->countries as $country) {
+            if (null !== $vote->getTitle() && false !== stripos($vote->getTitle(), $country->getLabel())) {
+                $relatedCountries[$country->getLabel()] = $country;
+            }
+        }
+
+        return $relatedCountries;
     }
 }
