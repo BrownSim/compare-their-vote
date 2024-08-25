@@ -45,6 +45,10 @@ matrix_type:
 comparison_type: Comparison type
 political_group_choice: Political group
 country: Country
+mp_country: Member country
+related_country:
+    label: Countries related to analysed votes
+    help: Leave blank to analyse all votes
 political_group: Political group
 comparison_subtitle: The website offers you several ways to make comparisons between MPs.
 comparison_donuts:

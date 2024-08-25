@@ -16,8 +16,7 @@ class MemberVoteRepository extends EntityRepository
         $query = $this->createQueryBuilder('member_vote')
             ->addSelect('vote')
             ->join('member_vote.vote', 'vote')
-            ->where('vote.isFeatured = TRUE')
-            ->andWhere('member_vote.member = :member')
+            ->where('member_vote.member = :member')
             ->setParameter('member', $member)
         ;
 

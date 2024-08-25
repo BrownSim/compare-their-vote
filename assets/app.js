@@ -21,6 +21,8 @@ window.addEventListener('load', function () {
             document.querySelectorAll('['+target.getAttribute('data-target')+']').forEach((el) => {
                el.style.display = '';
             });
+
+            document.querySelector('[data-related-country]').style.display = '';
         })
     }
 });

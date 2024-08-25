@@ -26,7 +26,7 @@ class Member
     #[ORM\ManyToOne(targetEntity: PoliticalGroup::class, inversedBy: 'members')]
     private ?PoliticalGroup $group = null;
 
-    #[ORM\ManyToOne(targetEntity: Country::class)]
+    #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'members')]
     private ?Country $country = null;
 
     #[ORM\Column(type: Types::INTEGER)]

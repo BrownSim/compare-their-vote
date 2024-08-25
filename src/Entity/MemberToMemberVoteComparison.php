@@ -12,7 +12,7 @@ class MemberToMemberVoteComparison
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
-    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Column(type: Types::BIGINT)]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Member::class)]
@@ -38,6 +38,10 @@ class MemberToMemberVoteComparison
     #[ORM\ManyToOne(targetEntity: Country::class)]
     #[ORM\JoinColumn(name: 'country_member_2_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private ?Country $countryMember2 = null;
+
+    #[ORM\ManyToOne(targetEntity: Country::class)]
+    #[ORM\JoinColumn(name: 'related_rate_country_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    private ?Country $relatedRateCountry = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $nbVote = null;
@@ -118,6 +122,18 @@ class MemberToMemberVoteComparison
     public function setCountryMember2(?Country $countryMember2): self
     {
         $this->countryMember2 = $countryMember2;
+
+        return $this;
+    }
+
+    public function getRelatedRateCountry(): ?Country
+    {
+        return $this->relatedRateCountry;
+    }
+
+    public function setRelatedRateCountry(?Country $relatedRateCountry): self
+    {
+        $this->relatedRateCountry = $relatedRateCountry;
 
         return $this;
     }

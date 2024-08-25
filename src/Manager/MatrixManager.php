@@ -35,6 +35,17 @@ class MatrixManager
             $matrix[$key] = array_replace($orderedIds, $line);
         }
 
+        foreach ($matrix as &$line) {
+            foreach ($line as &$el) {
+                if (is_array($el) === false) {
+                    $el = [
+                        'rate' => 0,
+                        'nb_vote' => 0
+                    ];
+                }
+            }
+        }
+
         return $matrix;
     }
 
