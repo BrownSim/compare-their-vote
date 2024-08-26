@@ -394,3 +394,46 @@ footer {
         height: 300px;
     }
 }
+
+.btn-spinner {
+    position: relative;
+    transition: padding-right .3s;
+
+    .spinner-border {
+        position: absolute;
+        right: 10px;
+        width: 20px;
+        height: 20px;
+        opacity: 0;
+        transition: opacity .3s;
+    }
+}
+
+.loading {
+    pointer-events: none;
+
+    .btn-spinner {
+        display: flex;
+        align-items: center;
+        padding-right: 40px;
+
+        .spinner-border {
+            margin-left: 10px;
+            opacity: 1;
+        }
+    }
+
+    .loading-label {
+        display: unset;
+    }
+}
+
+.loading-label {
+    display: none;
+}
+
+form.loading {
+    .loading-label {
+        display: unset;
+    }
+}

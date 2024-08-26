@@ -61,3 +61,4 @@ try_it: Try it
 open_fullscreen: Open the map in a full screen
 compare: Compare
 vote_information: Votes where the MP was not present are not taken into account in the comparison.
+matrix_loading_information: It can take time to load all the data

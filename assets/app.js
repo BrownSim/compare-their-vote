@@ -25,6 +25,12 @@ window.addEventListener('load', function () {
             document.querySelector('[data-related-country]').style.display = '';
         })
     }
+
+    document.querySelectorAll('[data-form-loading]').forEach((el) => {
+        el.addEventListener('submit', (e) => {
+            e.target.classList.add('loading');
+        });
+    });
 });
 
 

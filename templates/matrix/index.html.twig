@@ -7,7 +7,7 @@
                 <h3 class="text-center mb-5">
                     {{ 'vote_information'|trans }}
                 </h3>
-                {{ form_start(form) }}
+                {{ form_start(form, {'attr': {'data-form-loading': ''}}) }}
                     {% set mpCountryAttr = {'data-mpcountry': ''} %}
                     {% set groupAttr = {'data-group': ''} %}
                     {% set countryAttr = {'data-related-country': '', 'style': 'display: none'} %}
@@ -28,7 +28,12 @@
                     {{ form_row(form.group, {'row_attr': groupAttr}) }}
                     {{ form_row(form.country, {'row_attr': countryAttr}) }}
 
-                    <button type="submit" class="btn btn-primary">{{ 'compare'|trans }}</button>
+                    <button type="submit" class="btn btn-primary btn-spinner">
+                        {{ 'compare'|trans }}
+                        <div class="spinner-border" role="status"></div>
+                    </button>
+
+                    <p class="loading-label">{{ 'matrix_loading_information'|trans }}</p>
                 {{ form_end(form) }}
             </div>
         </div>
