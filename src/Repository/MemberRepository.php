@@ -21,7 +21,6 @@ class MemberRepository extends EntityRepository
             ->join('m.memberVotes', 'member_votes')
             ->join('member_votes.vote', 'vote')
             ->join('vote.countries', 'countries')
-            ->where('member_votes.value in (:values)')
             ->getQuery()
             ->getResult()
         ;
