@@ -29,6 +29,10 @@ class Member
     #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'members')]
     private ?Country $country = null;
 
+    #[ORM\ManyToOne(targetEntity: Party::class, inversedBy: 'members')]
+    #[ORM\JoinColumn(name: 'party_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    private ?Party $party = null;
+
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $mepId = null;
 
@@ -95,6 +99,18 @@ class Member
     public function setCountry(?Country $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getParty(): ?Party
+    {
+        return $this->party;
+    }
+
+    public function setParty(?Party $party): self
+    {
+        $this->party = $party;
 
         return $this;
     }
