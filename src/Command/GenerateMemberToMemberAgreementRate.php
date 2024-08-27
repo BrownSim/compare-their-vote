@@ -39,6 +39,11 @@ class GenerateMemberToMemberAgreementRate extends Command
             foreach ($members as $member2) {
                 $member2Votes = [];
 
+                // check if value is already imported
+                if (isset($importedConnexion[$member1->getId()][$member2->getId()]) || isset($importedConnexion[$member2->getId()][$member1->getId()])) {
+                    continue;
+                }
+
                 if ($member1->getId() === $member2->getId()) {
                     continue;
                 }

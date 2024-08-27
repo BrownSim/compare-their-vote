@@ -15,30 +15,52 @@ class MatrixManager
     public function generateMatrix(array $data): array
     {
         $matrix = [];
-        $orderedIds = [];
+        $ids = [];
+
+        $members = [];
+        /** @var Member $member */
+        foreach ($this->em->getRepository(Member::class)->findAll() as $member) {
+            $members[$member->getId()] = $member;
+        }
 
         foreach ($data as $datum) {
-            // keep the mysql order for reorder the matrix
-            $orderedIds[$datum['member_1_id']] = true;
+            $member1 = $members[$datum['member_1_id']];
+            $member2 = $members[$datum['member_2_id']];
 
-            $matrix[$datum['member_1_id']][$datum['member_1_id']] = [];
-            $matrix[$datum['member_1_id']][$datum['member_2_id']] = [
-                'member_1' => $datum['member_1_id'],
-                'member_2' => $datum['member_2_id'],
+            $ids[$this->generateMemberKey($member1)] = $member1;
+            $ids[$this->generateMemberKey($member2)] = $member2;
+
+            $matrix[$this->generateMemberKey($member1)][$this->generateMemberKey($member1)] = [
+                'memberY' => $member1,
+                'memberX' => $member1,
+            ];
+
+            $matrix[$this->generateMemberKey($member2)][$this->generateMemberKey($member2)] = [
+                'memberY' => $member2,
+                'memberX' => $member2,
+            ];
+
+            $matrix[$this->generateMemberKey($member1)][$this->generateMemberKey($member2)] = [
+                'memberY' => $member2,
+                'memberX' => $member1,
+                'rate' => $datum['agreement_rate'],
+                'nb_vote' => $datum['nb_vote'],
+            ];
+
+            $matrix[$this->generateMemberKey($member2)][$this->generateMemberKey($member1)] = [
+                'memberY' => $member1,
+                'memberX' => $member2,
                 'rate' => $datum['agreement_rate'],
                 'nb_vote' => $datum['nb_vote'],
             ];
         }
 
-        // reorder the matrix
-        foreach ($matrix as $key => $line) {
-            $matrix[$key] = array_replace($orderedIds, $line);
-        }
-
-        foreach ($matrix as &$line) {
-            foreach ($line as &$el) {
-                if (is_array($el) === false) {
-                    $el = [
+        foreach ($matrix as $memberXId => &$line) {
+            foreach ($ids as $memberYId => $member) {
+                if (!isset($line[$memberYId])) {
+                    $line[$memberYId] = [
+                        'memberX' => $ids[$memberXId],
+                        'memberY' => $member,
                         'rate' => 0,
                         'nb_vote' => 0
                     ];
@@ -46,18 +68,17 @@ class MatrixManager
             }
         }
 
+        foreach ($matrix as &$line) {
+            ksort($line);
+        }
+
+        ksort($matrix);
+
         return $matrix;
     }
 
-    public function findMatrixMember(array $matrix): array
+    private function generateMemberKey(Member $member)
     {
-        $members = [];
-        $listMembers = $this->em->getRepository(Member::class)->findMembersByIds(array_keys($matrix));
-
-        foreach ($listMembers as $member) {
-            $members[$member->getId()] = $member;
-        }
-
-        return $members;
+        return $member->getGroup()->getPosition() . $member->getLastName() . $member->getLastName() . $member->getId();
     }
 }
