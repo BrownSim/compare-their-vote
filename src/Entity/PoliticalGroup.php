@@ -29,6 +29,9 @@ class PoliticalGroup
     #[ORM\OneToMany(targetEntity: PoliticalGroupVote::class, mappedBy: 'politicalGroup', orphanRemoval: true)]
     private Collection $politicalGroupVotes;
 
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $position = null;
+
     #[ORM\Column(type: Types::STRING)]
     private ?string $code = null;
 
@@ -37,6 +40,9 @@ class PoliticalGroup
 
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $shortLabel = null;
+
+    #[ORM\Column(type: Types::STRING, nullable: true, length: 6)]
+    private ?string $color = null;
 
     public function __construct()
     {
@@ -91,6 +97,18 @@ class PoliticalGroup
         return $this;
     }
 
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): self
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
     public function getCode(): ?string
     {
         return $this->code;
@@ -123,6 +141,18 @@ class PoliticalGroup
     public function setShortLabel(?string $shortLabel): self
     {
         $this->shortLabel = $shortLabel;
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): self
+    {
+        $this->color = $color;
 
         return $this;
     }

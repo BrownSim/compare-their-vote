@@ -190,6 +190,7 @@ footer {
     .member-detail {
         font-size: 12px;
         display: flex;
+        align-items: center;
         white-space: nowrap;
         overflow: hidden;
 
@@ -201,6 +202,12 @@ footer {
                 margin-bottom: 10px;
                 margin-right: unset;
             }
+        }
+
+        .political-group-dot-color {
+            border-radius: 50%;
+            width: 10px;
+            aspect-ratio: 1;
         }
     }
 
