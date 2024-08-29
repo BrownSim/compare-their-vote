@@ -22,6 +22,11 @@ class Party
     #[ORM\OneToMany(targetEntity: Member::class, mappedBy: 'party')]
     private Collection $members;
 
+    #[ORM\ManyToOne(targetEntity: Country::class)]
+    #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    private ?Country $country = null;
+
+
     #[ORM\Column(type: Types::STRING)]
     private ?string $label = null;
 
@@ -52,6 +57,18 @@ class Party
     {
         $this->members->removeElement($member);
         $member->setParty(null);
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
 
         return $this;
     }

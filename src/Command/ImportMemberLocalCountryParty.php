@@ -17,6 +17,8 @@ use Symfony\Component\DomCrawler\Crawler;
 #[AsCommand(name: 'app:member:party', description: 'Find member\'s party')]
 class ImportMemberLocalCountryParty extends Command
 {
+    private const BASE_URL = 'https://www.europarl.europa.eu';
+
     public function __construct(
         private readonly EntityManagerInterface $em,
         ?string $name = null
@@ -30,40 +32,91 @@ class ImportMemberLocalCountryParty extends Command
         $members = [];
 
         foreach ($this->em->getRepository(Party::class)->findAll() as $party) {
-            $parties[$party->getLabel()] = $party;
+            $parties[$party->getCountry()->getId()][$party->getLabel()] = $party;
         }
 
         foreach ($this->em->getRepository(Member::class)->findAll() as $member) {
             $members[$member->getMepId()] = $member;
         }
-        $guzzle = new Client();
-        $html = $guzzle->get('https://www.europarl.europa.eu/meps/fr/full-list/all')
-            ->getBody()
-            ->getContents();
 
-        $crawler = new Crawler($html);
-        $membersData = $crawler->filter('.erpl_member-list-item')->each(function (Crawler $node) {
-            return [
-                'mepId' => basename($node->filter('a')->attr('href')),
-                'party' => $node->filter('.sln-additional-info')->last()->text(),
-            ];
-        });
 
-        foreach ($membersData as $memberDatum) {
-            $member = $members[$memberDatum['mepId']];
-            $party = $parties[$memberDatum['party']] ?? null;
+        $client = new Client();
+        $bar = new ProgressBar($output, count($members));
 
-            if (null === $party) {
-                $party = (new Party())->setLabel($memberDatum['party']);
-                $parties[$party->getLabel()] = $party;
+        foreach ($members as $member) {
+            $bar->advance();
 
-                $this->em->persist($party);
+            $html = $client->get('https://www.europarl.europa.eu/meps/en/'.$member->getMepId())->getBody()->getContents();
+            $crawler = new Crawler($html);
+            $link = null;
+
+            try {
+                $link = $crawler->filter('.erpl_accordion-item:last-child .erpl_links-list-nav ul li:first-child a')->attr('href');
+            } catch (\Exception $e) {
             }
 
-            $member->setParty($party);
+            if (null === $link) {
+                continue;
+            }
+
+            $html = $client->get(self::BASE_URL.$link)->getBody()->getContents();
+            $crawler = new Crawler($html);
+            $party = null;
+
+            try {
+                $party = $crawler->filter('.erpl_meps-status')->each(function (Crawler $node) {
+                    if ($node->filter('.erpl_title-h4')->text('National parties') === 'National parties') {
+                        return $node->filter('ul li:first-child')->text();
+                    }
+
+                    return null;
+                });
+            } catch (\Exception $e) {
+            }
+
+            $party = array_filter($party);
+
+            if (null === $party || count($party) === 0) {
+                continue;
+            }
+
+            try {
+                //party data looks like this : dd-mm-yyy : party name (country) or dd-mm-yyyy - dd-mm-yyyy : party name (country)
+                //remove everything between ()
+                $party = preg_replace("/\([^)]+\)/",'', reset($party));
+
+                //remove dates
+                $party = trim(substr($party, strpos($party, ':') + 1));
+            } catch (\Exception $e) {
+                $party = null;
+            }
+
+            if (null === $party) {
+                continue;
+            }
+
+            $existingCountry = $parties[$member->getCountry()->getId()][$party] ?? null;
+            if (null !== $existingCountry) {
+                $member->setParty($existingCountry);
+                continue;
+            }
+
+            $newParty = (new Party())
+                ->setLabel($party)
+                ->setCountry($member->getCountry())
+            ;
+
+            $this->em->persist($newParty);
+            $parties[$newParty->getCountry()->getId()][$party] = $newParty;
+
+            $member->setParty($newParty);
         }
 
+        $bar->finish();
         $this->em->flush();
+
+        $output->writeln('Saving ...');
+        $output->writeln('Done 🥳');
 
         return self::SUCCESS;
     }
