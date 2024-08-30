@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Member;
 use App\Entity\Vote;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 
 class MemberVoteRepository extends EntityRepository
 {
@@ -37,6 +38,30 @@ class MemberVoteRepository extends EntityRepository
         return $query
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function getVoteResultByMemberQuery(Member $member): Query
+    {
+        return $this->createQueryBuilder('member_vote')
+            ->join('member_vote.vote', 'vote')
+            ->where('member_vote.member = :member')
+            ->orderBy('vote.voteDate', 'DESC')
+            ->setParameter('member', $member)
+            ->getQuery()
+        ;
+    }
+
+    public function countMemberVoteByValue(Member $member, ...$voteValues): int
+    {
+        return $this->createQueryBuilder('member_vote')
+            ->select('COUNT(member_vote)')
+            ->where('member_vote.member = :member')
+            ->andWhere('member_vote.value IN (:values)')
+            ->setParameter('member', $member)
+            ->setParameter('values', $voteValues)
+            ->getQuery()
+            ->getSingleScalarResult()
         ;
     }
 }

@@ -1,5 +1,17 @@
+$card-cap-bg : transparent;
+$card-border-color: rgb(241, 241, 244);
+$card-border-radius: 20px;
+$box-shadow: rgba(0, 0, 0, 0.03) 0px 3px 4px 0px;
+
+$pagination-border-width: 0;
+$pagination-color: #000;
+$pagination-active-color: $pagination-color;
+$pagination-active-bg: transparent;
+$pagination-disabled-bg: transparent;
+
 @import "tom-select/dist/css/tom-select.bootstrap5.css";
 @import 'bootstrap';
+@import '_pagination';
 
 :root {
     --bs-primary-rgb: 61, 81, 160;
@@ -202,12 +214,6 @@ footer {
                 margin-bottom: 10px;
                 margin-right: unset;
             }
-        }
-
-        .political-group-dot-color {
-            border-radius: 50%;
-            width: 10px;
-            aspect-ratio: 1;
         }
     }
 
@@ -442,5 +448,26 @@ footer {
 form.loading {
     .loading-label {
         display: unset;
+    }
+}
+
+.political-group-dot-color {
+    border-radius: 50%;
+    width: 10px;
+    aspect-ratio: 1;
+    display: inline-block;
+}
+
+.grid-list-mp {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+
+    a {
+        text-decoration: none;
+    }
+
+    .card-body {
+        font-size: 14px;
     }
 }

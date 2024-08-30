@@ -44,7 +44,7 @@ window.addEventListener('load', function () {
         if (el.hasAttribute('data-custom-provider')) {
             options = {options: tomSelectDataProvider(el.getAttribute('data-custom-provider'))};
         } else {
-            config = {};
+            config = {maxOptions: 10000};
         }
 
         new TomSelect(el, {...config, ...options});
