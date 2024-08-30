@@ -42,7 +42,6 @@ class MemberMapController extends AbstractController
             return $this->render($request->attributes->get('template'), [
                 'form' => $form->createView(),
                 'matrix' => $matrix,
-                'members' => $this->matrixManager->findMatrixMember($matrix),
             ]);
         }
 

@@ -51,8 +51,8 @@
                 <div class="col-12 p-0">
                     <div class="grid-container mt-3" style="width: {{ 250 + matrixSize * 30 }}px; grid-template-columns: 175px repeat({{ matrixSize }}, auto); grid-template-rows: 175px repeat({{ matrixSize }}, auto);">
                         <div class="cell cell-hide border-0"></div>
-                        {% for key, line in matrix %}
-                            {% set member = attribute(members, key) %}
+                        {% for line in matrix|first %}
+                            {% set member = line.memberY %}
                             <div class="cell cell-identity cell-identity-top border-top-0">
                                 <p class="mx-auto mb-2 member-detail rotate">
                                     <span class="mb-2 political-group-dot-color" {% if member.group.color is not null%}style="background: #{{ member.group.color }};"{% endif %}></span>
@@ -65,7 +65,7 @@
                             {% set newLine = true %}
                             {% for key2, el in line %}
                                 {% if newLine == true %}
-                                    {% set member = attribute(members, key) %}
+                                    {% set member = el.memberX %}
                                     <div class="cell cell-identity cell-identity-left border-start-0">
                                         <p class="m-auto me-2 member-detail">
                                             <span class="member-name">{{ member.lastName }}</span>
