@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% import 'common/macro/vote_value.html.twig' as voteValue %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="d-flex gap-3">
+                            <img src="https://howtheyvote.eu/{{ member.thumb }}" class="img-fluid rounded-3" alt="">
+                            <div>
+                                <h2 class="h5">{{ member.firstName }} {{ member.lastName }}</h2>
+                                <p class="m-0 ">Country : {{ member.country.label }}</p>
+                                {% if member.group is not null %}
+                                    <p class="m-0 d-flex align-items-baseline">
+                                        Political Groups : {{ member.group.label }}
+                                        {% if member.group.color is not null %}
+                                            <span class="ms-2 political-group-dot-color"
+                                                  {% if member.group.color is not null %}style="background: #{{ member.group.color }};"{% endif %}></span>
+                                        {% endif %}
+                                    </p>
+                                {% endif %}
+                                {% if member.party is not null %}
+                                    <p class="m-0">Country party : {{ member.party.label }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2 g-4">
+            <div class="col-12 col-lg-8 order-1 order-lg-0">
+                <div class="card shadow">
+                    <div class="card-header py-4">
+                        Votes list
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            {% for result in voteResults %}
+                                <li class="list-group-item p-0">
+                                    <p class="mt-4">
+                                        <span>{{ 'vote.title'|trans }}: {{ result.vote.title }}</span><br />
+                                        <small class="text-muted">{{ 'vote.ref'|trans }}: {{ result.vote.reference }}</small><br>
+                                        <small class="text-muted">{{ 'vote.description'|trans }}: {{ result.vote.description }}</small><br>
+                                        <small class="text-muted">{{ 'vote.date'|trans }}: {{ result.vote.voteDate|date('Y-m-d') }}</small><br>
+                                        <small class="text-muted">{{ 'vote.result'|trans }}: {{ voteValue.vote_value_badge(result.value)}} </small>
+                                    </p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="d-flex justify-content-center mt-3">
+                            {{ knp_pagination_render(voteResults) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 order-0 order-lg-1">
+                <div class="card shadow">
+                    <div class="card-header py-4">
+                        Statistics
+                    </div>
+                    <div class="card-body">
+                        <p>Number of votes : {{ voteResults.totalItemCount }}</p>
+                        <p>Number of missed votes : {{ nbDidnotVote }} ({{ (nbDidnotVote * 100 / voteResults.totalItemCount)|round }}%)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -3,6 +3,7 @@ import 'bootstrap';
 import './js/collection.js';
 import './js/select';
 import './js/chart';
+import './js/filter';
 
 import './scss/app.scss';
 

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center">List of Members of the European Parliament</h1>
+                <div class="filter my-5">
+                    {{ form_start(filter, {'attr' : {'data-mp-filter': ''}}) }}
+                    <div class="row">
+                        <div class="col">
+                            {{ form_label(filter.group, null, {'label_attr': {'class': 'col-sm-12'}}) }}
+                            {{ form_widget(filter.group) }}
+                        </div>
+                        <div class="col">
+                            {{ form_label(filter.country, null, {'label_attr': {'class': 'col-sm-12'}}) }}
+                            {{ form_widget(filter.country) }}
+                        </div>
+                        <div class="col">
+                            {{ form_label(filter.party, null, {'label_attr': {'class': 'col-sm-12'}}) }}
+                            {{ form_widget(filter.party) }}
+                        </div>
+                    </div>
+                    {{ form_end(filter) }}
+                </div>
+                <div class="grid-list-mp">
+                    {% for member in members %}
+                        <a href="{{ path('member_show', {'mepId': member.mepId}) }}"
+                           {% if member.country is not null %}data-mp-country="{{ member.country.code }}"{% endif %}
+                            {% if member.group is not null %}data-mp-group="{{ member.group.code }}"{% endif %}
+                            {% if member.party is not null %}data-mp-party="{{ member.party.id }}"{% endif %}
+                        >
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <img src="https://howtheyvote.eu/{{ member.thumb }}" class="img-fluid rounded-3 d-block m-auto w-50" alt="">
+                                    <h2 class="h6 text-center mt-3">{{ member.firstName }} {{ member.lastName }}</h2>
+                                    <p class="m-0">{{ member.group.label }}</p>
+                                    {% if member.country is not null or member.party is not null %}
+                                        <p class="m-0 d-flex flex-column">
+                                            {% if member.country is not null %}
+                                                <span>{{ member.country.label }}</span>
+                                            {% endif %}
+                                            {% if member.party is not null %}
+                                                <span>{{ member.party.label }}</span>
+                                            {% endif %}
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

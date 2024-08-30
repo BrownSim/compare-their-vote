@@ -24,6 +24,13 @@ vote:
     title: Title
     ref: Reference
     description: Description
+    date: Vote date
+    result: Vote result
+
+filter:
+    group: Political group
+    country: MP's country
+    party: MP's party
 
 same_vote: Same vote
 different_vote: Different vote
