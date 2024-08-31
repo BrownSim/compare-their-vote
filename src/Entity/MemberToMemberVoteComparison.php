@@ -7,6 +7,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MemberToMemberVoteComparisonRepository::class)]
+#[ORM\Index(columns: ['group_member_1_id', 'group_member_2_id', 'related_rate_country_id', 'nb_vote'])]
+#[ORM\Index(columns: ['country_member_1_id', 'country_member_2_id', 'related_rate_country_id', 'nb_vote'])]
 #[ORM\Table]
 class MemberToMemberVoteComparison
 {
