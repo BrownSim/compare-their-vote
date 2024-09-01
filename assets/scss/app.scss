@@ -1,6 +1,6 @@
 $card-cap-bg : transparent;
 $card-border-color: rgb(241, 241, 244);
-$card-border-radius: 20px;
+$card-border-radius: 16px;
 $box-shadow: rgba(0, 0, 0, 0.03) 0px 3px 4px 0px;
 
 $pagination-border-width: 0;
@@ -12,6 +12,7 @@ $pagination-disabled-bg: transparent;
 @import "tom-select/dist/css/tom-select.bootstrap5.css";
 @import 'bootstrap';
 @import '_pagination';
+@import 'lazy-loading';
 
 :root {
     --bs-primary-rgb: 61, 81, 160;
@@ -460,8 +461,20 @@ form.loading {
 
 .grid-list-mp {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
     grid-gap: 10px;
+    grid-template-columns: repeat(5, 1fr);
+
+    @include media-breakpoint-down(lg) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    @include media-breakpoint-down(md) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include media-breakpoint-down(sm) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
     a {
         text-decoration: none;
@@ -469,5 +482,41 @@ form.loading {
 
     .card-body {
         font-size: 14px;
+    }
+
+    .member-thumb {
+        width: 100px;
+        height: 125px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: auto;
+
+        //background: linear-gradient(100deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, 0) 60%) #f9f9f9;
+        //background-size: 200% 100%;
+        //background-position-x: 180%;
+        //animation: 1.5s loading ease-in-out infinite;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    @keyframes loading {
+        to {
+            background-position-x: -20%;
+        }
+    }
+}
+
+.card-member-info {
+    .member-thumb {
+        height: 150px;
+        width: 120px;
+
+        img {
+            width: 100%;
+        }
     }
 }

@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -59,10 +60,22 @@ class MemberFilterType extends AbstractType
                 'choice_label' => 'label',
                 'choice_attr' => function (Party $country) {
                     return [
-                        'data-mp-party' => $country->getId(),
-                        'tamere' => 'oui'
+                        'data-mp-party' => $country->getId()
                     ];
                 },
+            ])
+            ->add('mp_status', ChoiceType::class, [
+                'label' => 'filter.mp_status',
+                'choices' => [
+                    'mp_status_list.all' => 0,
+                    'mp_status_list.retired' => 2,
+                    'mp_status_list.active' => 1,
+                ],
+                'choice_attr' => [
+                    'mp_status_list.all' => [],
+                    'mp_status_list.retired' => ['data-mp-status' => 2],
+                    'mp_status_list.active' => ['data-mp-status' => 1],
+                ],
             ])
         ;
     }

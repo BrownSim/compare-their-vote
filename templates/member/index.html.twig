@@ -1,16 +1,20 @@
 {% extends 'base.html.twig' %}
 {% import 'common/macro/vote_value.html.twig' as voteValue %}
+{% import 'common/macro/member.html.twig' as memberMacro %}
 
 {% block body %}
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="card shadow">
+                <div class="card shadow card-member-info">
                     <div class="card-body">
                         <div class="d-flex gap-3">
-                            <img src="https://howtheyvote.eu/{{ member.thumb }}" class="img-fluid rounded-3" alt="">
-                            <div>
-                                <h2 class="h5">{{ member.firstName }} {{ member.lastName }}</h2>
+                            <div class="member-thumb">
+                                <img loading="lazy" src="https://howtheyvote.eu/{{ member.thumb }}" class="img-fluid rounded-3" alt="">
+                            </div>
+                            <div class="d-flex flex-column">
+                                <h2 class="h5 mb-auto">{{ member.firstName }} {{ member.lastName }}</h2>
+                                <p class="m-0">{{ memberMacro.member_badge_status(member) }}</p>
                                 <p class="m-0 ">Country : {{ member.country.label }}</p>
                                 {% if member.group is not null %}
                                     <p class="m-0 d-flex align-items-baseline">

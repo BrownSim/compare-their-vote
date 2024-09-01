@@ -2,7 +2,7 @@ window.addEventListener('load', function () {
     'use strict';
 
     const mpFilter = document.querySelector('[data-mp-filter]');
-    const mpFilterTypes = ['data-mp-group', 'data-mp-country', 'data-mp-party'];
+    const mpFilterTypes = ['data-mp-group', 'data-mp-country', 'data-mp-party', 'data-mp-status'];
 
     if (mpFilter) {
         mpFilter.addEventListener('change', (event) => {

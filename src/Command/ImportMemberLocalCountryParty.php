@@ -19,6 +19,8 @@ class ImportMemberLocalCountryParty extends Command
 {
     private const BASE_URL = 'https://www.europarl.europa.eu';
 
+    private array $activeMepIds = [];
+
     public function __construct(
         private readonly EntityManagerInterface $em,
         ?string $name = null
@@ -39,12 +41,12 @@ class ImportMemberLocalCountryParty extends Command
             $members[$member->getMepId()] = $member;
         }
 
-
         $client = new Client();
         $bar = new ProgressBar($output, count($members));
 
-        foreach ($members as $member) {
-            $bar->advance();
+        foreach ($members as $member)
+        {
+            $this->updateActiveStatus($member);
 
             $html = $client->get('https://www.europarl.europa.eu/meps/en/'.$member->getMepId())->getBody()->getContents();
             $crawler = new Crawler($html);
@@ -56,6 +58,7 @@ class ImportMemberLocalCountryParty extends Command
             }
 
             if (null === $link) {
+                $bar->advance();
                 continue;
             }
 
@@ -77,6 +80,7 @@ class ImportMemberLocalCountryParty extends Command
             $party = array_filter($party);
 
             if (null === $party || count($party) === 0) {
+                $bar->advance();
                 continue;
             }
 
@@ -92,12 +96,14 @@ class ImportMemberLocalCountryParty extends Command
             }
 
             if (null === $party) {
+                $bar->advance();
                 continue;
             }
 
             $existingCountry = $parties[$member->getCountry()->getId()][$party] ?? null;
             if (null !== $existingCountry) {
                 $member->setParty($existingCountry);
+                $bar->advance();
                 continue;
             }
 
@@ -110,6 +116,8 @@ class ImportMemberLocalCountryParty extends Command
             $parties[$newParty->getCountry()->getId()][$party] = $newParty;
 
             $member->setParty($newParty);
+
+            $bar->advance();
         }
 
         $bar->finish();
@@ -119,5 +127,25 @@ class ImportMemberLocalCountryParty extends Command
         $output->writeln('Done 🥳');
 
         return self::SUCCESS;
+    }
+
+    private function updateActiveStatus(Member $member): void
+    {
+        if ([] === $this->activeMepIds) {
+            // load all active MPs
+            $guzzle = new Client();
+            $html = $guzzle->get('https://www.europarl.europa.eu/meps/fr/full-list/all')
+                ->getBody()
+                ->getContents();
+
+            $crawler = new Crawler($html);
+            $ids = $crawler->filter('.erpl_member-list-item')->each(function (Crawler $node, $i) {
+                return basename($node->filter('a')->attr('href'));
+            });
+
+            $this->activeMepIds = array_flip($ids);
+        }
+
+        $member->setActive(isset($activeMemberIds[$member->getMepId()]));
     }
 }

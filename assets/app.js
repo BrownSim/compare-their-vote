@@ -4,6 +4,7 @@ import './js/collection.js';
 import './js/select';
 import './js/chart';
 import './js/filter';
+import './js/lazy-loading';
 
 import './scss/app.scss';
 
