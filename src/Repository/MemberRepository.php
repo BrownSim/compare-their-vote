@@ -18,9 +18,9 @@ class MemberRepository extends EntityRepository
             ->addSelect('member_votes')
             ->addSelect('vote')
             ->addSelect('countries')
-            ->join('m.memberVotes', 'member_votes')
-            ->join('member_votes.vote', 'vote')
-            ->join('vote.countries', 'countries')
+            ->leftJoin('m.memberVotes', 'member_votes')
+            ->leftJoin('member_votes.vote', 'vote')
+            ->leftJoin('vote.countries', 'countries')
             ->getQuery()
             ->getResult()
         ;
