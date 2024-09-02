@@ -1,3 +1,5 @@
+$blue: #3d52a0;
+
 $card-cap-bg : transparent;
 $card-border-color: rgb(241, 241, 244);
 $card-border-radius: 16px;
@@ -13,6 +15,7 @@ $pagination-disabled-bg: transparent;
 @import 'bootstrap';
 @import '_pagination';
 @import 'lazy-loading';
+@import 'dropdown';
 
 :root {
     --bs-primary-rgb: 61, 81, 160;
@@ -29,7 +32,7 @@ body {
     grid-template-rows: auto 1fr auto;
 }
 
-header nav {
+header.main-header nav {
     background: #3d52a0;
 }
 
@@ -68,12 +71,19 @@ footer {
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-.navbar-brand,
-.navbar-nav .nav-link {
-    color: #fff;
-
-    &:hover, &:focus, &.active {
+.navbar {
+    .btn-link {
         color: #fff;
+        text-decoration: none;
+    }
+
+    .navbar-brand,
+    .navbar-nav .nav-link {
+        color: #fff;
+
+        &:hover, &:focus, &.active {
+            color: #fff;
+        }
     }
 }
 

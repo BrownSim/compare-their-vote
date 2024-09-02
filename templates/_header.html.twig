@@ -12,13 +12,24 @@
             <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('member_list') }}">MPs</a>
+                        <div class="dropdown">
+                            <button class="btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Statistics
+                            </button>
+                            <ul class="dropdown-menu fade-up">
+                                <li><a class="dropdown-item" href="{{ path('member-to-member') }}">MP comparison</a></li>
+                                <li><a class="dropdown-item" href="{{ path('member-map') }}">MP correlation matrix</a></li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('groups') }}">Political Groups</a>
+                        <a class="btn btn-link" href="{{ path('member_list') }}">MPs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('faq') }}">About & FAQ</a>
+                        <a class="btn btn-link" href="{{ path('groups') }}">Political Groups</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-link" href="{{ path('faq') }}">About & FAQ</a>
                     </li>
                 </ul>
             </div>

@@ -1,0 +1,56 @@
+@media all and (min-width: 992px) {
+  .navbar {
+    .nav-item {
+      .dropdown-menu {
+        display: block;
+        opacity: 0;
+        visibility: hidden;
+        margin-top: 0;
+
+        border: 0;
+        border-radius: .85rem;
+        box-shadow: 0 0 50px 0 rgba(82, 63, 105, 0.15);
+        will-change: transform;
+
+        &.fade-up {
+          top: 180%;
+        }
+      }
+
+      :hover {
+        .nav-link {
+          color: #fff;
+        }
+
+        .dropdown-menu {
+          opacity: 1;
+          visibility: visible;
+          top: 100%;
+          transform: rotateX(0deg);
+          will-change: transform;
+          animation: dropdown-animation-fade-in .3s ease 1, dropdown-animation-move-up .3s ease 1;
+        }
+      }
+    }
+  }
+}
+
+@keyframes dropdown-animation-fade-in {
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes dropdown-animation-move-up {
+  from {
+    margin-top: .75rem
+  }
+
+  to {
+    margin-top: 0
+  }
+}
