@@ -1,0 +1,43 @@
+@import 'component/datatable';
+
+.datatable {
+  thead button {
+    text-decoration: none;
+    padding-left: 0;
+    padding-bottom: 0;
+    font-weight: 600;
+    color: unset;
+  }
+}
+
+.datatable-vote-results {
+  tr td:last-child {
+    width: 1%;
+  }
+
+  .datatable-vote-results-detail {
+    display: grid;
+    gap: 6px;
+    grid-template-columns: min-content auto;
+  }
+}
+
+.datatable-absence-prediction {
+  font-size: 14px;
+
+  th:first-child {
+    width: 100%;
+  }
+
+  th:not(:last-child),
+  tr td:not(:last-child) {
+    padding-right: 16px;
+  }
+
+  thead tr th {
+    button {
+      font-size: 14px;
+      text-align: left;
+    }
+  }
+}

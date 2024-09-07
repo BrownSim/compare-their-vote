@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\PoliticalGroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: PoliticalGroupRepository::class)]
 #[ORM\Table]
 class PoliticalGroup
 {

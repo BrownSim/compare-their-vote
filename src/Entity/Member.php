@@ -33,6 +33,9 @@ class Member
     #[ORM\JoinColumn(name: 'party_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private ?Party $party = null;
 
+    #[ORM\OneToOne(targetEntity: MemberVoteStatistic::class, mappedBy: 'member')]
+    private ?MemberVoteStatistic $voteStatistics = null;
+
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isActive = false;
 
@@ -114,6 +117,18 @@ class Member
     public function setParty(?Party $party): self
     {
         $this->party = $party;
+
+        return $this;
+    }
+
+    public function getVoteStatistics(): ?MemberVoteStatistic
+    {
+        return $this->voteStatistics;
+    }
+
+    public function setVoteStatistics(?MemberVoteStatistic $voteStatistics): self
+    {
+        $this->voteStatistics = $voteStatistics;
 
         return $this;
     }

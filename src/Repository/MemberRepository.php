@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Country;
 use App\Entity\Member;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 
 class MemberRepository extends EntityRepository
 {
@@ -34,5 +36,21 @@ class MemberRepository extends EntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findMembersWithVoteStatistics(): array
+    {
+        return $this->createQueryBuilder('m')
+            ->select('m as member')
+            ->addSelect('COUNT(m) as total')
+            ->addSelect("SUM(CASE WHEN member_votes.value = 'DID_NOT_VOTE' THEN 1 ELSE 0 END) AS miss")
+            ->addSelect("SUM(CASE WHEN member_votes.value != 'DID_NOT_VOTE' THEN 1 ELSE 0 END) AS attendance")
+            ->join('m.memberVotes', 'member_votes')
+            ->join('m.country', 'country')
+            ->join('m.group', 'group')
+            ->groupBy('m')
+            ->orderBy('group.position', 'asc')
+            ->getQuery()
+            ->getResult();
     }
 }

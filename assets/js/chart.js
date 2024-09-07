@@ -1,6 +1,11 @@
 import * as am5 from '@amcharts/amcharts5/index';
 import * as am5percent from '@amcharts/amcharts5/percent';
 
+import {BeeswarmChart} from './chart/beeswarmChart';
+import {DotTrends} from './chart/dotTrends';
+import {DotAverageByCategory} from './chart/dotAverageByCategory';
+import {Map} from './chart/map';
+
 window.addEventListener('load', function () {
     'use strict';
 
@@ -8,6 +13,11 @@ window.addEventListener('load', function () {
         let data = JSON.parse(el.dataset.value);
         let title = el.dataset.title;
         chartDonuts(el, data, title)
+    });
+
+    document.querySelectorAll('[data-scatter-plot]').forEach(el => {
+        let data = JSON.parse(el.dataset.value);
+        // scatterPlot(el, data);
     });
 
     function chartDonuts(el, data, title) {
@@ -66,5 +76,50 @@ window.addEventListener('load', function () {
 
             series.appear(1000, 100);
         });
+    }
+
+    if (document.querySelector('#beeswarm') !== null) {
+        let data = JSON.parse(document.querySelector('#beeswarm').dataset.json);
+        let label = document.querySelector('#beeswarm').dataset.chartX
+        let chart = BeeswarmChart(data, {
+            x: d => d.ratio,
+            xDomain: [0, 100],
+            label: label,
+            width: 1200,
+            radius: 4,
+            tooltipBody: d => d.tooltip,
+            tooltipTitle: d => d.member,
+            fill: d => d.color,
+            marginBottom: 40
+        })
+
+        document.querySelector('#beeswarm').append(chart);
+    }
+
+    if (document.querySelector('#dottrands') !== null) {
+        const dottrands = document.querySelector('#dottrands');
+        let data = JSON.parse(dottrands.dataset.json);
+        let chart = DotTrends(data.data, {
+            tooltipBody: d => d.tooltip,
+            tooltipTitle: d => d.member,
+            xTitle: data.label.x,
+            yTitle: data.label.y,
+            xData: d => d.total,
+            yData: d => d.prediction.gap,
+        });
+
+        dottrands.append(chart);
+    }
+
+    if (document.querySelector('#dot-average-category') !== null) {
+        const dom = document.querySelector('#dot-average-category');
+        dom.append(DotAverageByCategory(JSON.parse(dom.dataset.json)));
+    }
+
+    if (document.querySelector('#absenteeism-map') !== null) {
+        const data = JSON.parse(document.querySelector('#absenteeism-map').dataset.json);
+        let chart = Map(data);
+
+        document.querySelector('#absenteeism-map').append(chart);
     }
 });

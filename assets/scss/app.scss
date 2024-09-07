@@ -11,12 +11,20 @@ $pagination-active-color: $pagination-color;
 $pagination-active-bg: transparent;
 $pagination-disabled-bg: transparent;
 
+$nav-tabs-border-width: 0;
+
+$popover-border-color: #F1F1F4;
+
+@import 'flag-icons/css/flag-icons.min.css';
 @import "tom-select/dist/css/tom-select.bootstrap5.css";
 @import 'bootstrap';
 @import '_pagination';
 @import 'lazy-loading';
 @import 'dropdown';
 @import 'datatable';
+@import 'chart';
+@import 'navtabs';
+@import 'popover';
 
 :root {
     --bs-primary-rgb: 61, 81, 160;

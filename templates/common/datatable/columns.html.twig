@@ -9,8 +9,8 @@
     <th class="{{ class }}">
         {% if sortableColumn %}
             <button class="btn btn-link" data-colname="{{ key }}" data-colposition="{{ loop.index0 }}">
+                <span class="btn-label">{{ col.label|trans|raw }}</span>
                 <span class="datatable-order-picto"></span>
-                {{ col.label|trans }}
             </button>
         {% else %}
             {{ col.label|trans }}

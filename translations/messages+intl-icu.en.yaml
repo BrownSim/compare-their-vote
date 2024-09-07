@@ -73,3 +73,36 @@ mp_status_list:
     active: While in office
     retired: Retired
     all: All
+
+absenteeism:
+    nav:
+        overview: Overview
+        table: Table
+    chart:
+        title:
+            abstention_rate: Abstention rate by MP
+            abstention_anomaly: Abstention anomaly
+            abstention_political_group: Abstention rate by political group
+        dotplot:
+            axis: Abstention rate
+            total: 'Number of vote(s): '
+            abstention_rate: 'Abstention rate: '
+            party: 'Party: '
+            group: 'Group: '
+            country: 'Country: '
+        anomaly:
+            x: Number of votes
+            y: Anomaly in number of votes
+
+absence:
+    mp_name: MP
+    country: Country
+    total_vote: Total&nbsp;votes
+    total_miss: Total&nbsp;votes missed
+    ratio: Presence/absence ratio
+    predicted: Prediction
+    predicted_gap: Difference&nbsp;with prediction
+    reality_prediction_ratio: Reality/prediction ratio
+    political_group: Political group
+    attendance: Nb&nbsp;of&nbsp;votes present
+    chart:

@@ -1,0 +1,53 @@
+.dotchart,  {
+  circle {
+    cursor: pointer;
+    stroke: #000;
+    stroke-opacity: 0;
+    transition: stroke-opacity .25s;
+
+    &:hover {
+      stroke-opacity: .8;
+    }
+  }
+
+  g {
+    font-size: 14px;
+    font-family: "Raleway", sans-serif;
+  }
+}
+
+.popover-chart {
+  box-shadow: 0 0 60px 0 rgba(82, 63, 105, 0.15);
+  position: relative;
+
+  .popover-body {
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .popover-header {
+    background-color: unset;
+    border-bottom: solid 1px #F1F1F4;
+  }
+
+  .popover-header {
+    padding: 0 0 0 20px;
+    border-top-right-radius: 7px;
+    overflow: hidden;
+  }
+
+  .popover-content {
+    padding: 20px;
+  }
+
+  .container-flag {
+    height: 100%;
+
+    .fi {
+      width: 60px;
+      aspect-ratio: 4/3;
+      line-height: unset;
+    }
+  }
+}

@@ -1,11 +1,20 @@
 .datatable {
-  td {
+  width: 100%;
+
+  th {
+    vertical-align: top;
+  }
+
+  th:not(:last-child) {
+    padding-right: 10px;
+  }
+
+  td, th {
     padding-top: 16px;
     padding-bottom: 16px;
   }
 
-  tr {
-    &:not(:last-child) {
+  thead tr, tbody tr:not(:last-child) {
       border-bottom-width: 1px;
       border-bottom-style: dashed;
       border-bottom-color: #F1F1F4;
@@ -13,6 +22,48 @@
 
     td:not(:last-child) {
       padding-right: 10px;
+    }
+
+  .order-asc {
+    .datatable-order-picto::after {
+      opacity: 1;
+    }
+  }
+
+  .order-desc {
+    .datatable-order-picto::after {
+      opacity: 1;
+      transform: rotate(180deg);
+    }
+  }
+
+  .datatable-order-picto {
+    &::after {
+      content: " ";
+      opacity: 0;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      background-color: #999;
+      mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 6' fill='var%28--bs-text-muted%29'%3e%3cpath d='M3.23571 2.72011L4.97917 4.46358C5.15176 4.63618 5.43158 4.63617 5.60417 4.46358C5.77676 4.29099 5.77676 4.01118 5.60417 3.83861L3.29463 1.52904C3.13192 1.36629 2.86809 1.36629 2.70538 1.52904L0.395812 3.83861C0.22325 4.01117 0.22325 4.29099 0.395812 4.46358C0.568437 4.63617 0.84825 4.63617 1.02081 4.46358L2.76429 2.72011C2.89446 2.58994 3.10554 2.58994 3.23571 2.72011Z'/%3e%3c/svg%3e");
+      position: relative;
+      display: inline-block;
+      width: .65rem;
+      height: .65rem;
+      bottom: auto;
+      right: auto;
+      left: auto;
+      margin-left: .5rem;
+    }
+  }
+
+  .btn-link {
+    padding: 0;
+    white-space: nowrap;
+    display: flex;
+    align-items: start;
+
+    .btn-label {
+      white-space: wrap;
     }
   }
 }
