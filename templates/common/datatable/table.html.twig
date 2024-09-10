@@ -1,0 +1,20 @@
+{% use "Common/Datatable/table_layout.html.twig" %}
+
+{% set attr = attr|default([])|merge(attributes) -%}
+{% set attr = attr|default([])|merge({class: ('datatable ' ~ attributes.class|default(''))|trim}) -%}
+
+<table
+        {% if sourceRoute|default(null)is not null %} data-path="{{ sourceRoute }}"{% endif%}
+        {% if sourceData|default(null)is not null %} data-tabledata="{{ sourceData }}"{% endif%}
+        {{ block('attributes') }}
+        data-datatable
+        data-nb-element="{{ datatable.nbElement }}"
+>
+    {% if datatable.hasHeader %}
+        <thead>
+            <tr>
+                {{ datatable_render_columns(datatable) }}
+            </tr>
+        </thead>
+    {% endif %}
+</table>

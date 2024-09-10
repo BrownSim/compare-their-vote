@@ -1,0 +1,13 @@
+@import 'component/datatable';
+
+.datatable-vote-results {
+  tr td:last-child {
+    width: 1%;
+  }
+}
+
+.datatable-vote-results-detail {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: min-content auto;
+}
