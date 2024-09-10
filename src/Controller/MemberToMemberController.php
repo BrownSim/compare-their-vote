@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Datatable\DatatableBuilder;
+use App\Datatable\Normalizer\GenericNormalizer;
 use App\Entity\Session;
 use App\Form\Type\MemberSearchType;
 use App\Manager\MemberManager;
@@ -18,7 +20,7 @@ class MemberToMemberController extends AbstractController
     }
 
     #[Route('member-to-member', name: 'member-to-member')]
-    public function home(Request $request, MemberManager $memberManager)
+    public function home(Request $request, MemberManager $memberManager, DatatableBuilder $datatableBuilder, GenericNormalizer $normalizer)
     {
         $lastSession = $this->em->getRepository(Session::class)->findOneBy(['status' => Session::SESSION_STATUS_LAST]);
 
@@ -31,10 +33,16 @@ class MemberToMemberController extends AbstractController
             $members = array_merge([$formData['member']], $formData['members']);
             $data = $memberManager->compare($formData['mainMember'], $members, $formData['voteValue']);
 
+            foreach ($data as &$datum) {
+                $datum['normalizedData'] = json_encode($normalizer->normalize('member', $datum['data']['votes_list']));
+            }
+            unset($datum);
+
             return $this->render('memberToMember/index.html.twig', [
                 'data' => $data,
                 'form' => $form->createView(),
                 'lastSession' => $lastSession,
+                'datatable' => $datatableBuilder->build('member'),
             ]);
         }
 

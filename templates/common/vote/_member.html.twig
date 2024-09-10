@@ -1,0 +1,11 @@
+{% import 'common/macro/vote_value.html.twig' as voteValue %}
+
+<div class="d-flex gap-5">
+    <span class="flex-grow-1 text-nowrap">{{ resource.member_1_vote.member.firstName }} {{ resource.member_1_vote.member.lastName }}</span>
+    <span class="datatable-vote-value">{{ voteValue.vote_value_badge(resource.member_1_vote.value) }}</span>
+</div>
+
+<div class="d-flex gap-5">
+    <span class="flex-grow-1 text-nowrap">{{ resource.member_2_vote.member.firstName }} {{ resource.member_2_vote.member.lastName }}</span>
+    <span class="datatable-vote-value">{{ voteValue.vote_value_badge(resource.member_2_vote.value) }}</span>
+</div>

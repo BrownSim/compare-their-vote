@@ -21,6 +21,7 @@
                 {{ form_end(form) }}
             {% endif %}
         </div>
+
         {% if data is defined %}
             <div class="row mt-5">
                 {% for key, comparison in data %}
@@ -30,63 +31,42 @@
                             {{ 'similar_vote_rate'|trans({'rate': comparison.data.rate.same|round(2), 'nb': comparison.data.total}) }}
                         </div>
                         <div class="my-5 mx-auto member-comparison-chart" data-chart-type="doughnut" data-value="{{ comparison.data|chart_pie_this }}" data-title="{{ 'vote_label'|trans({'nb': comparison.data.total}) }}"></div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {% for key, comparison in data %}
                         <div class="accordion accordion-transparent mt-4" id="{{ key }}vote-detail-accordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ key }}-different-vote-detail" aria-expanded="false" aria-controls="{{ key }}-vote-detail">
-                                        {{ 'list_difference_vote'|trans }}
+                                        {{ 'list_vote_member_vs_member'|trans({
+                                            'member_1': comparison.member.firstName ~ ' ' ~ comparison.member.lastName,
+                                            'member_2': comparison.memberCompared.firstName ~ ' ' ~ comparison.memberCompared.lastName
+                                        }) }}
                                     </button>
                                 </h2>
                                 <div id="{{ key }}-different-vote-detail" class="accordion-collapse collapse" data-bs-parent="#{{ key }}vote-detail-accordion">
-                                    <div class="accordion-body">
-                                        <ul class="list-group list-group-flush">
-                                            {% for memberVote in comparison.data.difference_detail %}
-                                                <li class="list-group-item p-0">
-                                                    <p class="mt-4">
-                                                        <span>{{ 'vote.title'|trans }}: {{ memberVote.voteItem.vote.title }}</span><br />
-                                                        <small class="text-muted">{{ 'vote.ref'|trans }}: {{ memberVote.voteItem.vote.reference }}</small><br>
-                                                        <small class="text-muted">{{ 'vote.description'|trans }} {{ memberVote.voteItem.vote.description }}</small>
-                                                    </p>
-                                                    <p class="d-flex justify-content-between">
-                                                        <span>{{ comparison.member.firstName }} {{ comparison.member.lastName }}</span>
-                                                        {{ voteValue.vote_value_badge(memberVote.mainMemberVoteValue) }}
-                                                    </p>
-                                                    <p class="d-flex justify-content-between">
-                                                        <span>{{ comparison.memberCompared.firstName }} {{ comparison.memberCompared.lastName }}</span>
-                                                        {{ voteValue.vote_value_badge(memberVote.comparedMemberVoteValue) }}
-                                                    </p>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ key }}-same-vote-detail" aria-expanded="false" aria-controls="{{ key }}-vote-detail">
-                                        {{ 'list_same_vote'|trans }}
-                                    </button>
-                                </h2>
-                                <div id="{{ key }}-same-vote-detail" class="accordion-collapse collapse" data-bs-parent="#{{ key }}vote-detail-accordion">
-                                    <div class="accordion-body">
-                                        <ul class="list-group list-group-flush">
-                                            {% for memberVote in comparison.data.same_detail %}
-                                                <li class="list-group-item p-0">
-                                                    <p class="my-4">
-                                                        <span>{{ 'vote.title'|trans }}: {{ memberVote.voteItem.vote.title }}</span><br />
-                                                        <small class="text-muted">{{ 'vote.ref'|trans }}: {{ memberVote.voteItem.vote.reference }}</small><br>
-                                                        <small class="text-muted">{{ 'vote.description'|trans }}: {{ memberVote.voteItem.vote.description }}</small>
-                                                    </p>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
+                                    <div class="accordion-body px-0">
+                                        <div class="card shadow">
+                                            <div class="card-body">
+                                                {{ datatable_render_table(datatable, {
+                                                    sourceData: comparison.normalizedData,
+                                                    attributes: {
+                                                        'data-datatable-name': 'mytable',
+                                                        'data-custom-row-builder': '',
+                                                        'class': 'datatable-vote-results'
+                                                    }
+                                                }) }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         {% endif %}
     </div>

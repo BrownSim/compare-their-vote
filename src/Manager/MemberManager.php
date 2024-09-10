@@ -47,15 +47,17 @@ class MemberManager
     {
         $results = [
             'same' => 0,
-            'same_detail' => [],
             'difference' => 0,
-            'difference_detail' => [],
+            'votes_list' => [],
             'total' => 0
         ];
 
         $array1 = array_intersect_key($array1, $array2);
         $array2 = array_intersect_key($array2, $array1);
 
+        /**
+         * @var MemberVote $item
+         */
         foreach ($array1 as $key => $item) {
             if (false === isset($array2[$key])) {
                 continue;
@@ -66,7 +68,6 @@ class MemberManager
 
             if ($mainMemberVote->getValue() === $comparedMemberVote->getValue()) {
                 $results['same'] += 1;
-                $results['same_detail'][] = ['voteItem' => $item];
             } else {
                 $results['difference'] += 1;
                 $results['difference_detail'][] = [
@@ -77,6 +78,10 @@ class MemberManager
             }
 
             $results['total'] += 1;
+            $results['votes_list'][] = [
+                'vote' => $item->getVote(),
+                'vote_members' => ['member_1_vote' => $item, 'member_2_vote' => $comparedMemberVote]
+            ];
         }
 
         $results['rate']['same'] = 0 === $results['same'] ? 0 : $results['same'] / $results['total'] * 100;

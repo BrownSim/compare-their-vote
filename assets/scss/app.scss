@@ -16,6 +16,7 @@ $pagination-disabled-bg: transparent;
 @import '_pagination';
 @import 'lazy-loading';
 @import 'dropdown';
+@import 'datatable';
 
 :root {
     --bs-primary-rgb: 61, 81, 160;
@@ -137,10 +138,6 @@ footer {
 
 .accordion-button:not(.collapsed) {
     background: unset;
-}
-
-.accordion-body {
-    padding-left: 0;
 }
 
 .ts-dropdown [data-selectable] .highlight {
