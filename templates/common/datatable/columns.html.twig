@@ -1,0 +1,3 @@
+{% for key, col in datatable.columns %}
+    <th{{ key == 'actions' ? ' class="actions-cell"' : ''}}>{{ col.label|trans }}</th>
+{% endfor %}
