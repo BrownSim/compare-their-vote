@@ -39,8 +39,7 @@ add_member: Add member
 add_members: Add members
 choice_member: Choose a member
 search: Search
-list_difference_vote: List of different votes
-list_same_vote: List of similar votes
+list_vote_member_vs_member: List of joint votes between {member_1} and {member_2}
 main_member: Main member
 member: Member
 hp:
@@ -70,8 +69,11 @@ open_fullscreen: Open the map in a full screen
 compare: Compare
 vote_information: Votes where the MP was not present are not taken into account in the comparison.
 matrix_loading_information: It can take time to load all the data
-
 mp_status_list:
     active: While in office
     retired: Retired
     all: All
+vote_list:
+    title: 'Title: '
+    ref: 'Reference: '
+    date: 'Date :'

@@ -6,6 +6,6 @@
     {% elseif vote == constant('App\\Entity\\MemberVote::VOTE_ABSTENTION') %}
         <span class="badge bg-secondary">{{ 'vote_value.abstention'|trans }}</span>
     {% elseif vote == constant('App\\Entity\\MemberVote::VOTE_DID_NOT_VOTE') %}
-        <span class="badge bg-light">{{ 'vote_value.not_vote'|trans }}</span>
+        <span class="badge bg-warning">{{ 'vote_value.not_vote'|trans }}</span>
     {% endif %}
 {% endmacro %}

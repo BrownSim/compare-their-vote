@@ -5,6 +5,7 @@ import './js/select';
 import './js/chart';
 import './js/filter';
 import './js/lazy-loading';
+import './js/datatable';
 
 import './scss/app.scss';
 

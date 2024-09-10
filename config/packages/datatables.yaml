@@ -1,2 +1,16 @@
 parameters:
     datatable_configs:
+        member:
+            settings:
+                header: false
+                nb_element: 5
+            columns:
+                vote_label:
+                    label: vote.title
+                    path: vote
+                    options:
+                        template: common/vote/_detail.html.twig
+                vote_members:
+                    path: vote_members
+                    options:
+                        template: common/vote/_member.html.twig
