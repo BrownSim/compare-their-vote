@@ -365,9 +365,15 @@ footer {
 
 .hp-grid-container {
     min-width: unset;
-    width: 350px;
+    width: 400px;
     margin: auto;
     height: unset;
+    max-width: unset;
+
+    &.grid-container .cell {
+        min-width: 20px;
+        min-height: 20px;
+    }
 }
 
 .fullscreen {
