@@ -21,11 +21,11 @@ vote_label: >-
         other {# votes} 
     }
 vote:
-    title: Title
-    ref: Reference
-    description: Description
-    date: Vote date
-    result: Vote result
+    title: 'Title: '
+    ref: 'Reference: '
+    description: 'Description: '
+    date: 'Vote date: '
+    result: 'Vote result: '
 
 filter:
     group: Political group
@@ -73,7 +73,3 @@ mp_status_list:
     active: While in office
     retired: Retired
     all: All
-vote_list:
-    title: 'Title: '
-    ref: 'Reference: '
-    date: 'Date :'

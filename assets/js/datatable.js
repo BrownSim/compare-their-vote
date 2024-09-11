@@ -9,7 +9,8 @@ window.addEventListener('load', function () {
 function initDatatable() {
     document.querySelectorAll('[data-datatable]').forEach(function(table) {
         new Datatable(table, {
-            nbElement: table.dataset.nbElement
+            nbElementDisplayed: table.dataset.nbElement,
+            ajax: table.dataset.ajax ?? null
         });
     });
 }
