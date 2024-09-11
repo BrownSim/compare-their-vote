@@ -1,35 +1,60 @@
 "use strict";
 
 class Datatable {
+    #table = null;
     #nav = null;
+    #data = null
+    #currentDisplayedData = null;
+    #nbData = null
+    #currentPage = 1;
+
     #defaultSettings = {
-        nbElement: 20,
-        paginationNbElement: 4
+        nbElementDisplayed: 20,
+        paginationNbElement: 4,
+        nbPages: null,
+        ajax: null,
     };
 
     constructor(table, settings = {}) {
-        let data = table.dataset.tabledata;
-
+        this.#table = table;
+        this.#data = null;
         this.#defaultSettings = {...this.#defaultSettings, ...settings};
 
-        if (null === data) {
-            return;
-        }
+        if (null === this.#defaultSettings.ajax || undefined === this.#defaultSettings.ajax) {
+            this.#data = table.dataset.tabledata;
 
-        if (data !== undefined) {
-            data = JSON.parse(data);
-        }
+            if (null === this.#data || undefined === this.#data) {
+                return;
+            }
 
-        this.#loadDatatableContent(table, data.data, 1, this.#defaultSettings.nbElement);
+            this.#data = JSON.parse(this.#data).data;
+            this.#nbData = this.#data.length;
+
+            this.#findCurrentDataToDisplay();
+            this.#loadDatatableContent(1);
+        } else {
+            this.#datatableReloadEvent();
+            this.#ajaxQuery(1);
+        }
     }
 
-    #drawPagination(table, data, current = 1) {
-        current = parseInt(current);
+    #datatableReloadEvent() {
+        this.#table.addEventListener('datatable-ajax-query-done', (event) => {
+            this.#nbData = event.detail.recordsTotal;
+            this.#data = event.detail.data;
+            this.#currentDisplayedData = event.detail.data;
 
-        let limit = parseInt(this.#defaultSettings.nbElement);
+            this.#loadDatatableContent(event.detail.currentPage);
+        });
+    }
+
+    #drawPagination() {
+        let current = parseInt(this.#currentPage);
+
+        let limit = parseInt(this.#defaultSettings.nbElementDisplayed);
         let nbPageItem = parseInt(this.#defaultSettings.paginationNbElement);
 
-        let endPage = Math.ceil(data.length / limit);
+        let endPage = Math.ceil(this.#nbData / limit);
         let firstPagesInRange = Math.max(1, current - nbPageItem / 2);
         let lastPagesInRange = Math.min(endPage, current + nbPageItem / 2);
 
@@ -40,16 +65,13 @@ class Datatable {
 
         this.#nav = document.createElement('div');
         this.#nav.classList.add('datatable-pagination');
-        table.after(this.#nav);
+        this.#table.after(this.#nav);
 
         let ul = document.createElement('ul');
         this.#nav.appendChild(ul);
 
-        if (firstPagesInRange - 2 >= 1) {
-            ul.appendChild(this.#generatePaginationNavigationBtn(1));
-        }
-
         if (firstPagesInRange - 1 >= 1) {
+            ul.appendChild(this.#generatePaginationNavigationBtn(1));
             ul.appendChild(this.#generatePaginationNavigationBtn('...'));
         }
 
@@ -57,17 +79,21 @@ class Datatable {
             ul.appendChild(this.#generatePaginationNavigationBtn(i, parseInt(current) === i));
         }
 
-        if (lastPagesInRange + 1 < endPage) {
+        if (lastPagesInRange + 1 <= endPage) {
             ul.appendChild(this.#generatePaginationNavigationBtn('...'));
-        }
-
-        if (lastPagesInRange + 2 < endPage) {
             ul.appendChild(this.#generatePaginationNavigationBtn(endPage));
         }
 
         ul.querySelectorAll('button').forEach((el) => {
             el.addEventListener('click', () => {
-                this.#loadDatatableContent(table, data, el.dataset.page);
+                this.#currentPage = el.dataset.page;
+
+                if(null === this.#defaultSettings.ajax || undefined === this.#defaultSettings.ajax) {
+                    this.#findCurrentDataToDisplay();
+                    this.#loadDatatableContent();
+                } else {
+                    this.#ajaxQuery();
+                }
             });
         });
     }
@@ -91,24 +117,37 @@ class Datatable {
         return li
     }
 
-    #loadDatatableContent(table, data, page) {
-        let nbElements = parseInt(this.#defaultSettings.nbElement);
-
-        if (table.querySelector('tbody')) {
-            table.querySelector('tbody').innerHTML = '';
+    #loadDatatableContent() {
+        if (this.#table.querySelector('tbody')) {
+            this.#table.querySelector('tbody').innerHTML = '';
         }
 
-        const slicedData = data.slice((page - 1) * nbElements, (page - 1) * nbElements + nbElements);
-        slicedData.forEach((row) => {
-            let newRow = table.insertRow(-1);
+        this.#currentDisplayedData.forEach((row) => {
+            let newRow = this.#table.insertRow(-1);
             row.forEach((cell, index) => {
                 let newCell = newRow.insertCell(index);
                 newCell.innerHTML = cell;
             });
-        })
+        });
 
-        this.#drawPagination(table, data, page);
+        this.#drawPagination();
+    }
+
+    #ajaxQuery() {
+        fetch(this.#defaultSettings.ajax + '?page=' + this.#currentPage)
+            .then(response => response.json())
+            .then(response => {
+                let event = new CustomEvent('datatable-ajax-query-done', {
+                    'detail': response,
+                });
+                this.#table.dispatchEvent(event);
+            })
+        ;
+    }
+
+    #findCurrentDataToDisplay() {
+        let nbElements = parseInt(this.#defaultSettings.nbElementDisplayed);
+        this.#currentDisplayedData = this.#data.slice((this.#currentPage - 1) * nbElements, (this.#currentPage - 1) * nbElements + nbElements);
     }
 }
-
 export default Datatable;
