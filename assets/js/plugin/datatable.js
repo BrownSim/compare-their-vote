@@ -72,6 +72,9 @@ class Datatable {
 
         if (firstPagesInRange - 1 >= 1) {
             ul.appendChild(this.#generatePaginationNavigationBtn(1));
+        }
+
+        if (firstPagesInRange - 2 >= 1) {
             ul.appendChild(this.#generatePaginationNavigationBtn('...'));
         }
 
@@ -79,8 +82,11 @@ class Datatable {
             ul.appendChild(this.#generatePaginationNavigationBtn(i, parseInt(current) === i));
         }
 
-        if (lastPagesInRange + 1 <= endPage) {
+        if (lastPagesInRange + 2 <= endPage) {
             ul.appendChild(this.#generatePaginationNavigationBtn('...'));
+        }
+
+        if (lastPagesInRange + 1 <= endPage) {
             ul.appendChild(this.#generatePaginationNavigationBtn(endPage));
         }
 
