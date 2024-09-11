@@ -41,22 +41,12 @@
                         Votes list
                     </div>
                     <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            {% for result in voteResults %}
-                                <li class="list-group-item p-0">
-                                    <p class="mt-4">
-                                        <span>{{ 'vote.title'|trans }}: {{ result.vote.title }}</span><br />
-                                        <small class="text-muted">{{ 'vote.ref'|trans }}: {{ result.vote.reference }}</small><br>
-                                        <small class="text-muted">{{ 'vote.description'|trans }}: {{ result.vote.description }}</small><br>
-                                        <small class="text-muted">{{ 'vote.date'|trans }}: {{ result.vote.voteDate|date('Y-m-d') }}</small><br>
-                                        <small class="text-muted">{{ 'vote.result'|trans }}: {{ voteValue.vote_value_badge(result.value)}} </small>
-                                    </p>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        <div class="d-flex justify-content-center mt-3">
-                            {{ knp_pagination_render(voteResults) }}
-                        </div>
+                        {{ datatable_render_table(datatable, {
+                            ajax: path('member_list_vote', {'mepId': member.mepId}),
+                            attributes: {
+                                'class': 'datatable-vote-results'
+                            }
+                        }) }}
                     </div>
                 </div>
             </div>

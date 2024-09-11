@@ -4,7 +4,7 @@
 {% set attr = attr|default([])|merge({class: ('datatable ' ~ attributes.class|default(''))|trim}) -%}
 
 <table
-        {% if sourceRoute|default(null)is not null %} data-path="{{ sourceRoute }}"{% endif%}
+        {% if ajax|default(null)is not null %} data-ajax="{{ ajax }}"{% endif%}
         {% if sourceData|default(null)is not null %} data-tabledata="{{ sourceData }}"{% endif%}
         {{ block('attributes') }}
         data-datatable

@@ -14,3 +14,13 @@ parameters:
                     path: vote_members
                     options:
                         template: common/vote/_member.html.twig
+        member_vote:
+            settings:
+                header: false
+                nb_element: 10
+            columns:
+                vote_label:
+                    label: toto
+                    path: .
+                    options:
+                        template: common/vote/_result.html.twig
