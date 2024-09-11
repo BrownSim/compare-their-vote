@@ -1,4 +1,4 @@
-{% use "Common/Datatable/table_layout.html.twig" %}
+{% use "common/datatable/table_layout.html.twig" %}
 
 {% set attr = attr|default([])|merge(attributes) -%}
 {% set attr = attr|default([])|merge({class: ('datatable ' ~ attributes.class|default(''))|trim}) -%}
