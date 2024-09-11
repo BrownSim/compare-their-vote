@@ -1,5 +1,8 @@
+{% import 'common/macro/vote_value.html.twig' as voteValue %}
+
 <p class="datatable-vote-results-detail mb-0">
-    <span>{{ 'vote.title'|trans }}</span><span>{{ resource.vote.title }}</span>
-    <span>{{ 'vote.ref'|trans }}</span><span>{{ resource.vote.reference }}</span>
-    <span>{{ 'vote.date'|trans }} </span><small>{{ resource.vote.voteDate|date('Y-m-d') }}</small>
+    <span class="text-nowrap">{{ 'vote.title'|trans }}</span><span>{{ resource.vote.title }}</span>
+    <span class="text-nowrap">{{ 'vote.ref'|trans }}</span><span>{{ resource.vote.reference }}</span>
+    <span class="text-nowrap">{{ 'vote.date'|trans }} </span><small>{{ resource.vote.voteDate|date('Y-m-d') }}</small>
+    <span class="text-nowrap">{{ 'vote.result'|trans }} </span><small>{{ voteValue.vote_value_badge(resource.value) }}</small>
 </p>
