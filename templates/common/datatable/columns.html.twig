@@ -1,3 +1,19 @@
 {% for key, col in datatable.columns %}
-    <th{{ key == 'actions' ? ' class="actions-cell"' : ''}}>{{ col.label|trans }}</th>
+    {% set class = '' %}
+
+    {% set sortableColumn = attribute(datatable.sortableColumns, key)|default(false) %}
+    {% if false != sortableColumn and (sortableColumn.order is same as ('asc') or sortableColumn.order is same as ('desc')) %}
+        {% set class = 'order-' ~ sortableColumn.order %}
+    {% endif %}
+
+    <th class="{{ class }}">
+        {% if sortableColumn %}
+            <button class="btn btn-link" data-colname="{{ key }}" data-colposition="{{ loop.index0 }}">
+                <span class="datatable-order-picto"></span>
+                {{ col.label|trans }}
+            </button>
+        {% else %}
+            {{ col.label|trans }}
+        {% endif %}
+    </th>
 {% endfor %}

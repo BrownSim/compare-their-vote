@@ -8,6 +8,8 @@ class Datatable
 
     private array $columns = [];
 
+    private array $sortableColumns = [];
+
     public function __construct(array $config = [])
     {
         $this->config = $config;
@@ -19,6 +21,10 @@ class Datatable
             $col->label = $data['label'] ?? $key;
 
             $this->columns[$key] = $col;
+
+            if (array_key_exists('sortable', $data)) {
+                $this->sortableColumns[$key]['order'] = $data['sortable'] ?? true;
+            }
         }
     }
 
@@ -30,6 +36,11 @@ class Datatable
     public function getNbElement(): int
     {
         return $this->config['settings']['nb_element'] ?? 20;
+    }
+
+    public function getSortableColumns(): array
+    {
+        return $this->sortableColumns;
     }
 
     public function getColumns(): array
