@@ -4,13 +4,15 @@ class Datatable {
     #table = null;
     #tbody = null;
     #nav = null;
-    #data = null
+    #data = null;
+    #colTypes = [];
     #currentDisplayedData = null;
     #nbData = null
     #currentPage = 1;
     #orderDirection = 'asc';
     #orderColumn = null;
     #orderColumnPosition = null;
+    #numericCleanerRegex = /[%]/gi;
 
     #defaultSettings = {
         nbElementDisplayed: 20,
@@ -21,7 +23,6 @@ class Datatable {
 
     constructor(table, settings = {}) {
         this.#table = table;
-        this.#data = null;
         this.#defaultSettings = {...this.#defaultSettings, ...settings};
 
         this.#init();
@@ -190,15 +191,37 @@ class Datatable {
     }
 
     #sortData() {
+        let colType = this.#colTypes[this.#orderColumnPosition];
         let compareValues = function(a, b) {
-            //-1 if desc to reverse the order
+            if ('int' === colType) {
+                return 'asc' === this.#orderDirection
+                    ? a[this.#orderColumnPosition] - b[this.#orderColumnPosition]
+                    : -(a[this.#orderColumnPosition] - b[this.#orderColumnPosition]);
+            }
+
             let factor = 'asc' === this.#orderDirection ? 1 : -1;
 
-            //sort string and numbers
             return factor * a[this.#orderColumnPosition].localeCompare(b[this.#orderColumnPosition], undefined, {numeric: true});
         }.bind(this);
 
-        this.#data = this.#data.sort((a, b) => compareValues(a, b));
+        let sortedData = [];
+
+        //need to generate a new array of object with base data and cleaned data to perform order
+        this.#data.forEach((el) => {
+            let cleanedRow = [];
+            el.forEach((cell, index) => {
+                cleanedRow[index] = this.#colTypes[index] === 'string' ? cell : this.#numericCleaner(cell);
+            });
+
+            sortedData.push({'base': el, 'cleaned': cleanedRow});
+        });
+
+        sortedData.sort((a, b) => compareValues(a.cleaned, b.cleaned));
+
+        this.#data = [];
+        sortedData.forEach((el) => {
+           this.#data.push(el.base);
+        });
     }
 
     #updateColOrderClass() {
@@ -260,8 +283,40 @@ class Datatable {
         this.#data = JSON.parse(this.#data).data;
         this.#nbData = this.#data.length;
 
+        // detect if column contain only int
+        // used for sorting action
+        this.#detectColType();
+
         this.#findCurrentDataToDisplay();
         this.#loadDatatableContent();
+    }
+
+    #isNumber(str) {
+        let cleaned = str.replace(this.#numericCleanerRegex, '');
+
+        return !isNaN(cleaned);
+    }
+
+    #numericCleaner(str) {
+        let cleaned = str.replace(this.#numericCleanerRegex, '');
+        if (!isNaN(cleaned)) {
+            return cleaned;
+        }
+
+        return str;
+    }
+
+    #detectColType() {
+        this.#data.forEach((el) => {
+           el.some((item, index) => {
+                if (this.#isNumber(item)) {
+                    this.#colTypes[index] = 'int';
+                    return false;
+                } else {
+                    this.#colTypes[index] = 'string';
+                }
+           })
+        });
     }
 }
 
