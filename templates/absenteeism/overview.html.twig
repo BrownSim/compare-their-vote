@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center mb-5">Absenteeism rate overview</h1>
+            </div>
+            <div class="col-12 d-flex">
+                <div id="absenteeism-map" class="absenteeism-map mx-auto" data-json="{{ map }}"></div>
+            </div>
+            <div class="col-12">
+                <div class="card shadow mt-5">
+                    <div class="card-header py-4">
+                        <h4 class="text-center mb-0">
+                            {{ 'absenteeism.chart.title.abstention_political_group'|trans }}
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="dot-average-category" class="dotchart w-100" data-json="{{ politicalGroupAbsenceChartJson }}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

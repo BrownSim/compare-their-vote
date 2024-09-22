@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12">
+                <h1 class="text-center mb-5">MP absenteeism {% if country is defined %}for {{ country.label }}{% else %}by country{% endif %}</h1>
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        {{ form_start(filter) }}
+                        <div class="d-flex flex-row gap-3">
+                            {{ form_label(filter.country, null, {'label_attr': {'class': 'col-sm-auto'}}) }}
+                            {{ form_widget(filter.country) }}
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                        {{ form_end(filter, {'render_rest': false}) }}
+                    </div>
+                </div>
+                {% if politicalGroups|default(null) is not null %}
+                    <nav class="mt-4">
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pie-chart-fill" viewBox="0 0 16 16">
+                                    <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778zM8.5.015V7.5h7.485A8 8 0 0 0 8.5.015"/>
+                                </svg>
+                                <span class="ms-2">{{ 'absenteeism.nav.overview'|trans }}</span>
+                            </button>
+                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-table" viewBox="0 0 16 16">
+                                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"/>
+                                </svg>
+                                <span class="ms-2">{{ 'absenteeism.nav.table'|trans }}</span>
+                            </button>
+                        </div>
+                    </nav>
+                    <div class="tab-content mt-5" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                            <div class="legend d-flex flex-wrap gap-3 mt-3">
+                                {% for group in politicalGroups %}
+                                    <div class="d-flex gap-2" style="order: {{ group.position }}">
+                                        <div class="color p-2 rounded-5 align-self-center" style="background-color: #{{ group.color }}"></div>
+                                        <p class="m-0">{{ group.label }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="card shadow mt-5">
+                                <div class="card-header py-4">
+                                    <h4 class="text-center mb-0">
+                                        {{ 'absenteeism.chart.title.abstention_rate'|trans }}
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <div id="beeswarm" class="dotchart w-100" data-chart-x="{{ 'absenteeism.chart.dotplot.axis'|trans }}" data-json="{{ absenceChartJson }}"></div>
+                                </div>
+                            </div>
+                            <div class="card shadow mt-5">
+                                <div class="card-header py-4">
+                                    <h4 class="text-center mb-0">
+                                        {{ 'absenteeism.chart.title.abstention_anomaly'|trans }}
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <div id="dottrands" class="dotchart w-100" data-json="{{ absenceComparisonChartJson }}"></div>
+                                </div>
+                            </div>
+                            <div class="card shadow mt-5">
+                                <div class="card-header py-4">
+                                    <h4 class="text-center mb-0">
+                                        {{ 'absenteeism.chart.title.abstention_political_group'|trans }}
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <div id="dot-average-category" class="dotchart w-100" data-json="{{ politicalGroupAbsenceChartJson }}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    {{ datatable_render_table(absenceDatatable, {
+                                        sourceData: absencePredictionDatatableData,
+                                        attributes: {
+                                            'class': 'datatable-absence-prediction'
+                                        }
+                                    }) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

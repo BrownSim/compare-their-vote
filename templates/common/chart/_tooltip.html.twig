@@ -1,0 +1,19 @@
+<h3 class="popover-header d-flex justify-content-between align-items-center gap-4">
+    <span class="popover-title">{{ memberVoteStatistic.member.firstName }} {{ memberVoteStatistic.member.lastName }}</span>
+    <div class="container-flag">
+        <span class="fi fi-{{ memberVoteStatistic.member.country.isoAlpha|lower}}"></span>
+    </div>
+</h3>
+<div class="popover-content">
+    {{ 'absenteeism.chart.dotplot.total'|trans }}{{ memberVoteStatistic.nbVote }} <br>
+    {{ 'absenteeism.chart.dotplot.abstention_rate'|trans }}{{ memberVoteStatistic.missRatio|round }}% <br>
+    {% if memberVoteStatistic.member.group is not null %}
+        {{ 'absenteeism.chart.dotplot.group'|trans }}{{ memberVoteStatistic.member.group.label }} <br>
+    {% endif %}
+    {% if memberVoteStatistic.member.country is not null %}
+        {{ 'absenteeism.chart.dotplot.country'|trans }}{{ memberVoteStatistic.member.country.label }} <br>
+    {% endif %}
+    {% if memberVoteStatistic.member.party is not null %}
+        {{ 'absenteeism.chart.dotplot.party'|trans }}{{ memberVoteStatistic.member.party.label }}
+    {% endif %}
+</div>

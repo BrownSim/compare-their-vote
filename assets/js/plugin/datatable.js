@@ -132,6 +132,8 @@ class Datatable {
 
         if (this.#table.querySelector('tbody')) {
             this.#table.querySelector('tbody').innerHTML = '';
+        } else {
+            this.#tbody = this.#table.createTBody();
         }
         this.#currentDisplayedData.forEach((row) => {
             let newRow = this.#tbody.insertRow(-1);
