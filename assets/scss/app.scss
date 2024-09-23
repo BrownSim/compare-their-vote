@@ -15,6 +15,21 @@ $nav-tabs-border-width: 0;
 
 $popover-border-color: #F1F1F4;
 
+$spacer: 1rem;
+$spacers: (
+        0: 0,
+        1: $spacer * .25,
+        2: $spacer * .5,
+        3: $spacer,
+        4: $spacer * 1.5,
+        5: $spacer * 3,
+        6: $spacer * 3.5,
+        7: $spacer * 4,
+        8: $spacer * 5,
+        9: $spacer * 6,
+        10: $spacer * 7,
+);
+
 @import 'flag-icons/css/flag-icons.min.css';
 @import "tom-select/dist/css/tom-select.bootstrap5.css";
 @import 'bootstrap';
@@ -25,6 +40,7 @@ $popover-border-color: #F1F1F4;
 @import 'chart';
 @import 'navtabs';
 @import 'popover';
+@import 'aos/dist/aos.css';
 
 :root {
     --bs-primary-rgb: 61, 81, 160;
@@ -539,5 +555,18 @@ form.loading {
         img {
             width: 100%;
         }
+    }
+}
+
+.bg-light-gradient {
+    border-top: solid 1px rgb(241, 244, 248);
+    background-image: linear-gradient(rgb(249, 251, 253) 0px, rgb(255, 255, 255) 100%);
+}
+
+.presentation-section {
+    img {
+        max-width: 500px;
+        height: auto;
+        object-fit: contain
     }
 }
