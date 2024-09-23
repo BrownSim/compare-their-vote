@@ -40,47 +40,50 @@
         {% if matrix is defined %}
             {% set matrixSize = matrix|length %}
 
-            {% set param = [] %}
-            {% set queryParams = app.request.query.all %}
-            {% for paramName, paramValue in queryParams %}
-                {% set param = param|merge({(paramName): (paramValue)}) %}
-            {% endfor %}
+            {% if matrixSize == 0 %}
+                <h4 class="text-center">Not enough data to generate a matrix</h4>
+            {% else %}
+                {% set param = [] %}
+                {% set queryParams = app.request.query.all %}
+                {% for paramName, paramValue in queryParams %}
+                    {% set param = param|merge({(paramName): (paramValue)}) %}
+                {% endfor %}
 
-            <a href="{{ path('member-map-fullscreen', param) }}" target="_blank" class="btn btn-primary">{{ 'open_fullscreen'|trans }}</a>
-            <div class="row">
-                <div class="col-12 p-0">
-                    <div class="grid-container mt-3" style="width: {{ 250 + matrixSize * 30 }}px; grid-template-columns: 175px repeat({{ matrixSize }}, auto); grid-template-rows: 175px repeat({{ matrixSize }}, auto);">
-                        <div class="cell cell-hide border-0"></div>
-                        {% for line in matrix|first %}
-                            {% set member = line.memberY %}
-                            <div class="cell cell-identity cell-identity-top border-top-0">
-                                <p class="mx-auto mb-2 member-detail rotate">
-                                    <span class="mb-2 political-group-dot-color" {% if member.group.color is not null%}style="background: #{{ member.group.color }};"{% endif %}></span>
-                                    <span class="member-name">{{ member.lastName }}</span>
-                                    <small>({{ member.group.shortLabel }})</small>
-                                </p>
-                            </div>
-                        {% endfor %}
-                        {% for key, line in matrix %}
-                            {% set newLine = true %}
-                            {% for key2, el in line %}
-                                {% if newLine == true %}
-                                    {% set member = el.memberX %}
-                                    <div class="cell cell-identity cell-identity-left border-start-0">
-                                        <p class="m-auto me-2 member-detail">
-                                            <span class="member-name">{{ member.lastName }}</span>
-                                            <small>({{ member.group.shortLabel }})</small>
-                                            <span class="ms-2 political-group-dot-color" {% if member.group.color is not null%}style="background: #{{ member.group.color }};"{% endif %}></span>
-                                        </p>
-                                    </div>
-                                    {% set newLine = false %}
-                                {% endif %}
-                                {% if el.rate is defined %}
-                                    {% set cellClass = 'no-vote' %}
-                                    {% if el.nb_vote > 0 %}
-                                        {% set cellClass = 'rate-' ~ el.rate|round_down_5 %}
+                <a href="{{ path('member-map-fullscreen', param) }}" target="_blank" class="btn btn-primary">{{ 'open_fullscreen'|trans }}</a>
+                <div class="row">
+                    <div class="col-12 p-0">
+                        <div class="grid-container mt-3" style="width: {{ 250 + matrixSize * 30 }}px; grid-template-columns: 175px repeat({{ matrixSize }}, auto); grid-template-rows: 175px repeat({{ matrixSize }}, auto);">
+                            <div class="cell cell-hide border-0"></div>
+                            {% for line in matrix|first %}
+                                {% set member = line.memberY %}
+                                <div class="cell cell-identity cell-identity-top border-top-0">
+                                    <p class="mx-auto mb-2 member-detail rotate">
+                                        <span class="mb-2 political-group-dot-color" {% if member.group.color is not null%}style="background: #{{ member.group.color }};"{% endif %}></span>
+                                        <span class="member-name">{{ member.lastName }}</span>
+                                        <small>({{ member.group.shortLabel }})</small>
+                                    </p>
+                                </div>
+                            {% endfor %}
+                            {% for key, line in matrix %}
+                                {% set newLine = true %}
+                                {% for key2, el in line %}
+                                    {% if newLine == true %}
+                                        {% set member = el.memberX %}
+                                        <div class="cell cell-identity cell-identity-left border-start-0">
+                                            <p class="m-auto me-2 member-detail">
+                                                <span class="member-name">{{ member.lastName }}</span>
+                                                <small>({{ member.group.shortLabel }})</small>
+                                                <span class="ms-2 political-group-dot-color" {% if member.group.color is not null%}style="background: #{{ member.group.color }};"{% endif %}></span>
+                                            </p>
+                                        </div>
+                                        {% set newLine = false %}
                                     {% endif %}
-                                    <div class="cell{% if el|length == 0 %} empty{% endif %} {{ cellClass }}">
+                                    {% if el.rate is defined %}
+                                        {% set cellClass = 'no-vote' %}
+                                        {% if el.nb_vote > 0 %}
+                                            {% set cellClass = 'rate-' ~ el.rate|round_down_5 %}
+                                        {% endif %}
+                                        <div class="cell{% if el|length == 0 %} empty{% endif %} {{ cellClass }}">
                                         <span class="fw-bold">
                                             {% if el.nb_vote == 0 %}
                                                 <small>No data</small>
@@ -92,15 +95,16 @@
                                                 </p>
                                             {% endif %}
                                         </span>
-                                    </div>
-                                {% else %}
-                                    <div class="cell empty"></div>
-                                {% endif %}
+                                        </div>
+                                    {% else %}
+                                        <div class="cell empty"></div>
+                                    {% endif %}
+                                {% endfor %}
                             {% endfor %}
-                        {% endfor %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
         {% endif %}
     </div>
 {% endblock %}
