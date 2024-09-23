@@ -1,4 +1,5 @@
 import * as bootstrap from 'bootstrap';
+import AOS from 'aos';
 
 import './js/collection.js';
 import './js/select';
@@ -11,6 +12,8 @@ import './scss/app.scss';
 
 window.addEventListener('load', function () {
     'use strict';
+
+    AOS.init();
 
     const mapTypeChoice = document.querySelector('[data-maptype]');
     if (mapTypeChoice) {

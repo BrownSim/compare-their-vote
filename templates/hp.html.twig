@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import 'common/macro/icon.html.twig' as icon %}
 
 {% block body %}
     <div class="container">
@@ -6,67 +7,113 @@
             <h1>{{ 'hp_title'|trans }}</h1>
             <h5 class="mb-5">{{ 'hp_last_vote'|trans({'start': lastSession.startAt|date('M d'), 'to': lastSession.endAt|date('M d Y')}) }}</h5>
         </div>
-        <div class="col-12">
-            <h4 class="text-center">{{ 'comparison_subtitle'|trans }}</h4>
-            <div class="row mt-5">
-                <div class="col-12 col-lg-6">
-                    <p>
-                        {{ 'comparison_donuts.text_1'|trans }}
-                        <br>
-                        <b>
-                            {{ 'comparison_donuts.text_2'|trans }}
-                        </b>
-                    </p>
-                    <a href="{{ path('member-to-member') }}" class="btn btn-sm btn-primary">{{ 'try_it'|trans}} &rarr;</a>
-                    <div style="width: 300px;height: 300px" class="my-5 mx-auto" data-chart-type="doughnut" data-value="{&quot;dataset&quot;:[{&quot;category&quot;:&quot;Same vote&quot;,&quot;value&quot;:263},{&quot;category&quot;:&quot;Different vote&quot;,&quot;value&quot;:38}]}" data-title="301 votes"></div>
-                </div>
-                <div class="col-12 col-lg-6">
-                    <p>
-                        {{ 'comparison_matrix_correlation.text_1'|trans }}
-                        <br>
-                        <b>
-                            {{ 'comparison_matrix_correlation.text_2'|trans }}
-                        </b>
-                    </p>
-                    <a href="{{ path('member-map') }}" class="btn btn-sm btn-primary">{{ 'try_it'|trans}} &rarr;</a>
+    </div>
 
-                    {% set matrixSize = matrix|length %}
-                    <div class="grid-container hp-grid-container" style="grid-template-columns: 90px repeat({{ matrixSize }}, auto); grid-template-rows: 90px repeat({{ matrixSize }}, auto);">
-                        <div class="cell border-0" style="position: sticky; top: 0"></div>
-                        {% for key, line in matrix %}
-                            <div class="cell cell-identity border-top-0 d-flex" style="position: sticky; top: -20px; background: #fff; z-index: 10000">
-                                <p class="mx-auto mb-2 member-detail rotate">
-                                    <span class="member-name">{{ key }}</span>
-                                </p>
-                            </div>
-                        {% endfor %}
-                        {% for key, line in matrix %}
-                            {% set newLine = true %}
-                            {% for el in line %}
-                                {% if newLine == true %}
-                                    <div class="cell cell-identity d-flex border-start-0" style="position: sticky; left: -20px; background: #fff">
-                                        <p class="m-auto me-2 member-detail">
-                                            <span class="member-name">{{ key }}</span>
-                                        </p>
-                                    </div>
-                                    {% set newLine = false %}
-                                {% endif %}
-                                {% if el.rate is defined %}
-                                    {% set cellClass = 'no-vote' %}
-                                    {% if el.nb_vote > 0 %}
-                                        {% set cellClass = 'rate-' ~ el.rate|default(null)|round(-1) %}
-                                    {% endif %}
-                                    <div class="cell{% if el|length == 0 %} empty{% endif %} {{ cellClass }}">
-                                        <span class="fw-bold">{{ el.rate|default(null)|round }}%</span>
-                                    </div>
-                                {% else %}
-                                    <div class="cell empty"></div>
-                                {% endif %}
-                            {% endfor %}
-                        {% endfor %}
+    <section class="presentation-section my-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 d-flex justify-content-end" data-aos="fade-right">
+                    <img src="{{ asset('build/images/hp/deal.webp') }}" alt="" style="max-width: 400px" class="pe-5">
+                </div>
+                <div class="col-6" data-aos="fade-left">
+                    <h2 class="h4">How close the votes of MPs are</h2>
+                    <div class="d-flex gap-3">
+                        <div>{{ icon.pie() }}</div>
+                        <p>
+                            Pick MPs and compare them <br>
+                            <span class="text-muted">
+                                You will be able to select one or more PMs and see all of their votes <br>
+                                You can choose which type(s) of vote you wish to compare <br>
+                            </span>
+                        </p>
                     </div>
+                    <a href="{{ path('member-to-member') }}" class="btn btn-primary mt-4">Try -></a>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section class="presentation-section pt-9 mb-10 bg-light-gradient">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 d-flex justify-content-end" data-aos="fade-right">
+                    <img src="{{ asset('build/images/hp/Sans titre.webp') }}" alt="" style="max-width: 500px; height: auto; object-fit: contain" class="pe-5">
+                </div>
+                <div class="col-6" data-aos="fade-left">
+                    <h2 class="h4">A correlation matrix between MPs</h2>
+                    <p class="text-muted">Very useful for getting an quick overview!</p>
+                    <div class="d-flex gap-3 mt-4">
+                        <div>{{ icon.heatmap() }}</div>
+                        <p>
+                            An interactive heatmap showing all the MPs. <br>
+                            <span class="text-muted">
+                                It is possible to display the MPs of a country or the MPs of a group.
+                                Use your mouse to see the common voting rate.
+                            </span>
+                        </p>
+                    </div>
+                    <div class="d-flex gap-3 mt-3">
+                        <div>{{ icon.filter() }}</div>
+                        <div>
+                            Filter votes
+                            <p class="text-muted">
+                                You can refine your search by selecting the country concerned by the votes. Try to pick Ukraine ;)
+                            </p>
+                        </div>
+                    </div>
+                    <a href="{{ path('member-map') }}" class="btn btn-primary mt-4">Try -></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="presentation-section my-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 d-flex justify-content-end" data-aos="fade-right">
+                    <img src="{{ asset('build/images/hp/map.webp') }}" alt="" style="max-width: 500px; height: auto; object-fit: contain" class="pe-5">
+                </div>
+                <div class="col-6" data-aos="fade-left">
+                    <h2 class="h4">Overview of MP absenteeism</h2>
+                    <div class="d-flex gap-3 mt-4">
+                        <div>{{ icon.europe() }}</div>
+                        <p>
+                            An overview of absenteeism by country and by group<br>
+                            <span class="text-muted">
+                                An interactive map and a graph where the MPs are divided by group.
+                            </span>
+                        </p>
+                    </div>
+                    <a href="{{ path('absenteeism_overview') }}" class="btn btn-primary mt-4">Try -></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="presentation-section my-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 d-flex justify-content-end" data-aos="fade-right">
+                    <img src="{{ asset('build/images/hp/dotaverage.webp') }}" alt="" style="" class="pe-5">
+                </div>
+                <div class="col-6" data-aos="fade-left">
+                    <h2 class="h4">A detailed view of absenteeism by country</h2>
+                    <div class="d-flex gap-3 mt-4">
+                        <div>{{ icon.dotchart() }}</div>
+                        <p>
+                            Multiple graphics<br>
+                            <span class="text-muted">
+                                Graphs to illustrate the absenteeism of MPs based on their average absences or absenteeism compared with other MPs. The graphs are interactive and you can see the details for each MP.
+                            </span>
+                        </p>
+                    </div>
+                    <div class="d-flex gap-3 mt-4">
+                        <div>{{ icon.table() }}</div>
+                        <p>A summary table showing all available data</p>
+                    </div>
+                    <a href="{{ path('absenteeism_country') }}" class="btn btn-primary mt-4">Try -></a>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

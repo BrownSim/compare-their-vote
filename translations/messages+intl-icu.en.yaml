@@ -6,7 +6,7 @@ similar_vote_rate: >-
         one   {{rate}% similar vote from a total of # vote}  
         other {{rate}% similar votes from a total of # votes} 
     }
-hp_title: Compare how Members of the European Parliament vote
+hp_title: Compare MP data
 hp_last_vote: The last plenary session was held from {start} to {to}
 vote_value_label: Vote value
 vote_value:
