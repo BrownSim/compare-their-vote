@@ -1,11 +1,11 @@
 {% macro vote_value_badge(vote) %}
     {% if vote == constant('App\\Entity\\MemberVote::VOTE_FOR') %}
-        <span class="badge bg-primary">{{ 'vote_value.for'|trans }}</span>
+        <span class="badge bg-primary">{{ 'global.vote_value.for'|trans }}</span>
     {% elseif vote == constant('App\\Entity\\MemberVote::VOTE_AGAINST') %}
-        <span class="badge bg-danger">{{ 'vote_value.against'|trans }}</span>
+        <span class="badge bg-danger">{{ 'global.vote_value.against'|trans }}</span>
     {% elseif vote == constant('App\\Entity\\MemberVote::VOTE_ABSTENTION') %}
-        <span class="badge bg-secondary">{{ 'vote_value.abstention'|trans }}</span>
+        <span class="badge bg-secondary">{{ 'global.vote_value.abstention'|trans }}</span>
     {% elseif vote == constant('App\\Entity\\MemberVote::VOTE_DID_NOT_VOTE') %}
-        <span class="badge bg-warning">{{ 'vote_value.not_vote'|trans }}</span>
+        <span class="badge bg-warning">{{ 'global.vote_value.not_vote'|trans }}</span>
     {% endif %}
 {% endmacro %}

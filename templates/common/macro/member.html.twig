@@ -1,7 +1,7 @@
 {% macro member_badge_status(member) %}
     {% if member.isActive %}
-        <span class="badge text-bg-success">{{ 'mp_status_list.active'|trans }}</span>
+        <span class="badge text-bg-success">{{ 'global.mp_status_list.active'|trans }}</span>
     {% else %}
-        <span class="badge text-bg-secondary">{{ 'mp_status_list.retired'|trans }}</span>
+        <span class="badge text-bg-secondary">{{ 'global.mp_status_list.retired'|trans }}</span>
     {% endif %}
 {% endmacro %}

@@ -1,88 +1,66 @@
 meta:
     description: Compare Members of the European Parliament votes with each other
-similar_vote_rate: >-
-    {nb, plural,
-        =0    {{rate}% similar vote from a total of # vote} 
-        one   {{rate}% similar vote from a total of # vote}  
-        other {{rate}% similar votes from a total of # votes} 
-    }
-hp_title: Compare MP data
-hp_last_vote: The last plenary session was held from {start} to {to}
-vote_value_label: Vote value
-vote_value:
-    for: For
-    against: Agasint
-    not_vote: Did not vote
-    abstention: Abstention
-vote_label: >-
-    {nb, plural,
-        =0    {# vote} 
-        one   {# vote}  
-        other {# votes} 
-    }
-vote:
-    title: 'Title: '
-    ref: 'Reference: '
-    description: 'Description: '
-    date: 'Vote date: '
-    result: 'Vote result: '
 
-filter:
-    group: Political group
-    country: MP's country
-    party: MP's party
-    mp_status: MP's status
+form:
+    collection:
+        add: Add
+        delete: Delete
+    filter:
+        member:
+            country: Country
+            group: Political Group
+            party: Party
+            status:
+                label: Status
+                all: All
+                retired: Retired
+                active: Active
+        matrix:
+            country: Country
+            vote_related_to_country:
+                label: Countries related to analysed votes
+                help: Leave blank to analyse all votes
+            group: Political Group
+            matrix_type:
+                label: Comparison type
+                political_group: Political Group
+                country: Country
+        member_comparison:
+            main_member:
+                label: Main member
+                placeholder: Choose a member
+            compared_member:
+                label: Member
+                placeholder: Choose a member
+            member_collection:
+                placeholder: Choose a member
 
-same_vote: Same vote
-different_vote: Different vote
-add_member: Add member
-add_members: Add members
-choice_member: Choose a member
-search: Search
-list_vote_member_vs_member: List of joint votes between {member_1} and {member_2}
-main_member: Main member
-member: Member
-hp:
-    welcome:
-choice_country: Choose a country
-choice_group: Choose a political group
-matrix_type:
-    political_group: Political group
-    country: Country
-comparison_type: Comparison type
-political_group_choice: Political group
-country: Country
-mp_country: Member country
-related_country:
-    label: Countries related to analysed votes
-    help: Leave blank to analyse all votes
-political_group: Political group
-comparison_subtitle: The website offers you several ways to make comparisons between MPs.
-comparison_donuts:
-    text_1: You can select the M.P.s you wish to compare and have access to the concordant and divergent votes.
-    text_2: It's the best choice if you want the most detail
-comparison_matrix_correlation:
-    text_1: You can also choose to compare all MEPs by group or by country. This comparison will be illustrated by a correlation matrix.
-    text_2: It's the best choice if you want an overview
-try_it: Try it
-open_fullscreen: Open the map in a full screen
-compare: Compare
-vote_information: Votes where the MP was not present are not taken into account in the comparison.
-matrix_loading_information: It can take time to load all the data
-mp_status_list:
-    active: While in office
-    retired: Retired
-    all: All
+global:
+    search: Search
+    last_vote_date: The last plenary session was held from {start} to {to}
+    vote_value:
+        for: For
+        against: Agasint
+        not_vote: Did not vote
+        abstention: Abstention
+    vote_label: >-
+        {nb, plural,
+            =0    {# vote} 
+            one   {# vote}  
+            other {# votes} 
+        }
+    vote:
+        title: 'Title: '
+        ref: 'Reference: '
+        description: 'Description: '
+        date: 'Vote date: '
+        result: 'Vote result: '
+    mp_status_list:
+        active: While in office
+        retired: Retired
+        all: All
 
-absenteeism:
-    nav:
-        overview: Overview
-        table: Table
     chart:
-        title:
-            abstention_rate: Abstention rate by MP
-            abstention_anomaly: Abstention anomaly
-            abstention_political_group: Abstention rate by political group
         dotplot:
             axis: Abstention rate
             total: 'Number of vote(s): '
@@ -94,15 +72,114 @@ absenteeism:
             x: Number of votes
             y: Anomaly in number of votes
 
-absence:
-    mp_name: MP
-    country: Country
-    total_vote: Total&nbsp;votes
-    total_miss: Total&nbsp;votes missed
-    ratio: Presence/absence ratio
-    predicted: Prediction
-    predicted_gap: Difference&nbsp;with prediction
-    reality_prediction_ratio: Reality/prediction ratio
-    political_group: Political group
-    attendance: Nb&nbsp;of&nbsp;votes present
-    chart:
+header:
+    title: CompareTheirVotes
+    menu:
+        statistic:
+            title: Statistics
+            comparator: MP comparison
+            matrix: MP correlation matrix
+            absenteeism: Absenteeism overview
+            absenteeism_detail: Absenteeism by country
+        mp: MPs
+        political_group: Political Groups
+        faq: About & FAQ
+
+footer:
+    git: GitHub
+    howtheyvote: HowTheyVote
+
+page:
+    hp:
+        title: Compare MP data
+        vote_comparator:
+            btn: Try ->
+            title: How close the votes of MPs are
+            block_1:
+                title: Pick MPs and compare them
+                desc: You will be able to select one or more PMs and see all of their votes
+                      You can choose which type(s) of vote you wish to compare
+        matrix:
+            btn: Try ->
+            title: A correlation matrix between MPs
+            sub_title: Very useful for getting an quick overview!
+            block_1:
+                title: An interactive heatmap showing all the MPs.
+                desc: |
+                    It is possible to display the MPs of a country or the MPs of a group.
+                    Use your mouse to see the common voting rate.
+            block_2:
+                title: Filter votes
+                desc: You can refine your search by selecting the country concerned by the votes. Try to pick Ukraine ;)
+        absenteeism:
+            btn: Try ->
+            title: Overview of MP absenteeism
+            block_1:
+                title: An overview of absenteeism by country and by group
+                desc: An interactive map and a graph where the MPs are divided by group.
+        absenteeism_detail:
+            btn: Try ->
+            title: A detailed view of absenteeism by country
+            block_1:
+                title: Multiple graphics
+                desc: Graphs to illustrate the absenteeism of MPs based on their average absences or absenteeism compared with other MPs. The graphs are interactive and you can see the details for each MP.
+            block_2:
+                title: A summary table showing all available data
+
+    matrix:
+        btn_compare: Compare
+        btn_full_page: Open the map in a full screen
+        loading_information: It can take time to load all the data
+        not_enough_data: We don't have enough data to generate the matrix
+        no_data: No data
+
+    member_list:
+        title: List of Members of the European Parliament
+
+    member_detail:
+        country: 'Country: {country}'
+        country_party: 'Country party: {party}'
+        vote_list: Votes list
+        statistics: Statistics
+        nb_vote: 'Number of votes: {nb}'
+        nb_missed_vote: 'Number of missed votes: {nb} ({rate}%)'
+
+    member_comparison:
+        member_compared_to_member: List of joint votes between {member_1} and {member_2}
+        similar_vote_rate: >-
+            {nb, plural,
+                =0    {{rate}% similar vote from a total of # vote} 
+                one   {{rate}% similar vote from a total of # vote}  
+                other {{rate}% similar votes from a total of # votes} 
+            }
+
+    absenteeism_overview:
+        title: Absenteeism rate overview
+        abstention_political_group: Abstention rate by political group
+
+    absenteeism_country:
+        title_with_country: MP absenteeism for {country}
+        title_without_country: MP absenteeism by country
+        btn_filter: Filter
+        nav:
+            overview: Overview
+            table: Table
+        chart:
+            title:
+                abstention_rate: Abstention rate by MP
+                abstention_anomaly: Abstention anomaly
+                abstention_political_group: Abstention rate by political group
+
+datatable:
+    absence:
+        mp_name: MP
+        country: Country
+        total_vote: Total&nbsp;votes
+        total_miss: Total&nbsp;votes missed
+        ratio: Presence/absence ratio
+        predicted: Prediction
+        predicted_gap: Difference&nbsp;with prediction
+        reality_prediction_ratio: Reality/prediction ratio
+        political_group: Political group
+        attendance: Nb&nbsp;of&nbsp;votes present
+        chart:

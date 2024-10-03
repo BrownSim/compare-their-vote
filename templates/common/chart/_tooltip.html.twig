@@ -5,15 +5,15 @@
     </div>
 </h3>
 <div class="popover-content">
-    {{ 'absenteeism.chart.dotplot.total'|trans }}{{ memberVoteStatistic.nbVote }} <br>
-    {{ 'absenteeism.chart.dotplot.abstention_rate'|trans }}{{ memberVoteStatistic.missRatio|round }}% <br>
+    {{ 'global.chart.dotplot.total'|trans }}{{ memberVoteStatistic.nbVote }} <br>
+    {{ 'global.chart.dotplot.abstention_rate'|trans }}{{ memberVoteStatistic.missRatio|round }}% <br>
     {% if memberVoteStatistic.member.group is not null %}
-        {{ 'absenteeism.chart.dotplot.group'|trans }}{{ memberVoteStatistic.member.group.label }} <br>
+        {{ 'global.chart.dotplot.group'|trans }}{{ memberVoteStatistic.member.group.label }} <br>
     {% endif %}
     {% if memberVoteStatistic.member.country is not null %}
-        {{ 'absenteeism.chart.dotplot.country'|trans }}{{ memberVoteStatistic.member.country.label }} <br>
+        {{ 'global.chart.dotplot.country'|trans }}{{ memberVoteStatistic.member.country.label }} <br>
     {% endif %}
     {% if memberVoteStatistic.member.party is not null %}
-        {{ 'absenteeism.chart.dotplot.party'|trans }}{{ memberVoteStatistic.member.party.label }}
+        {{ 'global.chart.dotplot.party'|trans }}{{ memberVoteStatistic.member.party.label }}
     {% endif %}
 </div>
