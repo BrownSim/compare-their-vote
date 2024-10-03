@@ -3,7 +3,7 @@
         <div class="w-100 d-flex justify-content-between">
             <div>
                 <a class="navbar-brand d-flex" href="{{ path('hp') }}">
-                    <h1 class="h4 m-0">CompareTheirVotes</h1>
+                    <h1 class="h4 m-0">{{ 'header.title'|trans }}</h1>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -14,24 +14,24 @@
                     <li class="nav-item">
                         <div class="dropdown">
                             <button class="btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Statistics
+                                {{ 'header.menu.statistic.title'|trans }}
                             </button>
                             <ul class="dropdown-menu fade-up">
-                                <li><a class="dropdown-item" href="{{ path('member-to-member') }}">MP comparison</a></li>
-                                <li><a class="dropdown-item" href="{{ path('member-map') }}">MP correlation matrix</a></li>
-                                <li><a class="dropdown-item" href="{{ path('absenteeism_overview') }}">Absenteeism overview</a></li>
-                                <li><a class="dropdown-item" href="{{ path('absenteeism_country') }}">Absenteeism by country</a></li>
+                                <li><a class="dropdown-item" href="{{ path('member-to-member') }}">{{ 'header.menu.statistic.comparator'|trans }}</a></li>
+                                <li><a class="dropdown-item" href="{{ path('member-map') }}">{{ 'header.menu.statistic.matrix'|trans }}</a></li>
+                                <li><a class="dropdown-item" href="{{ path('absenteeism_overview') }}">{{ 'header.menu.statistic.absenteeism'|trans }}</a></li>
+                                <li><a class="dropdown-item" href="{{ path('absenteeism_country') }}">{{ 'header.menu.statistic.absenteeism_detail'|trans }}</a></li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-link" href="{{ path('member_list') }}">MPs</a>
+                        <a class="btn btn-link" href="{{ path('member_list') }}">{{ 'header.menu.mp'|trans }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-link" href="{{ path('groups') }}">Political Groups</a>
+                        <a class="btn btn-link" href="{{ path('groups') }}">{{ 'header.menu.political_group'|trans }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-link" href="{{ path('faq') }}">About & FAQ</a>
+                        <a class="btn btn-link" href="{{ path('faq') }}">{{ 'header.menu.faq'|trans }}</a>
                     </li>
                 </ul>
             </div>

@@ -21,7 +21,7 @@ class MemberMapType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $mpCountryOptions =  [
-            'label' => 'mp_country',
+            'label' => 'form.filter.matrix.country',
             'class' => Country::class,
             'placeholder' => 'choice_country',
             'choice_label' => 'label',
@@ -36,7 +36,7 @@ class MemberMapType extends AbstractType
         ];
 
         $groupOptions = [
-            'label' => 'political_group',
+            'label' => 'form.filter.matrix.group',
             'class' => PoliticalGroup::class,
             'placeholder' => 'choice_group',
             'choice_label' => 'label',
@@ -53,24 +53,24 @@ class MemberMapType extends AbstractType
             ->add('mpCountry', EntityType::class, $mpCountryOptions)
             ->add('group', EntityType::class, $groupOptions)
             ->add('mapType', ChoiceType::class, [
-                'label' => 'comparison_type',
+                'label' => 'form.filter.matrix.matrix_type.label',
                 'choices' => [
-                    'matrix_type.political_group' => 1,
-                    'matrix_type.country' => 2
+                    'form.filter.matrix.matrix_type.political_group' => 1,
+                    'form.filter.matrix.matrix_type.country' => 2
                 ],
                 'expanded' => true,
                 'choice_attr' => [
-                    'matrix_type.political_group' => ['data-target' => 'data-group'],
-                    'matrix_type.country' => ['data-target' => 'data-mpcountry'],
+                    'form.filter.matrix.matrix_type.political_group' => ['data-target' => 'data-group'],
+                    'form.filter.matrix.matrix_type.country' => ['data-target' => 'data-mpcountry'],
                 ],
             ])
             ->add('country', EntityType::class, [
-                'label' => 'related_country.label',
+                'label' => 'form.filter.matrix.vote_related_to_country.label',
                 'class' => Country::class,
                 'placeholder' => 'choice_country',
                 'choice_label' => 'label',
                 'required' => false,
-                'help' => 'related_country.help',
+                'help' => 'form.filter.matrix.vote_related_to_country.help',
                 'query_builder' => function (EntityRepository $er): QueryBuilder {
                     return $er
                         ->createQueryBuilder('country')

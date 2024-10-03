@@ -4,9 +4,6 @@
     <div class="container">
         <div class="row mb-5">
             <div class="col-12">
-                <h3 class="text-center mb-5">
-                    {{ 'vote_information'|trans }}
-                </h3>
                 {{ form_start(form, {'attr': {'data-form-loading': ''}}) }}
                     {% set mpCountryAttr = {'data-mpcountry': ''} %}
                     {% set groupAttr = {'data-group': ''} %}
@@ -29,11 +26,11 @@
                     {{ form_row(form.country, {'row_attr': countryAttr}) }}
 
                     <button type="submit" class="btn btn-primary btn-spinner">
-                        {{ 'compare'|trans }}
+                        {{ 'page.matrix.btn_compare'|trans }}
                         <div class="spinner-border" role="status"></div>
                     </button>
 
-                    <p class="loading-label">{{ 'matrix_loading_information'|trans }}</p>
+                    <p class="loading-label">{{ 'page.matrix.loading_information'|trans }}</p>
                 {{ form_end(form) }}
             </div>
         </div>
@@ -41,7 +38,7 @@
             {% set matrixSize = matrix|length %}
 
             {% if matrixSize == 0 %}
-                <h4 class="text-center">Not enough data to generate a matrix</h4>
+                <h4 class="text-center">{{ 'page.matrix.not_enough_data'|trans }}</h4>
             {% else %}
                 {% set param = [] %}
                 {% set queryParams = app.request.query.all %}
@@ -49,7 +46,7 @@
                     {% set param = param|merge({(paramName): (paramValue)}) %}
                 {% endfor %}
 
-                <a href="{{ path('member-map-fullscreen', param) }}" target="_blank" class="btn btn-primary">{{ 'open_fullscreen'|trans }}</a>
+                <a href="{{ path('member-map-fullscreen', param) }}" target="_blank" class="btn btn-primary">{{ 'page.matrix.btn_full_page'|trans }}</a>
                 <div class="row">
                     <div class="col-12 p-0">
                         <div class="grid-container mt-3" style="width: {{ 250 + matrixSize * 30 }}px; grid-template-columns: 175px repeat({{ matrixSize }}, auto); grid-template-rows: 175px repeat({{ matrixSize }}, auto);">
@@ -86,12 +83,12 @@
                                         <div class="cell{% if el|length == 0 %} empty{% endif %} {{ cellClass }}">
                                         <span class="fw-bold">
                                             {% if el.nb_vote == 0 %}
-                                                <small>No data</small>
+                                                <small>{{ 'page.matrix.no_data'|trans }}</small>
                                             {% else %}
                                                 <p class="mb-0 text-center">
                                                     {{ el.rate|default(null)|round }}%
                                                     <br>
-                                                    <small class="nb-vote">{{ 'vote_label'|trans({'nb': el.nb_vote}) }}</small>
+                                                    <small class="nb-vote">{{ 'global.vote_label'|trans({'nb': el.nb_vote}) }}</small>
                                                 </p>
                                             {% endif %}
                                         </span>

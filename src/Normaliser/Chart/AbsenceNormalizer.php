@@ -24,8 +24,8 @@ class AbsenceNormalizer
     {
         $data = [
             'label' => [
-                'x' => $this->translator->trans('absenteeism.chart.anomaly.x'),
-                'y' => $this->translator->trans('absenteeism.chart.anomaly.y'),
+                'x' => $this->translator->trans('global.chart.anomaly.x'),
+                'y' => $this->translator->trans('global.chart.anomaly.y'),
             ]
         ];
 

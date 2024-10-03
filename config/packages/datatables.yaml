@@ -6,7 +6,7 @@ parameters:
             columns:
                 vote_label:
                     sortable: ~
-                    label: vote.title
+                    label: global.vote.title
                     path: vote
                     options:
                         template: common/vote/_detail.html.twig
@@ -20,7 +20,6 @@ parameters:
                 nb_element: 10
             columns:
                 vote_label:
-                    label: toto
                     path: .
                     options:
                         template: common/vote/_result.html.twig
@@ -30,42 +29,42 @@ parameters:
             columns:
                 mp_name:
                     sortable: ~
-                    label: absence.mp_name
+                    label: datatable.absence.mp_name
                     path: member
                     options:
                         template: common/datatableTemplate/_member_identity.html.twig
                 group:
                     sortable: ~
-                    label: absence.political_group
+                    label: datatable.absence.political_group
                     path: member.group
                     options:
                         template: common/datatableTemplate/_political_group_with_color.html.twig
                 total_vote:
-                    label: absence.total_vote
+                    label: datatable.absence.total_vote
                     sortable: ~
                     path: total
                 total_miss:
-                    label: absence.total_miss
+                    label: datatable.absence.total_miss
                     sortable: ~
                     path: miss
                 attendance:
-                    label: absence.attendance
+                    label: datatable.absence.attendance
                     sortable: ~
                 ratio:
-                    label: absence.ratio
+                    label: datatable.absence.ratio
                     sortable: ~
                     options:
                         template: common/datatableTemplate/_ratio.html.twig
                 predicted:
-                    label: absence.predicted
+                    label: datatable.absence.predicted
                     sortable: ~
                     path: prediction.value
                 gap:
-                    label: absence.predicted_gap
+                    label: datatable.absence.predicted_gap
                     sortable: ~
                     path: prediction.gap
                 ratio_miss_prediction:
-                    label: absence.reality_prediction_ratio
+                    label: datatable.absence.reality_prediction_ratio
                     sortable: ~
                     path: prediction.ratio
                     options:

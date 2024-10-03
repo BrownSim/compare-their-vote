@@ -17,34 +17,33 @@ class MemberSearchType extends AbstractType
     {
         $builder
             ->add('mainMember', EntityType::class, [
-                'label' => 'main_member',
+                'label' => 'form.filter.member_comparison.main_member.label',
                 'class' => Member::class,
-                'placeholder' => 'choice_member',
+                'placeholder' => 'form.filter.member_comparison.main_member.placeholder',
                 'choice_label' => function (?Member $member): string {
                     return $member ? $member->getFirstName() . ' ' . $member->getLastName() : '';
                 },
             ])
             ->add('member', EntityType::class, [
-                'label' => 'member',
+                'label' => 'form.filter.member_comparison.compared_member.label',
                 'class' => Member::class,
+                'placeholder' => 'form.filter.member_comparison.main_member.placeholder',
                 'choice_label' => function (?Member $member): string {
                     return $member ? $member->getFirstName() . ' ' . $member->getLastName() : '';
                 },
-                'placeholder' => 'choice_member',
             ])
             ->add('members', CollectionType::class, [
+                'label' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
                 'entry_type' => EntityType::class,
                 'entry_options' => [
                     'class' => Member::class,
                     'choice_label' => function (?Member $member): string {
                         return $member ? $member->getFirstName() . ' ' . $member->getLastName() : '';
                     },
-                    'placeholder' => 'choice_member'
+                    'placeholder' => 'form.filter.member_comparison.member_collection.placeholder'
                 ],
-                'label' => false,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'label_add' => 'add_member',
                 'constraints' => [
                     new Count(max: 3),
                 ]
@@ -54,10 +53,10 @@ class MemberSearchType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'choices' => [
-                     'vote_value.for' => MemberVote::VOTE_FOR,
-                     'vote_value.against' => MemberVote::VOTE_AGAINST,
-                     'vote_value.abstention' => MemberVote::VOTE_ABSTENTION,
-                     'vote_value.not_vote' => MemberVote::VOTE_DID_NOT_VOTE,
+                     'global.vote_value.for' => MemberVote::VOTE_FOR,
+                     'global.vote_value.against' => MemberVote::VOTE_AGAINST,
+                     'global.vote_value.abstention' => MemberVote::VOTE_ABSTENTION,
+                     'global.vote_value.not_vote' => MemberVote::VOTE_DID_NOT_VOTE,
                 ],
             ])
         ;

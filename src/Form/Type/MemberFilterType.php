@@ -19,7 +19,7 @@ class MemberFilterType extends AbstractType
     {
         $builder
             ->add('country', EntityType::class, [
-                'label' => 'filter.country',
+                'label' => 'form.filter.member.country',
                 'class' => Country::class,
                 'required' => false,
                 'choice_label' => 'label',
@@ -33,7 +33,7 @@ class MemberFilterType extends AbstractType
                 },
             ])
             ->add('group', EntityType::class, [
-                'label' => 'filter.group',
+                'label' => 'form.filter.member.group',
                 'class' => PoliticalGroup::class,
                 'required' => false,
                 'query_builder' => function (EntityRepository $er): QueryBuilder {
@@ -46,7 +46,7 @@ class MemberFilterType extends AbstractType
                 },
             ])
             ->add('party', EntityType::class, [
-                'label' => 'filter.party',
+                'label' => 'form.filter.member.party',
                 'class' => Party::class,
                 'required' => false,
                 'query_builder' => function (EntityRepository $er): QueryBuilder {
@@ -65,16 +65,16 @@ class MemberFilterType extends AbstractType
                 },
             ])
             ->add('mp_status', ChoiceType::class, [
-                'label' => 'filter.mp_status',
+                'label' => 'form.filter.member.status.label',
                 'choices' => [
-                    'mp_status_list.all' => 0,
-                    'mp_status_list.retired' => 2,
-                    'mp_status_list.active' => 1,
+                    'form.filter.member.status.all' => 0,
+                    'form.filter.member.status.retired' => 2,
+                    'form.filter.member.status.active' => 1,
                 ],
                 'choice_attr' => [
-                    'mp_status_list.all' => [],
-                    'mp_status_list.retired' => ['data-mp-status' => 2],
-                    'mp_status_list.active' => ['data-mp-status' => 1],
+                    'form.filter.member.status.all' => [],
+                    'form.filter.member.status.retired' => ['data-mp-status' => 2],
+                    'form.filter.member.status.active' => ['data-mp-status' => 1],
                 ],
             ])
         ;

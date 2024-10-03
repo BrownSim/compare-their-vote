@@ -15,7 +15,7 @@
                             <div class="d-flex flex-column">
                                 <h2 class="h5 mb-auto">{{ member.firstName }} {{ member.lastName }}</h2>
                                 <p class="m-0">{{ memberMacro.member_badge_status(member) }}</p>
-                                <p class="m-0 ">Country : {{ member.country.label }}</p>
+                                <p class="m-0 ">{{ 'page.member_detail.country'|trans({'country': member.country.label}) }}</p>
                                 {% if member.group is not null %}
                                     <p class="m-0 d-flex align-items-baseline">
                                         Political Groups : {{ member.group.label }}
@@ -26,7 +26,7 @@
                                     </p>
                                 {% endif %}
                                 {% if member.party is not null %}
-                                    <p class="m-0">Country party : {{ member.party.label }}</p>
+                                    <p class="m-0">{{ 'page.member_detail.country_party'|trans({'party': member.party.label}) }}</p>
                                 {% endif %}
                             </div>
                         </div>
@@ -38,7 +38,7 @@
             <div class="col-12 col-lg-8 order-1 order-lg-0">
                 <div class="card shadow">
                     <div class="card-header py-4">
-                        Votes list
+                        {{ 'page.member_detail.vote_list'|trans }}
                     </div>
                     <div class="card-body">
                         {{ datatable_render_table(datatable, {
@@ -53,11 +53,16 @@
             <div class="col-12 col-lg-4 order-0 order-lg-1">
                 <div class="card shadow">
                     <div class="card-header py-4">
-                        Statistics
+                        {{ 'page.member_detail.statistics'|trans }}
                     </div>
                     <div class="card-body">
-                        <p>Number of votes : {{ voteResults.totalItemCount }}</p>
-                        <p>Number of missed votes : {{ nbDidnotVote }} ({{ (nbDidnotVote * 100 / voteResults.totalItemCount)|round }}%)</p>
+                        <p>{{ 'page.member_detail.nb_vote'|trans({'nb': voteResults.totalItemCount }) }}</p>
+                        <p>
+                            {{ 'page.member_detail.nb_missed_vote'|trans({
+                                'nb': nbDidnotVote,
+                                'rate': (nbDidnotVote * 100 / voteResults.totalItemCount)|round})
+                            }}
+                        </p>
                     </div>
                 </div>
             </div>

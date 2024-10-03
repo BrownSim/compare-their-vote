@@ -4,8 +4,8 @@
 {% block body %}
     <div class="container">
         <div class="col-12 text-center">
-            <h1>{{ 'hp_title'|trans }}</h1>
-            <h5 class="mb-5">{{ 'hp_last_vote'|trans({'start': lastSession.startAt|date('M d'), 'to': lastSession.endAt|date('M d Y')}) }}</h5>
+            <h1>{{ 'page.hp.title'|trans }}</h1>
+            <h5 class="mb-5">{{ 'global.last_vote_date'|trans({'start': lastSession.startAt|date('M d'), 'to': lastSession.endAt|date('M d Y')}) }}</h5>
         </div>
     </div>
 
@@ -16,18 +16,17 @@
                     <img src="{{ asset('build/images/hp/deal.webp') }}" alt="" style="max-width: 400px" class="pe-5">
                 </div>
                 <div class="col-12 col-lg-6" data-aos="fade-left">
-                    <h2 class="h4">How close the votes of MPs are</h2>
+                    <h2 class="h4">{{ 'page.hp.vote_comparator.title'|trans }}</h2>
                     <div class="d-flex gap-3">
                         <div>{{ icon.pie() }}</div>
                         <p>
-                            Pick MPs and compare them <br>
+                            {{ 'page.hp.vote_comparator.block_1.title'|trans }} <br>
                             <span class="text-muted">
-                                You will be able to select one or more PMs and see all of their votes <br>
-                                You can choose which type(s) of vote you wish to compare <br>
+                                {{ 'page.hp.vote_comparator.block_1.desc'|trans }}
                             </span>
                         </p>
                     </div>
-                    <a href="{{ path('member-to-member') }}" class="btn btn-primary mt-4">Try -></a>
+                    <a href="{{ path('member-to-member') }}" class="btn btn-primary mt-4">{{ 'page.hp.vote_comparator.btn'|trans }}</a>
                 </div>
             </div>
         </div>
@@ -40,28 +39,27 @@
                     <img src="{{ asset('build/images/hp/matrix.webp') }}" alt="" style="max-width: 500px; height: auto; object-fit: contain" class="pe-5">
                 </div>
                 <div class="col-12 col-lg-6" data-aos="fade-left">
-                    <h2 class="h4">A correlation matrix between MPs</h2>
-                    <p class="text-muted">Very useful for getting an quick overview!</p>
+                    <h2 class="h4">{{ 'page.hp.matrix.title'|trans }}</h2>
+                    <p class="text-muted">{{ 'page.hp.matrix.sub_title'|trans }}</p>
                     <div class="d-flex gap-3 mt-4">
                         <div>{{ icon.heatmap() }}</div>
                         <p>
-                            An interactive heatmap showing all the MPs. <br>
+                            {{ 'page.hp.matrix.block_1.title'|trans }} <br>
                             <span class="text-muted">
-                                It is possible to display the MPs of a country or the MPs of a group.
-                                Use your mouse to see the common voting rate.
+                                {{ 'page.hp.matrix.block_1.desc'|trans }}
                             </span>
                         </p>
                     </div>
                     <div class="d-flex gap-3 mt-3">
                         <div>{{ icon.filter() }}</div>
                         <div>
-                            Filter votes
+                            {{ 'page.hp.matrix.block_2.title'|trans }}
                             <p class="text-muted">
-                                You can refine your search by selecting the country concerned by the votes. Try to pick Ukraine ;)
+                                {{ 'page.hp.matrix.block_2.desc'|trans }}
                             </p>
                         </div>
                     </div>
-                    <a href="{{ path('member-map') }}" class="btn btn-primary mt-4">Try -></a>
+                    <a href="{{ path('member-map') }}" class="btn btn-primary mt-4">{{ 'page.hp.matrix.btn'|trans }}</a>
                 </div>
             </div>
         </div>
@@ -74,17 +72,17 @@
                     <img src="{{ asset('build/images/hp/map.webp') }}" alt="" style="max-width: 500px; height: auto; object-fit: contain" class="pe-5">
                 </div>
                 <div class="col-12 col-lg-6" data-aos="fade-left">
-                    <h2 class="h4">Overview of MP absenteeism</h2>
+                    <h2 class="h4">{{ 'page.hp.absenteeism.title'|trans }}</h2>
                     <div class="d-flex gap-3 mt-4">
                         <div>{{ icon.europe() }}</div>
                         <p>
-                            An overview of absenteeism by country and by group<br>
+                            {{ 'page.hp.absenteeism.block_1.title'|trans }}<br>
                             <span class="text-muted">
-                                An interactive map and a graph where the MPs are divided by group.
+                                {{ 'page.hp.absenteeism.block_1.desc'|trans }}
                             </span>
                         </p>
                     </div>
-                    <a href="{{ path('absenteeism_overview') }}" class="btn btn-primary mt-4">Try -></a>
+                    <a href="{{ path('absenteeism_overview') }}" class="btn btn-primary mt-4">{{ 'page.hp.absenteeism.btn'|trans }}</a>
                 </div>
             </div>
         </div>
@@ -97,21 +95,21 @@
                     <img src="{{ asset('build/images/hp/dotaverage.webp') }}" alt="" style="" class="pe-5">
                 </div>
                 <div class="col-12 col-lg-6" data-aos="fade-left">
-                    <h2 class="h4">A detailed view of absenteeism by country</h2>
+                    <h2 class="h4">{{ 'page.hp.absenteeism_detail.title'|trans }}</h2>
                     <div class="d-flex gap-3 mt-4">
                         <div>{{ icon.dotchart() }}</div>
                         <p>
-                            Multiple graphics<br>
+                            {{ 'page.hp.absenteeism_detail.block_1.title'|trans }}<br>
                             <span class="text-muted">
-                                Graphs to illustrate the absenteeism of MPs based on their average absences or absenteeism compared with other MPs. The graphs are interactive and you can see the details for each MP.
+                                {{ 'page.hp.absenteeism_detail.block_1.desc'|trans }}
                             </span>
                         </p>
                     </div>
                     <div class="d-flex gap-3 mt-4">
                         <div>{{ icon.table() }}</div>
-                        <p>A summary table showing all available data</p>
+                        <p>{{ 'page.hp.absenteeism_detail.block_2.title'|trans }}</p>
                     </div>
-                    <a href="{{ path('absenteeism_country') }}" class="btn btn-primary mt-4">Try -></a>
+                    <a href="{{ path('absenteeism_country') }}" class="btn btn-primary mt-4">{{ 'page.hp.absenteeism_detail.btn'|trans }}</a>
                 </div>
             </div>
         </div>

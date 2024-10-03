@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1 class="text-center">List of Members of the European Parliament</h1>
+                <h1 class="text-center">{{ 'page.member_list.title'|trans }}</h1>
                 <div class="filter my-5">
                     {{ form_start(filter, {'attr' : {'data-mp-filter': ''}}) }}
                     <div class="row">
@@ -42,9 +42,9 @@
                                     </div>
                                     <h2 class="h6 text-center mt-3">{{ member.firstName }} {{ member.lastName }}</h2>
                                     {% if member.isActive %}
-                                        <div class="badge text-bg-success">{{ 'mp_status_list.active'|trans }}</div>
+                                        <div class="badge text-bg-success">{{ 'global.mp_status_list.active'|trans }}</div>
                                     {% else %}
-                                        <div class="badge text-bg-secondary">{{ 'mp_status_list.retired'|trans }}</div>
+                                        <div class="badge text-bg-secondary">{{ 'global.mp_status_list.retired'|trans }}</div>
                                     {% endif %}
                                     <p class="m-0">{{ member.group.label }}</p>
                                     {% if member.country is not null or member.party is not null %}

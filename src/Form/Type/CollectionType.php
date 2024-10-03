@@ -17,8 +17,8 @@ class CollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'label_add' => 'form.add',
-            'label_remove' => 'form.delete',
+            'label_add' => 'form.collection.add',
+            'label_remove' => 'form..collection.delete',
         ]);
 
         $resolver->setNormalizer('entry_options', function (Options $options, $value) {
