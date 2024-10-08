@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class MemberMapController extends AbstractController
+class MemberHeatmapController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
@@ -19,8 +19,8 @@ class MemberMapController extends AbstractController
     ) {
     }
 
-    #[Route('/member-map', name: 'member-map', defaults: ['template' => 'matrix/index.html.twig'])]
-    #[Route('/member-map-fullscreen', name: 'member-map-fullscreen', defaults: ['template' => 'matrix/fullscreen.html.twig'])]
+    #[Route('/member-heatmap', name: 'member-heatmap', defaults: ['template' => 'memberHeatmap/index.html.twig'])]
+    #[Route('/member-heatmap-fullscreen', name: 'member-heatmap-fullscreen', defaults: ['template' => 'memberHeatmap/fullscreen.html.twig'])]
     public function show(Request $request): Response
     {
         $form = $this->createForm(MemberMapType::class);

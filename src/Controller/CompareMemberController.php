@@ -12,14 +12,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-class MemberToMemberController extends AbstractController
+class CompareMemberController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $em
     ) {
     }
 
-    #[Route('member-to-member', name: 'member-to-member')]
+    #[Route('compare-member', name: 'compare-member')]
     public function home(Request $request, MemberManager $memberManager, DatatableBuilder $datatableBuilder, GenericNormalizer $normalizer)
     {
         $lastSession = $this->em->getRepository(Session::class)->findOneBy(['status' => Session::SESSION_STATUS_LAST]);
@@ -38,7 +38,7 @@ class MemberToMemberController extends AbstractController
             }
             unset($datum);
 
-            return $this->render('memberToMember/index.html.twig', [
+            return $this->render('compareMember/index.html.twig', [
                 'data' => $data,
                 'form' => $form->createView(),
                 'lastSession' => $lastSession,
@@ -46,7 +46,7 @@ class MemberToMemberController extends AbstractController
             ]);
         }
 
-        return $this->render('memberToMember/index.html.twig', [
+        return $this->render('compareMember/index.html.twig', [
             'form' => $form->createView(),
             'lastSession' => $lastSession,
         ]);

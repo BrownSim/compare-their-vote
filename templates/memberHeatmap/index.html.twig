@@ -46,7 +46,7 @@
                     {% set param = param|merge({(paramName): (paramValue)}) %}
                 {% endfor %}
 
-                <a href="{{ path('member-map-fullscreen', param) }}" target="_blank" class="btn btn-primary">{{ 'page.matrix.btn_full_page'|trans }}</a>
+                <a href="{{ path('member-heatmap-fullscreen', param) }}" target="_blank" class="btn btn-primary">{{ 'page.matrix.btn_full_page'|trans }}</a>
                 <div class="row">
                     <div class="col-12 p-0">
                         <div class="grid-container mt-3" style="width: {{ 250 + matrixSize * 30 }}px; grid-template-columns: 175px repeat({{ matrixSize }}, auto); grid-template-rows: 175px repeat({{ matrixSize }}, auto);">
