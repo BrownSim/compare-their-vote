@@ -69,10 +69,10 @@ Encore
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
 
-    .copyFiles({
-        from: './assets/images',
-        to: 'images/[path][name].[ext]',
-    })
+    .copyFiles([
+        { from: './assets/images', to: 'images/[path][name].[ext]' },
+        { from: "./assets/chtml/font", to: "output/chtml/fonts/woff-v2/[name].[ext]" },
+    ])
 ;
 
 module.exports = Encore.getWebpackConfig();

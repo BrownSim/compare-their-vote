@@ -21,9 +21,9 @@ class MemberMapType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $mpCountryOptions =  [
-            'label' => 'form.filter.matrix.country',
+            'label' => 'form.filter.matrix.country.label',
             'class' => Country::class,
-            'placeholder' => 'choice_country',
+            'placeholder' => 'form.filter.matrix.country.placeholder',
             'choice_label' => 'label',
             'required' => false,
             'query_builder' => function (EntityRepository $er): QueryBuilder {
@@ -36,9 +36,9 @@ class MemberMapType extends AbstractType
         ];
 
         $groupOptions = [
-            'label' => 'form.filter.matrix.group',
+            'label' => 'form.filter.matrix.group.label',
             'class' => PoliticalGroup::class,
-            'placeholder' => 'choice_group',
+            'placeholder' => 'form.filter.matrix.group.placeholder',
             'choice_label' => 'label',
             'required' => false,
             'query_builder' => function (EntityRepository $er): QueryBuilder {
@@ -67,7 +67,7 @@ class MemberMapType extends AbstractType
             ->add('country', EntityType::class, [
                 'label' => 'form.filter.matrix.vote_related_to_country.label',
                 'class' => Country::class,
-                'placeholder' => 'choice_country',
+                'placeholder' => 'form.filter.matrix.vote_related_to_country.placeholder',
                 'choice_label' => 'label',
                 'required' => false,
                 'help' => 'form.filter.matrix.vote_related_to_country.help',

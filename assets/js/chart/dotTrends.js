@@ -117,7 +117,7 @@ export function DotTrends(data, {
         dots
             .attr("cx", d => xr(xData(d)))
             .attr("cy", d => yr(yData(d)))
-            .attr("r", 5 * Math.max(1, Math.min(2, Math.sqrt(tx().k) / 2)))
+            .attr("r", 4 * Math.max(1, Math.min(2, Math.sqrt(tx().k) / 2)))
             .attr('data-bs-custom-class', 'popover-chart')
             .attr('data-bs-toggle', 'popover')
             .attr('data-bs-content', d => d.tooltip)

@@ -7,6 +7,7 @@ import './js/chart';
 import './js/filter';
 import './js/lazy-loading';
 import './js/datatable';
+import './js/mathajax';
 
 import './scss/app.scss';
 

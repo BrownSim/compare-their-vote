@@ -16,11 +16,16 @@ form:
                 retired: Retired
                 active: Active
         matrix:
-            country: Country
+            country:
+                label: Country
+                placeholder: Choose a country
             vote_related_to_country:
                 label: Countries related to analysed votes
+                placeholder: Choose a country
                 help: Leave blank to analyse all votes
-            group: Political Group
+            group:
+                label: Political Group
+                placeholder: Choose a political group
             matrix_type:
                 label: Comparison type
                 political_group: Political Group
