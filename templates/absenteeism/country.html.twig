@@ -12,7 +12,7 @@
                     {% endif %}
                 </h1>
                 <div class="row">
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6 mx-auto">
                         {{ form_start(filter) }}
                         <div class="d-flex flex-row gap-3">
                             {{ form_label(filter.country, null, {'label_attr': {'class': 'col-sm-auto'}}) }}
@@ -22,79 +22,134 @@
                         {{ form_end(filter, {'render_rest': false}) }}
                     </div>
                 </div>
-                {% if politicalGroups|default(null) is not null %}
-                    <nav class="mt-4">
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pie-chart-fill" viewBox="0 0 16 16">
-                                    <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778zM8.5.015V7.5h7.485A8 8 0 0 0 8.5.015"/>
-                                </svg>
-                                <span class="ms-2">{{ 'page.absenteeism_country.nav.overview'|trans }}</span>
-                            </button>
-                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-table" viewBox="0 0 16 16">
-                                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"/>
-                                </svg>
-                                <span class="ms-2">{{ 'page.absenteeism_country.nav.table'|trans }}</span>
-                            </button>
-                        </div>
-                    </nav>
-                    <div class="tab-content mt-5" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
-                            <div class="legend d-flex flex-wrap gap-3 mt-3">
-                                {% for group in politicalGroups %}
-                                    <div class="d-flex gap-2" style="order: {{ group.position }}">
-                                        <div class="color p-2 rounded-5 align-self-center" style="background-color: #{{ group.color }}"></div>
-                                        <p class="m-0">{{ group.label }}</p>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                            <div class="card shadow mt-5">
-                                <div class="card-header py-4">
-                                    <h4 class="text-center mb-0">
-                                        {{ 'page.absenteeism_country.chart.title.abstention_rate'|trans }}
-                                    </h4>
-                                </div>
-                                <div class="card-body">
-                                    <div id="beeswarm" class="dotchart w-100" data-chart-x="{{ 'global.chart.dotplot.axis'|trans }}" data-json="{{ absenceChartJson }}"></div>
-                                </div>
-                            </div>
-                            <div class="card shadow mt-5">
-                                <div class="card-header py-4">
-                                    <h4 class="text-center mb-0">
-                                        {{ 'page.absenteeism_country.chart.title.abstention_anomaly'|trans }}
-                                    </h4>
-                                </div>
-                                <div class="card-body">
-                                    <div id="dottrands" class="dotchart w-100" data-json="{{ absenceComparisonChartJson }}"></div>
-                                </div>
-                            </div>
-                            <div class="card shadow mt-5">
-                                <div class="card-header py-4">
-                                    <h4 class="text-center mb-0">
-                                        {{ 'page.absenteeism_country.chart.title.abstention_political_group'|trans }}
-                                    </h4>
-                                </div>
-                                <div class="card-body">
-                                    <div id="dot-average-category" class="dotchart w-100" data-json="{{ politicalGroupAbsenceChartJson }}"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-                            <div class="card shadow">
-                                <div class="card-body">
-                                    {{ datatable_render_table(absenceDatatable, {
-                                        sourceData: absencePredictionDatatableData,
-                                        attributes: {
-                                            'class': 'datatable-absence-prediction'
-                                        }
-                                    }) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
             </div>
         </div>
     </div>
+    {% if politicalGroups|default(null) is not null %}
+        <div class="container my-5">
+            <div class="row">
+                {% for group in politicalGroups %}
+                    <div class="col-12 col-md-6 col-lg-4" style="order: {{ group.position }}">
+                        <div class="d-flex gap-4">
+                            <div class="color p-2 rounded-5 align-self-center" style="background-color: #{{ group.color }}"></div>
+                            <p class="m-0">{{ group.label }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <article>
+            <div class="bg-dark bg-dark-arrow">
+                <div class="container py-5">
+                    <div class="row">
+                        <div class="col-12">
+                            <h2>Mp's absenteeism comparison</h2>
+                            <p>
+                                This graph shows the rate of absenteeism of Members of Parliament. Each MP is represented by a dot and the colour indicates his or her political group.
+                                <br>
+                                It is important to read the details of each MP carefully by clicking on the point that interests you.
+                                <br>
+                                It is possible that some MSPs with an absentee rate of 0% or 100% had little opportunity to vote. In the details for each MEP, you can see how many votes he or she could have cast.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="background: #f6f6f7" class=py-5>
+                <div class="container">
+                    <div class="row">
+                        <div class="tab-content mt-5" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                                <div id="beeswarm" class="dotchart w-100" data-chart-x="{{ 'global.chart.dotplot.axis'|trans }}" data-json="{{ absenceChartJson }}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="bg-dark bg-dark-arrow">
+                <div class="container py-5">
+                    <div class="row">
+                        <div class="col-12">
+                            <h2>Mp's absenteeism anomaly</h2>
+                            <p>
+                                This graph shows the difference between estimated turnout and actual turnout. Each dot represents an MP and the colour of the dot represents his or her political group.
+                                <br>
+                                Each MP is compared with MPs with a similar number of votes.
+                                <br>
+                                MPs above the black line have a higher than expected turnout and those below a lower turnout.
+                                <br>
+                                You can zoom in on the graph to take a closer look at the individual MPs.
+                                <br>
+                                Detail of the calculation used for the estimate:
+                                <br>
+                                \[cov({x,y}) = \frac{\sum_{}(x_i - \bar{x})(y_i - \bar{y})}{N-1}\]
+                                \[v = \frac{\sum_{}(x_i - \bar{x})}{N-1}\]
+
+                                \[coef = \frac{cov({x,y})}v\]
+
+                                Estimated number of MP votes  = Number of MP votes \(* coef\),
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="background: #f6f6f7" class=py-5>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div id="dottrands" class="dotchart w-100" data-json="{{ absenceComparisonChartJson }}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="bg-dark bg-dark-arrow">
+                <div class="container py-5">
+                    <div class="row">
+                        <div class="col-12">
+                            <h2>Absenteeism by group</h2>
+                            <p>
+                                This graph shows the rate of absenteeism for each political group as well as the average absenteeism for each group.
+                                <br>
+                                The dots are interactive and each one provides information about the MP.
+                                <br>
+                                Please note that this is a logarithmic scale.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="background: #f6f6f7" class=py-5>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div id="dot-average-category" class="dotchart w-100" data-json="{{ politicalGroupAbsenceChartJson }}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>All MP's details data</h2>
+
+                        {{ datatable_render_table(absenceDatatable, {
+                            sourceData: absencePredictionDatatableData,
+                            attributes: {
+                                'class': 'datatable-absence-prediction'
+                            }
+                        }) }}
+                    </div>
+                </div>
+            </div>
+        </article>
+    {% endif %}
 {% endblock %}

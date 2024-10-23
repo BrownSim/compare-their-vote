@@ -85,7 +85,7 @@ const dayOverDayChange = ({ svg, x, y, color, data, era, average, showLegend}) =
         .join("circle")
         .attr("cx", d => x(d.value))
         .attr("cy", y(era))
-        .attr("r", 5)
+        .attr("r", 4)
         .attr("fill", d => color(d.value))
         .attr("fill-opacity", .5)
         .attr('data-bs-custom-class', 'popover-chart')
