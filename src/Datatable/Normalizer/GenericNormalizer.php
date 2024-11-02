@@ -15,8 +15,11 @@ class GenericNormalizer
 
     private readonly Environment $environment;
 
-    public function __construct(PropertyAccessorInterface $propertyAccessor, Environment $environment, ?array $config = [])
-    {
+    public function __construct(
+        PropertyAccessorInterface $propertyAccessor,
+        Environment $environment,
+        ?array $config = []
+    ) {
         $this->propertyAccessor = $propertyAccessor;
         $this->environment = $environment;
         $this->config = $config;

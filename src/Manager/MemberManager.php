@@ -29,7 +29,8 @@ class MemberManager
                 $votes[$memberVote->getVote()->getId()] = $memberVote;
             }
 
-            foreach ($memberVoteRepository->findFeaturedVotesByMember($item, $voteValues, array_keys($votes)) as $memberVote) {
+            $memberVotes = $memberVoteRepository->findFeaturedVotesByMember($item, $voteValues, array_keys($votes));
+            foreach ($memberVotes as $memberVote) {
                 $vote2[$memberVote->getVote()->getId()] = $memberVote;
             }
 
@@ -85,7 +86,9 @@ class MemberManager
         }
 
         $results['rate']['same'] = 0 === $results['same'] ? 0 : $results['same'] / $results['total'] * 100;
-        $results['rate']['difference'] = 0 === $results['difference'] ? 0 : $results['difference'] / $results['total'] * 100;
+        $results['rate']['difference'] = 0 === $results['difference']
+            ? 0
+            : $results['difference'] / $results['total'] * 100;
 
         return $results;
     }

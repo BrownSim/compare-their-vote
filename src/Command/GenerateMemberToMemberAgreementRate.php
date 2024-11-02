@@ -40,7 +40,8 @@ class GenerateMemberToMemberAgreementRate extends Command
                 $member2Votes = [];
 
                 // check if value is already imported
-                if (isset($importedConnexion[$member1->getId()][$member2->getId()]) || isset($importedConnexion[$member2->getId()][$member1->getId()])) {
+                if (isset($importedConnexion[$member1->getId()][$member2->getId()])
+                    || isset($importedConnexion[$member2->getId()][$member1->getId()])) {
                     continue;
                 }
 
@@ -131,8 +132,17 @@ class GenerateMemberToMemberAgreementRate extends Command
     /**
      * Insert with MySql instead of Doctrine. To many data for using Doctrine
      */
-    private function insertData(int $member1, int $member2, int $group1, int $group2, int $country1, int $country2, int $nBVote, float $rate, ?int $relatedCountry = null)
-    {
+    private function insertData(
+        int $member1,
+        int $member2,
+        int $group1,
+        int $group2,
+        int $country1,
+        int $country2,
+        int $nBVote,
+        float $rate,
+        ?int $relatedCountry = null
+    ): void {
         $relatedCountry = null === $relatedCountry ? 'NULL' : $relatedCountry;
 
         $sql = 'INSERT INTO member_to_member_vote_comparison (

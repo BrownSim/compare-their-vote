@@ -81,25 +81,28 @@ class MemberMapType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (PreSubmitEvent $event) use ($groupOptions, $mpCountryOptions): void {
-            $data = $event->getData();
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (PreSubmitEvent $event) use ($groupOptions, $mpCountryOptions): void {
+                $data = $event->getData();
 
-            if (1 === (int) $data['mapType'] && '' === $data['group']) {
-                $event
-                    ->getForm()
-                    ->add('group', EntityType::class, array_merge($groupOptions, [
-                        'constraints' => [new NotBlank()],
-                    ]))
-                ;
-            } elseif (2 === (int) $data['mapType'] && '' === $data['mpCountry']) {
-                $event
-                    ->getForm()
-                    ->add('mpCountry', EntityType::class, array_merge($mpCountryOptions, [
-                        'constraints' => [new NotBlank()],
-                    ]))
-                ;
+                if (1 === (int) $data['mapType'] && '' === $data['group']) {
+                    $event
+                        ->getForm()
+                        ->add('group', EntityType::class, array_merge($groupOptions, [
+                            'constraints' => [new NotBlank()],
+                        ]))
+                    ;
+                } elseif (2 === (int) $data['mapType'] && '' === $data['mpCountry']) {
+                    $event
+                        ->getForm()
+                        ->add('mpCountry', EntityType::class, array_merge($mpCountryOptions, [
+                            'constraints' => [new NotBlank()],
+                        ]))
+                    ;
+                }
             }
-        });
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)

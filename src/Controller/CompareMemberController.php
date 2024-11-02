@@ -10,6 +10,7 @@ use App\Manager\MemberManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class CompareMemberController extends AbstractController
@@ -20,14 +21,18 @@ class CompareMemberController extends AbstractController
     }
 
     #[Route('compare-member', name: 'compare-member')]
-    public function home(Request $request, MemberManager $memberManager, DatatableBuilder $datatableBuilder, GenericNormalizer $normalizer)
-    {
+    public function home(
+        Request $request,
+        MemberManager $memberManager,
+        DatatableBuilder $datatableBuilder,
+        GenericNormalizer $normalizer
+    ): Response {
         $lastSession = $this->em->getRepository(Session::class)->findOneBy(['status' => Session::SESSION_STATUS_LAST]);
 
         $form = $this->createForm(MemberSearchType::class);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
 
             $members = array_merge([$formData['member']], $formData['members']);

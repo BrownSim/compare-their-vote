@@ -41,7 +41,9 @@ class MemberController extends AbstractController
     #[Route(path: '{mepId}', name: 'show')]
     public function show(#[MapEntity(mapping: ['mepId' => 'mepId'])] Member $member): Response
     {
-        $nbDidntVote = $this->em->getRepository(MemberVote::class)->countMemberVoteByValue($member, MemberVote::VOTE_DID_NOT_VOTE);
+        $nbDidntVote = $this->em->getRepository(MemberVote::class)
+            ->countMemberVoteByValue($member, MemberVote::VOTE_DID_NOT_VOTE);
+
         $paginatedVoteResults = $this->paginator->paginate(
             target: $this->em->getRepository(MemberVote::class)->getVoteResultByMemberQuery($member)
         );

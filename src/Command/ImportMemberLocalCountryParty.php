@@ -43,11 +43,15 @@ class ImportMemberLocalCountryParty extends Command
         $client = new Client();
         $bar = new ProgressBar($output, count($members));
 
-        foreach ($members as $member)
-        {
+        foreach ($members as $member) {
             $this->updateActiveStatus($member);
 
-            $html = $client->get('https://www.europarl.europa.eu/meps/en/'.$member->getMepId())->getBody()->getContents();
+            $html = $client
+                ->get('https://www.europarl.europa.eu/meps/en/' . $member->getMepId())
+                ->getBody()
+                ->getContents()
+            ;
+
             $crawler = new Crawler($html);
             $link = null;
 
@@ -86,7 +90,7 @@ class ImportMemberLocalCountryParty extends Command
             try {
                 //party data looks like this : dd-mm-yyy : party name (country) or dd-mm-yyyy - dd-mm-yyyy : party name (country)
                 //remove everything between ()
-                $party = preg_replace("/\([^)]+\)/",'', reset($party));
+                $party = preg_replace("/\([^)]+\)/", '', reset($party));
 
                 //remove dates
                 $party = trim(substr($party, strpos($party, ':') + 1));
