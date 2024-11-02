@@ -2,10 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Country;
 use App\Entity\Member;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query;
 
 class MemberRepository extends EntityRepository
 {

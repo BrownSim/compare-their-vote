@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Entity\Member;
 use App\Entity\Party;
-use App\Manager\MemberManager;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use Symfony\Component\Console\Attribute\AsCommand;
