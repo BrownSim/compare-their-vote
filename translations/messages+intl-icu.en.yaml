@@ -150,6 +150,8 @@ page:
         nb_missed_vote: 'Number of missed votes: {nb} ({rate}%)'
 
     member_comparison:
+        same_vote: Similar vote rate
+        different_vote: Different vote rate
         member_compared_to_member: List of joint votes between {member_1} and {member_2}
         similar_vote_rate: >-
             {nb, plural,

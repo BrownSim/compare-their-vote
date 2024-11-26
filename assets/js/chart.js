@@ -96,9 +96,9 @@ window.addEventListener('load', function () {
         document.querySelector('#beeswarm').append(chart);
     }
 
-    if (document.querySelector('#dottrands') !== null) {
-        const dottrands = document.querySelector('#dottrands');
-        let data = JSON.parse(dottrands.dataset.json);
+    if (document.querySelector('#dottrends') !== null) {
+        const dottrends = document.querySelector('#dottrends');
+        let data = JSON.parse(dottrends.dataset.json);
         let chart = DotTrends(data.data, {
             tooltipBody: d => d.tooltip,
             tooltipTitle: d => d.member,
@@ -108,7 +108,7 @@ window.addEventListener('load', function () {
             yData: d => d.prediction.gap,
         });
 
-        dottrands.append(chart);
+        dottrends.append(chart);
     }
 
     if (document.querySelector('#dot-average-category') !== null) {

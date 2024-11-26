@@ -60,7 +60,7 @@
                     <div class="row">
                         <div class="tab-content mt-5" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-                                <div id="beeswarm" class="dotchart w-100" data-chart-x="{{ 'global.chart.dotplot.axis'|trans }}" data-json="{{ absenceChartJson }}"></div>
+                                <div id="beeswarm" class="dotchart w-100" data-chart-x="{{ 'global.chart.dotplot.axis'|trans }}" data-json="{{ absenceChart }}"></div>
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <div id="dottrands" class="dotchart w-100" data-json="{{ absenceComparisonChartJson }}"></div>
+                            <div id="dottrends" class="dotchart w-100" data-json="{{ absenceTrendChart }}"></div>
                         </div>
                     </div>
                 </div>
@@ -128,7 +128,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <div id="dot-average-category" class="dotchart w-100" data-json="{{ politicalGroupAbsenceChartJson }}"></div>
+                            <div id="dot-average-category" class="dotchart w-100" data-json="{{ politicalGroupAbsenceChart }}"></div>
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                         <h2>All MP's details data</h2>
 
                         {{ datatable_render_table(absenceDatatable, {
-                            sourceData: absencePredictionDatatableData,
+                            sourceData: absencePredictionDatatable,
                             attributes: {
                                 'class': 'datatable-absence-prediction'
                             }

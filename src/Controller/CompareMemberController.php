@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Datatable\DatatableBuilder;
-use App\Datatable\Normalizer\GenericNormalizer;
+use App\Datatable\Normalizer\DatatableGenericNormalizer;
 use App\Entity\Session;
 use App\Form\Type\MemberSearchType;
 use App\Manager\MemberManager;
@@ -25,7 +25,7 @@ class CompareMemberController extends AbstractController
         Request $request,
         MemberManager $memberManager,
         DatatableBuilder $datatableBuilder,
-        GenericNormalizer $normalizer
+        DatatableGenericNormalizer $normalizer
     ): Response {
         $lastSession = $this->em->getRepository(Session::class)->findOneBy(['status' => Session::SESSION_STATUS_LAST]);
 
@@ -41,7 +41,6 @@ class CompareMemberController extends AbstractController
             foreach ($data as &$datum) {
                 $datum['normalizedData'] = json_encode($normalizer->normalize('member', $datum['data']['votes_list']));
             }
-            unset($datum);
 
             return $this->render('compareMember/index.html.twig', [
                 'data' => $data,

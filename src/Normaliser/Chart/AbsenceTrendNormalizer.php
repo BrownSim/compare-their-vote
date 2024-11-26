@@ -7,20 +7,20 @@ use App\Math\Stats;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class AbsenceNormalizer
+class AbsenceTrendNormalizer
 {
     use Tooltip;
 
     public function __construct(
-        private readonly TranslatorInterface $translator,
-        private readonly Environment $twig
+        private readonly Environment $twig,
+        private readonly TranslatorInterface $translator
     ) {
     }
 
     /**
      * @param MemberVoteStatistic[] $membersVoteStatistic
      */
-    public function memberVoteStatsToDatatable(array $membersVoteStatistic): array
+    public function process(array $membersVoteStatistic): array
     {
         $data = [
             'label' => [
@@ -47,45 +47,6 @@ class AbsenceNormalizer
                 ],
             ];
         }
-
-        return $data;
-    }
-
-    public function analyseAbsenceByMpAndPoliticalGroup(array $membersStatistic): array
-    {
-        $data = [];
-        $nbVoteByGroup = [];
-        $nbMissByGroup = [];
-
-        /** @var MemberVoteStatistic $memberStatistic */
-        foreach ($membersStatistic as $memberStatistic) {
-            $member = $memberStatistic->getMember();
-            $group = $member->getGroup()->getId();
-
-            if (!isset($nbVoteByGroup[$group])) {
-                $nbVoteByGroup[$group] = 0;
-                $nbMissByGroup[$group] = 0;
-            }
-
-            $nbVoteByGroup[$group] += $memberStatistic->getNbVote();
-            $nbMissByGroup[$group] += $memberStatistic->getMiss();
-
-            $data[$group]['category'] = ['name' => $member->getGroup()->getShortLabel()];
-
-            $data[$group]['data'][] = [
-                'name' => $member->getFirstName() . ' ' . $member->getLastName(),
-                'value' => $memberStatistic->getMissRatio(),
-                'color' => $member->getGroup()->getColor(),
-                'tooltip' => $this->generateGraphToolTip($memberStatistic)
-            ];
-        }
-
-        foreach ($data as $groupIp => $datum) {
-            $data[$groupIp]['category']['value'] = ($nbMissByGroup[$groupIp] * 100) / $nbVoteByGroup[$groupIp];
-        }
-
-        //reset array key to prevent json_encore preserve array key
-        $data = array_values(array_filter($data));
 
         return $data;
     }

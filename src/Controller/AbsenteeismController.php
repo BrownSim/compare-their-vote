@@ -3,14 +3,16 @@
 namespace App\Controller;
 
 use App\Datatable\DatatableBuilder;
-use App\Datatable\Normalizer\GenericNormalizer;
+use App\Datatable\Normalizer\DatatableGenericNormalizer;
 use App\Entity\MemberVoteStatistic;
 use App\Entity\PoliticalGroup;
 use App\Form\Type\MemberFilterType;
 use App\Manager\StatisticManager;
-use App\Normaliser\Chart\AbsenceNormalizer as AbsenceChartNormalizer;
+use App\Normaliser\Chart\AbsenceMpAndGroupNormalizer;
+use App\Normaliser\Chart\AbsenceTrendNormalizer;
 use App\Normaliser\Chart\ScatterPlotNormaliser;
-use App\Normaliser\Datatable\AbsenceNormalizer as AbsenceDatatableNormalizer;
+use App\Normaliser\Datatable\CountryAbsenteeismNormalizer;
+use App\Normaliser\Datatable\MemberAbsenteeismNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,11 +25,13 @@ class AbsenteeismController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly DatatableBuilder $datatableBuilder,
-        private readonly GenericNormalizer $genericNormalizer,
+        private readonly DatatableGenericNormalizer $genericNormalizer,
         private readonly StatisticManager $statisticManager,
         private readonly ScatterPlotNormaliser $scatterPlotNormaliser,
-        private readonly AbsenceDatatableNormalizer $absenceDatatableNormalizer,
-        private readonly AbsenceChartNormalizer $absenceChartNormalizer
+        private readonly CountryAbsenteeismNormalizer $countryAbsenteeismNormalizer,
+        private readonly MemberAbsenteeismNormalizer $memberAbsenteeismNormalizer,
+        private readonly AbsenceTrendNormalizer $absenceTrendNormalizer,
+        private readonly AbsenceMpAndGroupNormalizer $absenceMpAndGroupNormalizer
     ) {
     }
 
@@ -37,12 +41,12 @@ class AbsenteeismController extends AbstractController
         $paginatedMembers = [];
 
         $membersVoteStatistic = $this->em->getRepository(MemberVoteStatistic::class)->findByMemberCountry();
-        $politicalGroupAbsenceStatistics = $this->absenceChartNormalizer->analyseAbsenceByMpAndPoliticalGroup($membersVoteStatistic);
+        $politicalGroupAbsenceStatistics = $this->absenceMpAndGroupNormalizer->process($membersVoteStatistic);
 
         return $this->render('absenteeism/overview.html.twig', [
             'paginatedMembers' => $paginatedMembers,
-            'map' => json_encode($this->absenceDatatableNormalizer->countryVoteStatsToDatatable($membersVoteStatistic)),
-            'politicalGroupAbsenceChartJson' => json_encode($politicalGroupAbsenceStatistics),
+            'map' => json_encode($this->countryAbsenteeismNormalizer->process($membersVoteStatistic)),
+            'politicalGroupAbsenceChart' => json_encode($politicalGroupAbsenceStatistics),
         ]);
     }
 
@@ -59,19 +63,21 @@ class AbsenteeismController extends AbstractController
             $this->statisticManager->generateAbsencePrediction($membersVoteStatistic);
             $politicalGroups = $this->em->getRepository(PoliticalGroup::class)->findByMemberCountry($country);
 
-            $absencePredictionDatatableData = $this->absenceDatatableNormalizer->memberVoteStatsToDatatable($membersVoteStatistic);
-            $absencePredictionChartData = $this->absenceChartNormalizer->memberVoteStatsToDatatable($membersVoteStatistic);
-            $politicalGroupAbsenceStatistics = $this->absenceChartNormalizer->analyseAbsenceByMpAndPoliticalGroup($membersVoteStatistic);
+            $absencePredictionDatatable = $this->memberAbsenteeismNormalizer->process($membersVoteStatistic);
+            $absencePredictionDatatable = $this->genericNormalizer->normalize('absence', $absencePredictionDatatable);
+
+            $absenceTrendChart = $this->absenceTrendNormalizer->process($membersVoteStatistic);
+            $politicalGroupAbsenceStatistics = $this->absenceMpAndGroupNormalizer->process($membersVoteStatistic);
 
             return $this->render('absenteeism/country.html.twig', [
                 'filter' => $filter->createView(),
                 'country' => $country,
                 'politicalGroups' => $politicalGroups,
-                'absenceChartJson' => json_encode($this->scatterPlotNormaliser->absenceDotPlot($membersVoteStatistic)),
                 'absenceDatatable' => $this->datatableBuilder->build('absence'),
-                'absencePredictionDatatableData' => json_encode($this->genericNormalizer->normalize('absence', $absencePredictionDatatableData)),
-                'absenceComparisonChartJson' => json_encode($absencePredictionChartData),
-                'politicalGroupAbsenceChartJson' => json_encode($politicalGroupAbsenceStatistics),
+                'absencePredictionDatatable' => json_encode($absencePredictionDatatable),
+                'absenceChart' => json_encode($this->scatterPlotNormaliser->absenceDotPlot($membersVoteStatistic)),
+                'absenceTrendChart' => json_encode($absenceTrendChart),
+                'politicalGroupAbsenceChart' => json_encode($politicalGroupAbsenceStatistics),
             ]);
         }
 

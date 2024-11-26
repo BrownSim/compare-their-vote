@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Datatable\DatatableBuilder;
-use App\Datatable\Normalizer\GenericNormalizer;
+use App\Datatable\Normalizer\DatatableGenericNormalizer;
 use App\Entity\Member;
 use App\Entity\MemberVote;
 use App\Form\Type\MemberFilterType;
@@ -23,7 +23,7 @@ class MemberController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly PaginatorInterface $paginator,
         private readonly DatatableBuilder $datatableBuilder,
-        private readonly GenericNormalizer $genericNormalizer
+        private readonly DatatableGenericNormalizer $genericNormalizer
     ) {
     }
 

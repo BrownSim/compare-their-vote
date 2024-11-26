@@ -24,6 +24,6 @@ services:
         arguments:
             $configs: '%datatable_configs%'
 
-    App\Datatable\Normalizer\GenericNormalizer:
+    App\Datatable\Normalizer\DatatableGenericNormalizer:
         arguments:
             $config: '%datatable_configs%'

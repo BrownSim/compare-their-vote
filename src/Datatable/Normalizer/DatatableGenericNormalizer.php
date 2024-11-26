@@ -7,7 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Twig\Environment;
 use Twig\Error\Error;
 
-class GenericNormalizer
+class DatatableGenericNormalizer
 {
     private readonly ?array $config;
 
