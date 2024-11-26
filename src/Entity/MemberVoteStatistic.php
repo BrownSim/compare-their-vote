@@ -15,7 +15,7 @@ class MemberVoteStatistic
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: Member::class, inversedBy: 'voteStatistics')]
+    #[ORM\OneToOne(targetEntity: Member::class)]
     #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Member $member = null;
 
