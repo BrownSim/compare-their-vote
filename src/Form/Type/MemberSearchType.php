@@ -49,7 +49,7 @@ class MemberSearchType extends AbstractType
                 ]
             ])
             ->add('voteValue', ChoiceType::class, [
-                'label' => 'vote_value_label',
+                'label' => 'form.filter.member_comparison.vote_value',
                 'expanded' => true,
                 'multiple' => true,
                 'choices' => [

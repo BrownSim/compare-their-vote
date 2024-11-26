@@ -39,6 +39,7 @@ form:
                 placeholder: Choose a member
             member_collection:
                 placeholder: Choose a member
+            vote_value: Position
 
 global:
     search: Search
