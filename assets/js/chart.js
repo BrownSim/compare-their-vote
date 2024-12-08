@@ -5,6 +5,7 @@ import {BeeswarmChart} from './chart/beeswarmChart';
 import {DotTrends} from './chart/dotTrends';
 import {DotAverageByCategory} from './chart/dotAverageByCategory';
 import {Map} from './chart/map';
+import {DoteTimeline} from './chart/doteTimeline';
 
 window.addEventListener('load', function () {
     'use strict';
@@ -122,4 +123,12 @@ window.addEventListener('load', function () {
 
         document.querySelector('#absenteeism-map').append(chart);
     }
+
+
+    let data = JSON.parse(document.querySelector('#step').dataset.json);
+    data.forEach(el => {
+        el.date = new Date(el.date);
+    });
+
+    document.querySelector('#step').append(DoteTimeline(data));
 });

@@ -20,7 +20,7 @@
                                     <p class="m-0 d-flex align-items-baseline">
                                         Political Groups : {{ member.group.label }}
                                         {% if member.group.color is not null %}
-                                            <span class="ms-2 political-group-dot-color"
+                                            <span class="ms-2 dot-color"
                                                   {% if member.group.color is not null %}style="background: #{{ member.group.color }};"{% endif %}></span>
                                         {% endif %}
                                     </p>
@@ -34,37 +34,66 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-2 g-4">
-            <div class="col-12 col-lg-8 order-1 order-lg-0">
-                <div class="card shadow">
-                    <div class="card-header py-4">
-                        {{ 'page.member_detail.vote_list'|trans }}
+        <div class="row">
+            <div class="col-12">
+                <nav class="mt-4">
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+                            {{ 'page.member_detail.nav.vote'|trans }}
+                        </button>
+                        <button class="nav-link" id="nav-absence-tab" data-bs-toggle="tab" data-bs-target="#nav-absence" type="button" role="tab" aria-controls="nav-absence" aria-selected="false">
+                            {{ 'page.member_detail.nav.absence'|trans }}
+                        </button>
                     </div>
-                    <div class="card-body">
-                        {{ datatable_render_table(datatable, {
-                            ajax: path('member_list_vote', {'mepId': member.mepId}),
-                            attributes: {
-                                'class': 'datatable-vote-results'
-                            }
-                        }) }}
+                </nav>
+            </div>
+        </div>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                <div class="row mt-2 g-4">
+                    <div class="col-12 col-lg-8 order-1 order-lg-0">
+                        <div class="card shadow">
+                            <div class="card-header py-4">
+                                {{ 'page.member_detail.vote_list'|trans }}
+                            </div>
+                            <div class="card-body">
+                                {{ datatable_render_table(datatable, {
+                                    ajax: path('member_list_vote', {'mepId': member.mepId}),
+                                    attributes: {
+                                        'class': 'datatable-vote-results'
+                                    }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4 order-0 order-lg-1">
+                        <div class="card shadow">
+                            <div class="card-header py-4">
+                                {{ 'page.member_detail.statistics'|trans }}
+                            </div>
+                            <div class="card-body">
+                                <p>{{ 'page.member_detail.nb_vote'|trans({'nb': voteResults.totalItemCount }) }}</p>
+                                <p>
+                                    {{ 'page.member_detail.nb_missed_vote'|trans({
+                                        'nb': nbDidnotVote,
+                                        'rate': (nbDidnotVote * 100 / voteResults.totalItemCount)|round})
+                                    }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-4 order-0 order-lg-1">
-                <div class="card shadow">
-                    <div class="card-header py-4">
-                        {{ 'page.member_detail.statistics'|trans }}
+            <div class="tab-pane fade" id="nav-absence" role="tabpanel" aria-labelledby="nav-absence-tab" tabindex="0">
+                <div class="row mt-4">
+                    <div class="col-auto">
+                        <div class="dot-color me-3" style="background: rgb(242, 142, 44);"></div>{{ 'page.member_detail.absent'|trans }}
                     </div>
-                    <div class="card-body">
-                        <p>{{ 'page.member_detail.nb_vote'|trans({'nb': voteResults.totalItemCount }) }}</p>
-                        <p>
-                            {{ 'page.member_detail.nb_missed_vote'|trans({
-                                'nb': nbDidnotVote,
-                                'rate': (nbDidnotVote * 100 / voteResults.totalItemCount)|round})
-                            }}
-                        </p>
+                    <div class="col-auto">
+                        <div class="dot-color me-3" style="background: rgb(78, 121, 167)"></div>{{ 'page.member_detail.present'|trans }}
                     </div>
                 </div>
+                <div id="step" data-json="{{ absenceProgressionChart }}"></div>
             </div>
         </div>
     </div>

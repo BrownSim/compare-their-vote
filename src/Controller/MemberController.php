@@ -7,6 +7,7 @@ use App\Datatable\Normalizer\DatatableGenericNormalizer;
 use App\Entity\Member;
 use App\Entity\MemberVote;
 use App\Form\Type\MemberFilterType;
+use App\Normaliser\Chart\AbsenceProgressionNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -23,7 +24,8 @@ class MemberController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly PaginatorInterface $paginator,
         private readonly DatatableBuilder $datatableBuilder,
-        private readonly DatatableGenericNormalizer $genericNormalizer
+        private readonly DatatableGenericNormalizer $genericNormalizer,
+        private readonly AbsenceProgressionNormalizer $absenceProgressionNormalizer,
     ) {
     }
 
@@ -44,6 +46,8 @@ class MemberController extends AbstractController
         $nbDidntVote = $this->em->getRepository(MemberVote::class)
             ->countMemberVoteByValue($member, MemberVote::VOTE_DID_NOT_VOTE);
 
+        $memberVotes = $this->em->getRepository(MemberVote::class)->findMemberVoteWithVote($member);
+
         $paginatedVoteResults = $this->paginator->paginate(
             target: $this->em->getRepository(MemberVote::class)->getVoteResultByMemberQuery($member)
         );
@@ -51,6 +55,7 @@ class MemberController extends AbstractController
         return $this->render('member/index.html.twig', [
             'member' => $member,
             'datatable' => $this->datatableBuilder->build('member_vote'),
+            'absenceProgressionChart' => json_encode($this->absenceProgressionNormalizer->process($memberVotes)),
             'voteResults' => $paginatedVoteResults,
             'nbDidnotVote' => $nbDidntVote,
         ]);

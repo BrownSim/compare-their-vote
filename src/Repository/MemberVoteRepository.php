@@ -64,4 +64,17 @@ class MemberVoteRepository extends EntityRepository
             ->getSingleScalarResult()
         ;
     }
+
+    public function findMemberVoteWithVote(Member $member): array
+    {
+        return $this->createQueryBuilder('member_vote')
+            ->select('member_vote.value as vote_value')
+            ->addSelect('vote.voteDate as vote_date')
+            ->join('member_vote.vote', 'vote')
+            ->where('member_vote.member = :member')
+            ->setParameter('member', $member)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

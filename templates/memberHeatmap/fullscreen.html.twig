@@ -10,7 +10,7 @@
                         {% set member = line.memberY %}
                         <div class="cell cell-identity cell-identity-top border-top-0">
                             <p class="mx-auto mb-2 member-detail rotate">
-                                <span class="mb-2 political-group-dot-color" {% if member.group.color is not null%}style="background: #{{ member.group.color }};"{% endif %}></span>
+                                <span class="mb-2 dot-color" {% if member.group.color is not null%}style="background: #{{ member.group.color }};"{% endif %}></span>
                                 <span class="member-name">{{ member.lastName }}</span>
                                 <small>({{ member.group.shortLabel }})</small>
                             </p>
@@ -25,7 +25,7 @@
                                     <p class="m-auto me-2 member-detail">
                                         <span class="member-name">{{ member.lastName }}</span>
                                         <small>({{ member.group.shortLabel }})</small>
-                                        <span class="ms-2 political-group-dot-color" {% if member.group.color is not null%}style="background: #{{ member.group.color }};"{% endif %}></span>
+                                        <span class="ms-2 dot-color" {% if member.group.color is not null%}style="background: #{{ member.group.color }};"{% endif %}></span>
                                     </p>
                                 </div>
                                 {% set newLine = false %}

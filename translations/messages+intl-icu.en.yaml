@@ -149,6 +149,11 @@ page:
         statistics: Statistics
         nb_vote: 'Number of votes: {nb}'
         nb_missed_vote: 'Number of missed votes: {nb} ({rate}%)'
+        nav:
+            vote: Vote detail
+            absence: Vote and absence
+        present: Present
+        absent: Absent
 
     member_comparison:
         same_vote: Similar vote rate
