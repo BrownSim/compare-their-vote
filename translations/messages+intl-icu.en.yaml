@@ -151,7 +151,8 @@ page:
         nb_missed_vote: 'Number of missed votes: {nb} ({rate}%)'
         nav:
             vote: Vote detail
-            absence: Vote and absence
+            absence: Absence chart
+            absence_calendar: Absence calendar
         present: Present
         absent: Absent
 

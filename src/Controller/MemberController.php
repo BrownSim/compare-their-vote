@@ -7,6 +7,7 @@ use App\Datatable\Normalizer\DatatableGenericNormalizer;
 use App\Entity\Member;
 use App\Entity\MemberVote;
 use App\Form\Type\MemberFilterType;
+use App\Manager\CalendarManager;
 use App\Normaliser\Chart\AbsenceProgressionNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -26,6 +27,7 @@ class MemberController extends AbstractController
         private readonly DatatableBuilder $datatableBuilder,
         private readonly DatatableGenericNormalizer $genericNormalizer,
         private readonly AbsenceProgressionNormalizer $absenceProgressionNormalizer,
+        private readonly CalendarManager $calendarManager,
     ) {
     }
 
@@ -58,6 +60,7 @@ class MemberController extends AbstractController
             'absenceProgressionChart' => json_encode($this->absenceProgressionNormalizer->process($memberVotes)),
             'voteResults' => $paginatedVoteResults,
             'nbDidnotVote' => $nbDidntVote,
+            'calendar' => $this->calendarManager->generateAbsenceCalendarForMemberVotes($memberVotes),
         ]);
     }
 

@@ -1,0 +1,36 @@
+<div class="calendar">
+    {% for key, months in calendar %}
+        {% set year = key %}
+        <div class="year-value">{{ year }}</div>
+        <div class="grid-month">
+            {% for key, month in months %}
+                {% set currentMonth = date(year ~ '-' ~ key ~ '-' ~ '1') %}
+                <div>
+                    <div class="month-value">{{ currentMonth|date('F') }}</div>
+                    <div class="grid-day">
+                        <div class="day-name">M</div>
+                        <div class="day-name">T</div>
+                        <div class="day-name">W</div>
+                        <div class="day-name">T</div>
+                        <div class="day-name">F</div>
+                        <div class="day-name">S</div>
+                        <div class="day-name">S</div>
+                        {% for day in month %}
+                            {% set dayNumber = day.date|date('j') %}
+                            {% set hasEvent = day.events is not empty %}
+                            <div class="day-wrapper{% if hasEvent %} has-event{% endif %}{% if day.date|date('m') != currentMonth|date('m') %} day-filling{% endif %}">
+                                <div class="day-value">
+                                    {% if hasEvent %}
+                                        <div class="calendar-event">{{ dayNumber }}</div>
+                                    {% else %}
+                                        {{ dayNumber }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

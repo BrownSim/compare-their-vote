@@ -1,0 +1,84 @@
+.calendar {
+  display: grid;
+
+  .grid-month {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    @include media-breakpoint-down(lg) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include media-breakpoint-down(md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    gap: 24px;
+  }
+
+  .grid-day {
+    display: grid;
+    grid-template-columns: repeat(7, 30px);
+    grid-template-rows: 30px;
+  }
+
+  .day-value {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .day-name, .day-value {
+    font-size: 13px;
+  }
+
+  .day-wrapper {
+    aspect-ratio: 1;
+  }
+
+  .day-wrapper.has-event .day-value{
+    height: calc(100% - 4px);
+    margin: 2px 0;
+  }
+
+  .has-event .day-value {
+    background: rgb(221, 189, 123);
+  }
+
+  .day-wrapper:not(.has-event) + .day-wrapper.has-event .day-value {
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+  }
+
+  .has-event:has(+ .day-wrapper:not(.has-event)) .day-value {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+  }
+
+  .day-filling .day-value {
+    color: #999;
+  }
+
+  .year-value, .month-value {
+    padding-left: 5px;
+  }
+
+  .year-value {
+    font-size: 26px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: dashed 1px #efefef;
+  }
+
+  .month-value {
+    font-size: 18px;
+  }
+
+  .day-name {
+    color: #626262;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

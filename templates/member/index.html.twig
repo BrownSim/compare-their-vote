@@ -44,12 +44,17 @@
                         <button class="nav-link" id="nav-absence-tab" data-bs-toggle="tab" data-bs-target="#nav-absence" type="button" role="tab" aria-controls="nav-absence" aria-selected="false">
                             {{ 'page.member_detail.nav.absence'|trans }}
                         </button>
+                        <button class="nav-link" id="nav-absence-calendar-tab" data-bs-toggle="tab" data-bs-target="#nav-absence-calendar" type="button" role="tab" aria-controls="nav-absence-calendar" aria-selected="false">
+                            {{ 'page.member_detail.nav.absence_calendar'|trans }}
+                        </button>
                     </div>
                 </nav>
             </div>
         </div>
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+    </div>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+            <div class="container">
                 <div class="row mt-2 g-4">
                     <div class="col-12 col-lg-8 order-1 order-lg-0">
                         <div class="card shadow">
@@ -84,17 +89,62 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="nav-absence" role="tabpanel" aria-labelledby="nav-absence-tab" tabindex="0">
-                <div class="row mt-4">
-                    <div class="col-auto">
-                        <div class="dot-color me-3" style="background: rgb(242, 142, 44);"></div>{{ 'page.member_detail.absent'|trans }}
-                    </div>
-                    <div class="col-auto">
-                        <div class="dot-color me-3" style="background: rgb(78, 121, 167)"></div>{{ 'page.member_detail.present'|trans }}
+        </div>
+        <div class="tab-pane fade" id="nav-absence" role="tabpanel" aria-labelledby="nav-absence-tab" tabindex="0">
+            <article>
+                <div class="bg-dark bg-dark-arrow">
+                    <div class="container py-5">
+                        <div class="row">
+                            <div class="col-12">
+                                <h2>Mp's absenteeism chart</h2>
+                                <p>
+                                    Each point on this graph represents a vote.
+                                    <br>
+                                    Each month has two columns
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div id="step" data-json="{{ absenceProgressionChart }}"></div>
-            </div>
+                <div class="container">
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="col-auto">
+                                <div class="dot-color me-3" style="background: rgb(242, 142, 44);"></div>{{ 'page.member_detail.absent'|trans }}
+                            </div>
+                            <div class="col-auto">
+                                <div class="dot-color me-3" style="background: rgb(78, 121, 167)"></div>{{ 'page.member_detail.present'|trans }}
+                            </div>
+                            <div id="step" data-json="{{ absenceProgressionChart }}"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="tab-pane fade" id="nav-absence-calendar" role="tabpanel" aria-labelledby="nav-absence-calendar-tab" tabindex="0">
+            <article>
+                <div class="bg-dark bg-dark-arrow">
+                    <div class="container py-5">
+                        <div class="row">
+                            <div class="col-12">
+                                <h2>Mp's absenteeism calendar</h2>
+                                <p>
+                                    If the MP is absent during a vote, he/she is noted as having been absent on that day, even if he/she was present for other votes on that day.
+                                    <br>
+                                    If there is a vote on Tuesday and a vote on Thursday and the MP is absent from both, he/she is recorded as being absent during 3 days: from Tuesday to Thursday.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            {{ calendar_render(calendar) }}
+                        </div>
+                    </div>
+                </div>
+            </article>
         </div>
     </div>
 {% endblock %}

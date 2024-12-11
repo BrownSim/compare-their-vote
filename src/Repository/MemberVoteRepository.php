@@ -72,6 +72,7 @@ class MemberVoteRepository extends EntityRepository
             ->addSelect('vote.voteDate as vote_date')
             ->join('member_vote.vote', 'vote')
             ->where('member_vote.member = :member')
+            ->orderBy('vote_date')
             ->setParameter('member', $member)
             ->getQuery()
             ->getResult()
