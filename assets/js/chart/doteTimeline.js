@@ -90,7 +90,6 @@ export function DoteTimeline(data, options={})
     const columns = svg.selectAll(".column")
         .data(groupedEvents)
         .join('g')
-        .call(d => console.log(d))
             .attr("class", "column")
             .attr("transform", d => `translate(${xScale(new Date(d[0]))}, ${height - 40})`)
     ;
