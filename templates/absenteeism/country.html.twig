@@ -136,6 +136,31 @@
         </article>
 
         <article>
+            <div class="bg-dark bg-dark-arrow">
+                <div class="container py-5">
+                    <div class="row">
+                        <div class="col-12">
+                            <h2>Mp's absenteeism timeline</h2>
+                            <p>
+                                This timeline shows all the days on which Members are absent.
+                                <br>
+                                If the Member is absent for a vote, he is recorded as having been absent on that day, even if he was present for other votes that day.
+                                <br>
+                                If there is a vote on Tuesday and a vote on Thursday and the member is absent from both, he or she is recorded as having been absent for 3 days: from Tuesday to Thursday.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container py-5">
+                <div class="row mt-2">
+                    <div class="col-12">
+                        {{ gantt_render(ganttAbsence) }}
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article>
             <div class="container mt-5">
                 <div class="row">
                     <div class="col-12">

@@ -2,34 +2,16 @@
 
 namespace App\Calendar;
 
-class Calendar
+class Calendar extends AbstractCalendar
 {
-    private ?\DateTimeInterface $startAt = null;
-
-    private ?\DateTimeInterface $endAt = null;
-
     /** @var CalendarEvent[] */
-    private array $events = [];
+    protected array $events = [];
 
-    private array $sortedEvents = [];
+    protected array $sortedEvents = [];
 
     public function addEvent(CalendarEvent $event): self
     {
         $this->events[] = $event;
-
-        return $this;
-    }
-
-    public function setStartAt(?\DateTimeInterface $startAt): self
-    {
-        $this->startAt = $startAt;
-
-        return $this;
-    }
-
-    public function setEndAt(?\DateTimeInterface $endAt): self
-    {
-        $this->endAt = $endAt;
 
         return $this;
     }
@@ -56,13 +38,6 @@ class Calendar
         }
 
         return $render;
-    }
-
-    private function getDatesFromRanges(\DateTimeInterface $from, \DateTimeInterface $to): \DatePeriod
-    {
-        $interval = new \DateInterval('P1D');
-
-        return new \DatePeriod($from, $interval, $to);
     }
 
     private function prepareEvents(): array
@@ -118,7 +93,7 @@ class Calendar
         $from = (clone $dateTime)->modify('+ 1 day');
         $to = (clone $dateTime)->modify('Sunday this week');
 
-        // datePeriod does not include last day, add + 1 ti fix it
+        // datePeriod does not include last day, add + 1 to fix it
         $to->modify('+1 day');
 
         $days = $this->getDaysMissingFormated($from, $to);

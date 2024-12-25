@@ -1,0 +1,109 @@
+.gantt {
+  $leftcolsize: 220px;
+
+  display: grid;
+  overflow-x: scroll;
+  position: relative;
+  padding-bottom: 16px;
+  max-height: 400px;
+
+  .gantt-series-row {
+    display: grid;
+    grid-template-columns: $leftcolsize 1fr;
+  }
+
+  .gantt-month-row {
+    display: grid;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    > div:not(:first-child) {
+      left: $leftcolsize;
+      padding-left: 3px;
+
+      // issue with sticky and border, need this trick to fake dashed border
+      &::before {
+        content: ' ';
+        height: 100%;
+        width: 1px;
+        position: absolute;
+        left: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          #F1F1F4 0px,
+          #F1F1F4 4px,
+          transparent 0,
+          transparent 9px
+        );
+      }
+    }
+  }
+
+  .gantt-day-row {
+    display: grid;
+    font-size: 13px;
+    grid-template-columns: 50px 1fr;
+    border-bottom: dashed 1px #b4b4b4;
+    position: sticky;
+    top: 24px;
+    z-index: 1;
+
+    > div {
+      padding: 6px 0;
+      text-align: center;
+      background: #fff;
+    }
+
+    > div:nth-child(even) {
+      background: #F8F8F8;
+    }
+  }
+
+  .gantt-day-row-label {
+    font-size: 14px;
+  }
+
+  .gantt-day-row-content {
+    display: grid;
+
+    > div {
+      background: #DDBD7B;
+      border-radius: 10px;
+      margin: 6px 0;
+    }
+  }
+
+  .gantt-day-grid {
+    display: grid;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    pointer-events: none;
+
+    > div:nth-child(even) {
+      background: #F8F8F8;
+      z-index: -1;
+    }
+  }
+
+  .gantt-series-label {
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    background: #fff;
+    font-size: 14px;
+  }
+
+  .gantt-series-label,
+  .gantt-day-row-content {
+    border-bottom: dashed 1px #e7e7e7;
+  }
+
+  .gantt-sticky {
+    position: sticky;
+    left: 0;
+    background: #fff;
+  }
+}

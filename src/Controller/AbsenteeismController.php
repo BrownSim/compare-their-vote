@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Datatable\DatatableBuilder;
 use App\Datatable\Normalizer\DatatableGenericNormalizer;
+use App\Entity\Member;
 use App\Entity\MemberVoteStatistic;
 use App\Entity\PoliticalGroup;
 use App\Form\Type\MemberFilterType;
+use App\Manager\CalendarManager;
 use App\Manager\StatisticManager;
 use App\Normaliser\Chart\AbsenceMpAndGroupNormalizer;
 use App\Normaliser\Chart\AbsenceTrendNormalizer;
@@ -31,7 +33,8 @@ class AbsenteeismController extends AbstractController
         private readonly CountryAbsenteeismNormalizer $countryAbsenteeismNormalizer,
         private readonly MemberAbsenteeismNormalizer $memberAbsenteeismNormalizer,
         private readonly AbsenceTrendNormalizer $absenceTrendNormalizer,
-        private readonly AbsenceMpAndGroupNormalizer $absenceMpAndGroupNormalizer
+        private readonly AbsenceMpAndGroupNormalizer $absenceMpAndGroupNormalizer,
+        private readonly CalendarManager $calendarManager,
     ) {
     }
 
@@ -69,6 +72,8 @@ class AbsenteeismController extends AbstractController
             $absenceTrendChart = $this->absenceTrendNormalizer->process($membersVoteStatistic);
             $politicalGroupAbsenceStatistics = $this->absenceMpAndGroupNormalizer->process($membersVoteStatistic);
 
+            $members = $this->em->getRepository(Member::class)->findMembersWithVotesByCountry($country);
+
             return $this->render('absenteeism/country.html.twig', [
                 'filter' => $filter->createView(),
                 'country' => $country,
@@ -78,6 +83,7 @@ class AbsenteeismController extends AbstractController
                 'absenceChart' => json_encode($this->scatterPlotNormaliser->absenceDotPlot($membersVoteStatistic)),
                 'absenceTrendChart' => json_encode($absenceTrendChart),
                 'politicalGroupAbsenceChart' => json_encode($politicalGroupAbsenceStatistics),
+                'ganttAbsence' => $this->calendarManager->generateAbsenceGantForMembers($members),
             ]);
         }
 

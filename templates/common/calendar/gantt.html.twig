@@ -1,0 +1,39 @@
+{% set nbColumns = gantt.nbDays %}
+<div class="gantt">
+    <div class="gantt-month-row" style="grid-template-columns: 220px repeat({{ nbColumns }}, 20px)">
+        <div class="gantt-sticky"></div>
+        {% for key, month in gantt.daysByYearAndMonth %}
+            {% set year = key %}
+            {% for key, nbDays in month %}
+                {% set currentMonth = date(year ~ '-' ~ key ~ '-' ~ '1') %}
+                <div class="gantt-sticky" style="grid-column: span {{ nbDays }}">{{ currentMonth|date('F Y') }}</div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    <div class="position-relative">
+        <div class="gantt-day-row" style="grid-template-columns: 220px repeat({{ nbColumns }}, 1fr)">
+            <div class="gantt-sticky"></div>
+            {% for day in gantt.days %}
+                <div>{{ day|date('d') }}</div>
+            {% endfor %}
+        </div>
+        <div class="gantt-day-grid" style="grid-template-columns: 220px repeat({{ nbColumns }}, 1fr)">
+            <div class="gantt-sticky"></div>
+            {% for day in gantt.days %}
+                <div></div>
+            {% endfor %}
+        </div>
+        {% for series in gantt.series %}
+            <div class="gantt-series-row">
+                <div class="gantt-series-label gantt-sticky">{{ series.label }}</div>
+                <div class="gantt-day-row-content" style="grid-template-columns: repeat({{ nbColumns }}, 1fr)">
+                    {% for event in series.events %}
+                        {% set startCol = gantt_daterange(gantt.startAt, event.startAt)|length %}
+                        {% set nbDurationCol = gantt_daterange(event.startAt, event.endAt)|length %}
+                        <div style="grid-column: {{ startCol }} / span {{ nbDurationCol }};" data-startat="{{ event.startAt|date('Y-m-d') }}" data-endat="{{ event.endAt|date('Y-m-d') }}"></div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

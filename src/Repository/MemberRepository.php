@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Country;
 use App\Entity\Member;
 use Doctrine\ORM\EntityRepository;
 
@@ -50,5 +51,19 @@ class MemberRepository extends EntityRepository
             ->orderBy('group.position', 'asc')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findMembersWithVotesByCountry(Country $country): array
+    {
+        return $this->createQueryBuilder('m')
+            ->addSelect('member_votes')
+            ->join('m.country', 'country')
+            ->join('m.memberVotes', 'member_votes')
+            ->join('member_votes.vote', 'vote')
+            ->where('country = :c')
+            ->setParameter('c', $country)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }
