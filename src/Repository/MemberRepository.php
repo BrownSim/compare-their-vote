@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Country;
 use App\Entity\Member;
+use App\Model\Member as MemberDTO;
 use Doctrine\ORM\EntityRepository;
 
 class MemberRepository extends EntityRepository
@@ -56,14 +57,19 @@ class MemberRepository extends EntityRepository
     public function findMembersWithVotesByCountry(Country $country): array
     {
         return $this->createQueryBuilder('m')
-            ->addSelect('member_votes')
-            ->join('m.country', 'country')
+            ->select(
+                    'm.id',
+                    'm.firstName',
+                    'm.lastName',
+                    'member_votes.value as votes_result',
+                    'vote.voteDate as votes_date'
+            )
             ->join('m.memberVotes', 'member_votes')
             ->join('member_votes.vote', 'vote')
-            ->where('country = :c')
+            ->where('m.country = :c')
             ->setParameter('c', $country)
             ->getQuery()
-            ->getResult()
+            ->getResult(MemberDTO::class)
         ;
     }
 }

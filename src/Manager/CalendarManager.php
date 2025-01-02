@@ -7,7 +7,6 @@ use App\Calendar\CalendarEvent;
 use App\Calendar\Gantt;
 use App\Calendar\GanttEvent;
 use App\Calendar\GanttSeries;
-use App\Entity\Member;
 use App\Entity\MemberVote;
 
 class CalendarManager
@@ -65,11 +64,6 @@ class CalendarManager
         return $calendar;
     }
 
-    /**
-     * @param Member[] $members
-     *
-     * @return Gantt
-     */
     public function generateAbsenceGantForMembers(array $members): Gantt
     {
         $from = $to = null;
@@ -85,8 +79,8 @@ class CalendarManager
             $missingTo = null;
             $missingEvents = [];
             $lastVoteDate = null;
-            foreach ($member->getMemberVotes() as $memberVote) {
-                $date = $memberVote->getVote()->getVoteDate();
+            foreach ($member->getVotes() as $vote) {
+                $date = $vote->getDate();
 
                 if (null === $from || $from > $date) {
                     $from = $date;
@@ -100,7 +94,7 @@ class CalendarManager
                     $lastVoteDate = $date;
                 }
 
-                if (MemberVote::VOTE_DID_NOT_VOTE === $memberVote->getValue()) {
+                if (MemberVote::VOTE_DID_NOT_VOTE === $vote->getResult()) {
                     if (null === $missingFrom) {
                         $missingFrom = $date->setTime(00, 00, 00);
                         $missingTo = $date->setTime(23, 59, 59);
@@ -111,14 +105,15 @@ class CalendarManager
                     $missingTo = $date->setTime(23, 59, 59);
                 }
 
-                if (MemberVote::VOTE_DID_NOT_VOTE !== $memberVote->getValue() && null !== $missingFrom) {
+                if (MemberVote::VOTE_DID_NOT_VOTE !== $vote->getResult() && null !== $missingFrom) {
                     $missingEvents = $this->missingEventEnd($missingFrom, $missingTo, $missingEvents);
                     $missingFrom = null;
                     $missingTo = null;
                 }
             }
 
-            if (MemberVote::VOTE_DID_NOT_VOTE === $member->getMemberVotes()->last()->getValue()) {
+            $votes = $member->getVotes();
+            if (MemberVote::VOTE_DID_NOT_VOTE === array_pop($votes)->getResult()) {
                 $missingEvents = $this->missingEventEnd($missingFrom, $missingTo, $missingEvents);
             }
 
