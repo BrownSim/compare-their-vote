@@ -17,14 +17,25 @@ class MemberRepository extends EntityRepository
     public function findMembersWithVotes(): array
     {
         return $this->createQueryBuilder('m')
-            ->addSelect('member_votes')
-            ->addSelect('vote')
-            ->addSelect('countries')
+//            ->addSelect('member_votes')
+//            ->addSelect('vote')
+//            ->addSelect('countries')
+            ->select(
+                'm.id',
+                'm.firstName',
+                'm.lastName',
+                'vote.id as votes_id',
+                'member_votes.value as votes_result',
+                'vote.voteDate as votes_date',
+                'countries.id as votes_countries_id',
+            )
             ->leftJoin('m.memberVotes', 'member_votes')
             ->leftJoin('member_votes.vote', 'vote')
             ->leftJoin('vote.countries', 'countries')
+//            ->setMaxResults(50000)
+//            ->where('m.country = 70')
             ->getQuery()
-            ->getResult()
+            ->getResult(MemberDTO::class)
         ;
     }
 
@@ -61,8 +72,9 @@ class MemberRepository extends EntityRepository
                     'm.id',
                     'm.firstName',
                     'm.lastName',
+                    'member_votes.id as votes_id',
                     'member_votes.value as votes_result',
-                    'vote.voteDate as votes_date'
+                    'vote.voteDate as votes_date',
             )
             ->join('m.memberVotes', 'member_votes')
             ->join('member_votes.vote', 'vote')

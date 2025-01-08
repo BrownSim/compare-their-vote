@@ -76,7 +76,7 @@ class AbstractHydrator extends BaseAbstractHydrator
 
     protected function getValue(string $key, mixed $value, string $dtoClass = null): mixed
     {
-        if (isset($this->objectProperties[$dtoClass])) {
+        if (isset($this->objectProperties[$dtoClass]) && isset($this->objectProperties[$dtoClass][$key])) {
             if ($this->objectProperties[$dtoClass][$key] === \DateTimeInterface::class) {
                 $str = substr($value, 0, 10);
                 $date = $this->dates[$str] ?? new \DateTime($str);
@@ -91,12 +91,21 @@ class AbstractHydrator extends BaseAbstractHydrator
 
     protected function hydrateAllData(): array
     {
-        $results = $formatedResults = [];
-        $iterator = 1;
+        $results = $formatedResults = $properties = [];
+        $associativeResults = $this->stmt->fetchAllAssociative();
 
-        foreach ($this->stmt->fetchAllAssociative() as $row) {
-            $this->formatRow($row, $formatedResults, $iterator);
-            $iterator++;
+        if ([] !== $associativeResults) {
+            foreach ($associativeResults[0] as $key => $value) {
+                $alias = explode('_', $this->rsm->getScalarAlias($key));
+                $properties['key_to_alias'][$key] = $alias;
+                $aliasToKey = null;
+                $this->generateCollectionFromFlatArray($alias, $aliasToKey, $key, false);
+                $properties['alias_to_key'] = array_merge_recursive($properties['alias_to_key'] ?? [], $aliasToKey);
+            }
+        }
+
+        foreach ($associativeResults as $row) {
+            $this->formatRow($row, $formatedResults, $properties);
         }
 
         foreach ($formatedResults as $formatedResult) {
@@ -130,34 +139,83 @@ class AbstractHydrator extends BaseAbstractHydrator
         return $object;
     }
 
-    protected function formatRow(array $row, array &$result, int $currentRowNumber): void
+    protected function formatRow(array $row, array &$result, $properties): void
     {
         $id = null;
-        foreach ($row as $key => $value) {
-            if (null !== $finalValue = $value) {
-                $properties = explode('_', $this->rsm->getScalarAlias($key));
-                if (count($properties) > 0) {
-                    if (count($properties) === 1) {
-                        if ('id' === $properties[0]) {
-                            $id = $finalValue;
-                        }
-
-                        $finalValue = $this->getValue($properties[0], $finalValue, $this->dtoClass);
-                        $result[$id][$properties[0]] = $finalValue;
-                        continue;
-                    }
-
-                    $collection = [];
-                    $this->generateCollectionFromFlatArray($properties, $collection, $finalValue);
-                    $collectionData = $collection[array_key_first($collection)];
-                    $result[$id][$properties[0]][$currentRowNumber][array_key_first($collectionData)] = reset($collectionData);
+        foreach ($properties['key_to_alias'] as $key => $property) {
+            if (count($property) === 1) {
+                if ('id' === $property[0]) {
+                    $id = $row[$key];
                 }
+
+                $finalValue = $this->getValue($property[0], $row[$key], $this->dtoClass);
+                $result[$id][$property[0]] = $finalValue;
+                continue;
+            }
+
+            $temp = $properties['alias_to_key'];
+            foreach ($property as $key) {
+                $temp = &$temp[$key];
+            }
+
+            $rowKeyValue = $this->getInArray($property, $properties['alias_to_key']);
+            $rowValue = $row[$rowKeyValue];
+            if (null !== $rowValue) {
+                $path = $this->buildPropertyPath($properties, $property, $row);
+                $this->setInArray($result[$id], $path, $row[$rowKeyValue]);
             }
         }
     }
 
-    private function generateCollectionFromFlatArray($properties, &$data, $value)
+    private function setInArray(&$array, $path, $value): void
     {
+        $temp = &$array;
+
+        foreach ($path as $key) {
+            $temp = &$temp[$key];
+        }
+
+        $temp = $value;
+    }
+
+    private function getInArray($path, $array): mixed
+    {
+        $temp = &$array;
+
+        foreach ($path as $key) {
+            $temp = &$temp[$key];
+        }
+
+        return $temp;
+    }
+
+    private function buildPropertyPath(array $properties, mixed $property, array $row): array
+    {
+        if (!is_array($property)) {
+            return [];
+        }
+
+        $nbProperty = count($property) - 1;
+        $iterator = 0;
+        foreach ($property as $propertyStep) {
+            $finalPath[] = $propertyStep;
+            $propertyAliasToKeyPath[] = $propertyStep;
+            $currentPropertyAliasToKeyPath = $propertyAliasToKeyPath;
+
+            if ('id' !== $propertyStep && $iterator < $nbProperty) {
+                $currentPropertyAliasToKeyPath[] = 'id';
+                $finalPath[] = $row[$this->getInArray($currentPropertyAliasToKeyPath, $properties['alias_to_key'])];
+            }
+
+            $iterator++;
+        }
+
+        return $finalPath;
+    }
+
+    private function generateCollectionFromFlatArray(array $properties, mixed &$data, mixed $value, bool $renderLastItemAsArray = true): void
+    {
+        $firstLoop = true;
         for ($i = count($properties) - 1; $i >= 0; $i--) {
             $arr = [];
             if ($i == count($properties) - 1) {
@@ -166,7 +224,8 @@ class AbstractHydrator extends BaseAbstractHydrator
                 $arr[$properties[$i]] = $newArr;
             }
 
-            $newArr = $arr;
+            $newArr = $firstLoop && $renderLastItemAsArray ? [$arr] : $arr;
+            $firstLoop = false;
         }
 
         $data = $newArr;
