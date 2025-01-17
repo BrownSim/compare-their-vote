@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Country;
+use App\Entity\PoliticalGroup;
 use Doctrine\ORM\EntityRepository;
 
 class PoliticalGroupRepository extends EntityRepository
@@ -25,5 +26,22 @@ class PoliticalGroupRepository extends EntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * @return array|PoliticalGroup[]
+     */
+    public function findPoliticalGroupWithMpWithVotes(): array
+    {
+        return $this->createQueryBuilder('pg')
+            ->addSelect('members')
+            ->addSelect('member_votes')
+            ->addSelect('vote')
+            ->innerJoin('pg.members', 'members')
+            ->join('members.memberVotes', 'member_votes')
+            ->join('member_votes.vote', 'vote')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 }

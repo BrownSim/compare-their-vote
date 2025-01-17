@@ -2,7 +2,8 @@
 
 namespace App\Command;
 
-use App\Entity\Member;
+use App\Entity\Country;
+use App\Entity\PoliticalGroup;
 use App\Manager\MemberManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -14,6 +15,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:member:agreement', description: 'Precalculate data (it\'s slooooooow)')]
 class GenerateMemberToMemberAgreementRate extends Command
 {
+    private ProgressBar $bar;
+
+    // used to prevent duplicate comparisons
+    private array $importedConnexion = [];
+
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly MemberManager $memberManager,
@@ -24,71 +30,21 @@ class GenerateMemberToMemberAgreementRate extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $members = $this->em->getRepository(Member::class)->findMembersWithVotes();
-        $bar = new ProgressBar($output, count($members));
+        $countries = $this->em->getRepository(Country::class)->findCountriesWithMpWithVotes();
+        $parties = $this->em->getRepository(PoliticalGroup::class)->findPoliticalGroupWithMpWithVotes();
+
+        $this->bar = new ProgressBar($output);
         $output->writeln('Start precalculate correlation');
 
-        $importedConnexion = [];
-
-        foreach ($members as $member1) {
-            $member1Votes = [];
-            foreach ($member1->getMemberVotes() as $memberVote) {
-                $member1Votes[$memberVote->getVote()->getId()] = $memberVote;
-            }
-
-            foreach ($members as $member2) {
-                $member2Votes = [];
-
-                // check if value is already imported
-                if (isset($importedConnexion[$member1->getId()][$member2->getId()])
-                    || isset($importedConnexion[$member2->getId()][$member1->getId()])) {
-                    continue;
-                }
-
-                if ($member1->getId() === $member2->getId()) {
-                    continue;
-                }
-
-                foreach ($member2->getMemberVotes() as $memberVote) {
-                    if (isset($member1Votes[$memberVote->getVote()->getId()])) {
-                        $member2Votes[$memberVote->getVote()->getId()] = $memberVote;
-                    }
-                }
-
-                $voteData = $this->memberManager->compareArray($member1Votes, $member2Votes);
-                $this->insertData(
-                    member1:  $member1->getId(),
-                    member2: $member2->getId(),
-                    group1: $member1->getGroup()->getId(),
-                    group2: $member2->getGroup()->getId(),
-                    country1: $member1->getCountry()->getId(),
-                    country2: $member2->getCountry()->getId(),
-                    nBVote: $voteData['total'],
-                    rate: $voteData['rate']['same'],
-                );
-
-                $comparisons = $this->compareMembersVotesRelatedToCountry($member1Votes, $member2Votes);
-                foreach ($comparisons as $comparison) {
-                    $this->insertData(
-                        member1:  $member1->getId(),
-                        member2: $member2->getId(),
-                        group1: $member1->getGroup()->getId(),
-                        group2: $member2->getGroup()->getId(),
-                        country1: $member1->getCountry()->getId(),
-                        country2: $member2->getCountry()->getId(),
-                        nBVote: $comparison['total'],
-                        rate: $comparison['rate'],
-                        relatedCountry: $comparison['country']
-                    );
-                }
-
-                $importedConnexion[$member1->getId()][$member2->getId()] = true;
-            }
-
-            $bar->advance();
+        foreach ($countries as $country) {
+            $this->compareMembers($country->getMembers());
         }
 
-        $bar->finish();
+        foreach ($parties as $party) {
+            $this->compareMembers($party->getMembers());
+        }
+
+        $this->bar->finish();
 
         $output->writeln('');
         $output->writeln('Saving');
@@ -169,5 +125,68 @@ class GenerateMemberToMemberAgreementRate extends Command
                 )';
 
         $this->em->getConnection()->prepare($sql)->executeQuery();
+    }
+
+    private function compareMembers(iterable $members): void
+    {
+        foreach ($members as $member1) {
+            $member1Votes = [];
+            foreach ($member1->getMemberVotes() as $memberVote) {
+                $member1Votes[$memberVote->getVote()->getId()] = $memberVote;
+            }
+
+            foreach ($members as $member2) {
+                $member2Votes = [];
+
+                // check if value is already imported
+                if (isset($this->importedConnexion[$member1->getId()][$member2->getId()])
+                    || isset($this->importedConnexion[$member2->getId()][$member1->getId()])) {
+                    $this->bar->advance();
+                    continue;
+                }
+
+                if ($member1->getId() === $member2->getId()) {
+                    $this->bar->advance();
+                    continue;
+                }
+
+                foreach ($member2->getMemberVotes() as $memberVote) {
+                    if (isset($member1Votes[$memberVote->getVote()->getId()])) {
+                        $member2Votes[$memberVote->getVote()->getId()] = $memberVote;
+                    }
+                }
+
+                $voteData = $this->memberManager->compareArray($member1Votes, $member2Votes);
+                $this->insertData(
+                    member1:  $member1->getId(),
+                    member2: $member2->getId(),
+                    group1: $member1->getGroup()->getId(),
+                    group2: $member2->getGroup()->getId(),
+                    country1: $member1->getCountry()->getId(),
+                    country2: $member2->getCountry()->getId(),
+                    nBVote: $voteData['total'],
+                    rate: $voteData['rate']['same'],
+                );
+
+                $comparisons = $this->compareMembersVotesRelatedToCountry($member1Votes, $member2Votes);
+                foreach ($comparisons as $comparison) {
+                    $this->insertData(
+                        member1:  $member1->getId(),
+                        member2: $member2->getId(),
+                        group1: $member1->getGroup()->getId(),
+                        group2: $member2->getGroup()->getId(),
+                        country1: $member1->getCountry()->getId(),
+                        country2: $member2->getCountry()->getId(),
+                        nBVote: $comparison['total'],
+                        rate: $comparison['rate'],
+                        relatedCountry: $comparison['country']
+                    );
+                }
+
+                $this->importedConnexion[$member1->getId()][$member2->getId()] = true;
+            }
+
+            $this->bar->advance();
+        }
     }
 }
