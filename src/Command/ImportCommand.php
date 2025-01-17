@@ -126,6 +126,7 @@ class ImportCommand extends Command
             ->setVoteDate(new \DateTimeImmutable($data['timestamp']))
             ->setDescription($data['description'])
             ->setReference($data['reference'])
+            ->setProcedureReference($data['procedure']['reference'] ?? null)
             ->setIsFeatured($data['is_featured'])
             ->setTitle($data['display_title'])
         ;
