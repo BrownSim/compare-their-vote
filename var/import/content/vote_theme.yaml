@@ -1,0 +1,38 @@
+App\Entity\VoteThematic:
+    vote_theme_economic_deregulation:
+        label: Economic deregulation
+        categories:
+            - '@liberalism'
+    vote_theme_free_trade_agreements:
+        label: Free trade agreements
+        categories:
+            - '@liberalism'
+    vote_theme_temporary_free_trade_agreements:
+        label: Temporary free trade agreements
+        categories:
+            - '@liberalism'
+    vote_theme_deregulation_of_the_electricity_market:
+        label: Deregulation of the electricity market
+        categories:
+            - '@liberalism'
+    vote_theme_economic_regulation:
+        label: Economic regulation
+        categories:
+            - '@economic_regulation'
+    vote_theme_pesticide_herbicide_regulation:
+        label: Economic regulation pesticide or herbicide
+        categories:
+            - '@economic_regulation'
+            - '@ecology'
+    vote_theme_strengthening_human_rights:
+        label: Strengthening human rights
+        categories:
+            - '@human_rights'
+    vote_theme_right_to_abortion:
+        label: Right to abortion
+        categories:
+            - '@women_s_rights'
+    vote_theme_war:
+        label: War
+        categories:
+            - '@war'

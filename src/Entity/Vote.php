@@ -40,6 +40,13 @@ class Vote
     #[ORM\JoinTable(name: 'votes_geoareas')]
     private Collection $geoAreas;
 
+    /**
+     * @var Collection<int, VoteThematic>
+     */
+    #[ORM\ManyToMany(targetEntity: VoteThematic::class, inversedBy: 'votes')]
+    #[ORM\JoinTable(name: 'vote_has_thematic')]
+    private Collection $thematics;
+
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $officialId = null;
 
@@ -67,6 +74,7 @@ class Vote
     public function __construct()
     {
         $this->geoAreas = new ArrayCollection();
+        $this->thematics = new ArrayCollection();
         $this->countries = new ArrayCollection();
         $this->membersVote = new ArrayCollection();
         $this->politicalGroupVote = new ArrayCollection();
@@ -156,6 +164,25 @@ class Vote
     public function removeGeoArea(GeoArea $geoArea): self
     {
         $this->geoAreas->removeElement($geoArea);
+
+        return $this;
+    }
+
+    public function getThematics(): Collection
+    {
+        return $this->thematics;
+    }
+
+    public function addThematic(VoteThematic $thematic): self
+    {
+        $this->thematics->add($thematic);
+
+        return $this;
+    }
+
+    public function removeThematic(VoteThematic $thematic): self
+    {
+        $this->thematics->removeElement($thematic);
 
         return $this;
     }

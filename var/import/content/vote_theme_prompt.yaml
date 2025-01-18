@@ -1,0 +1,55 @@
+App\Entity\VoteThematicPrompt:
+    prompt_economic_deregulation:
+        thematic: '@vote_theme_economic_deregulation'
+        question: Does this text aim to deregulate the market?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_free_trade_agreements:
+        thematic: '@vote_theme_free_trade_agreements'
+        question: Does this text aim to achieve free trade?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_temporary_free_trade_agreements:
+        thematic: '@vote_theme_temporary_free_trade_agreements'
+        question: Does this text aim to achieve temporary free trade?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_deregulation_of_the_electricity_market:
+        thematic: '@vote_theme_deregulation_of_the_electricity_market'
+        question: Is this text intended to deregulate the electricity market?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_economic_regulation:
+        thematic: '@vote_theme_economic_regulation'
+        question: Does this text regulate a market?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_pesticide_herbicide_regulation:
+        thematic: '@vote_theme_pesticide_herbicide_regulation'
+        question: Does this text regulate the use of pesticides or insecticides?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_strengthening_human_rights:
+        thematic: '@vote_theme_strengthening_human_rights'
+        question: Does this text talk about human rights?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_right_to_abortion:
+        thematic: '@vote_theme_right_to_abortion'
+        question: Does this text mention the right to abortion?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_war:
+        thematic: '@vote_theme_war'
+        question: Does this text refer to a war or an armed conflict?
+        responses:
+            - 'true'
+            - 'false'
