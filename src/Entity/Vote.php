@@ -53,7 +53,13 @@ class Vote
     private ?string $reference = null;
 
     #[ORM\Column(type: Types::STRING, nullable: true)]
+    private ?string $procedureReference = null;
+
+    #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $description = null;
+
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    private ?string $summaryLink = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $voteDate = null;
@@ -190,6 +196,18 @@ class Vote
         return $this;
     }
 
+    public function getProcedureReference(): ?string
+    {
+        return $this->procedureReference;
+    }
+
+    public function setProcedureReference(?string $procedureReference): self
+    {
+        $this->procedureReference = $procedureReference;
+
+        return $this;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
@@ -210,6 +228,18 @@ class Vote
     public function setIsFeatured(?bool $isFeatured): self
     {
         $this->isFeatured = $isFeatured;
+
+        return $this;
+    }
+
+    public function getSummaryLink(): ?string
+    {
+        return $this->summaryLink;
+    }
+
+    public function setSummaryLink(?string $summaryLink): self
+    {
+        $this->summaryLink = $summaryLink;
 
         return $this;
     }
