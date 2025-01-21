@@ -1,0 +1,50 @@
+App\Entity\VoteThematicCategory:
+    economic:
+        label: Economic
+    liberalism:
+        label: Liberalism
+        parent: '@economic'
+    protectionism:
+        label: Protectionism
+        parent: '@economic'
+    economic_regulation:
+        label: Regulation
+        parent: '@economic'
+    human_rights:
+        label: Human rights
+    education:
+        label: Education
+        parent: '@human_rights'
+    women_s_rights:
+        label: Women's rights
+        parent: '@human_rights'
+    immigration_law:
+        label: Immigration law
+        parent: '@human_rights'
+    violence_or_repression_against_the_population:
+        label: Violence or repression against the population
+        parent: '@human_rights'
+    war:
+        label: War
+    russia_ukraine:
+        label: Russia - Ukraine
+        parent: '@war'
+    israel_palestine:
+        label: Israel - Palestine
+        parent: '@war'
+    terrorism:
+        label: Terrorism
+        parent: '@war'
+    about_a_country:
+        label: About a country
+    violence_or_repression_against_the_population_specific_country:
+        label: Violence or repression against the population
+        parent: '@about_a_country'
+    interference:
+        label: Interference
+        parent: '@about_a_country'
+    ecology:
+        label: Ecology
+    global_warming:
+        label: Global warming
+        parent: '@ecology'
