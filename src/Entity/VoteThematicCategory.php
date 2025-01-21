@@ -29,7 +29,7 @@ class VoteThematicCategory
     /**
      * @var Collection<int, VoteThematic>
      */
-    #[ORM\ManyToMany(targetEntity: VoteThematic::class, mappedBy: 'voteThemeCategory')]
+    #[ORM\ManyToMany(targetEntity: VoteThematic::class, mappedBy: 'categories')]
     private Collection $voteThematics;
 
     #[ORM\Column(type: Types::STRING)]

@@ -29,7 +29,7 @@ class VoteThematic
     #[ORM\JoinTable(name: 'vote_thematic_has_category')]
     private ?Collection $categories;
 
-    #[ORM\OneToOne(targetEntity: VoteThematicPrompt::class, inversedBy: 'voteThematic')]
+    #[ORM\OneToOne(targetEntity: VoteThematicPrompt::class, inversedBy: 'thematic')]
     #[ORM\JoinColumn(name: 'prompt_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private VoteThematicPrompt $prompt;
 
