@@ -48,6 +48,7 @@ class VoteAnalyser
             $this->em->persist($voteAnalysed);
         }
 
+        $this->em->flush();
         $responses = $this->voteScanner->analyse($voteStr);
 
         $i = 0;

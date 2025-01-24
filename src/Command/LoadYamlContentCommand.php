@@ -46,7 +46,6 @@ class LoadYamlContentCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        dd($this->projectDir);
         foreach ($this->yamlFiles() as $yaml) {
             $this->readYamlFiles($yaml);
         }

@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:init:ia')]
 class InitIaCommand extends Command
 {
-    private const LIMIT = 10;
+    private const LIMIT = 20;
 
     public function __construct(private readonly VoteAnalyser $analyser, private readonly EntityManagerInterface $em)
     {

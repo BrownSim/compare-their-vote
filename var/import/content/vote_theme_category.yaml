@@ -37,9 +37,6 @@ App\Entity\VoteThematicCategory:
         parent: '@war'
     about_a_country:
         label: About a country
-    violence_or_repression_against_the_population_specific_country:
-        label: Violence or repression against the population
-        parent: '@about_a_country'
     interference:
         label: Interference
         parent: '@about_a_country'

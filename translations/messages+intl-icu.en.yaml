@@ -61,6 +61,7 @@ global:
         description: 'Description: '
         date: 'Vote date: '
         result: 'Vote result: '
+        link: 'Link: '
     mp_status_list:
         active: While in office
         retired: Retired

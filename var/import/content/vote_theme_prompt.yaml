@@ -53,3 +53,51 @@ App\Entity\VoteThematicPrompt:
         responses:
             - 'true'
             - 'false'
+    prompt_gmo:
+        thematic: '@vote_theme_gmo'
+        question: Does this text mention GMOs?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_gmo_market:
+        thematic: '@vote_theme_gmo_market'
+        question: Does this text refer to authorisation to market GMOs?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_russia_ukraine:
+        thematic: '@vote_russia_ukraine'
+        question: Is this text about the war between Ukraine and Russia?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_israel_palestine:
+        thematic: '@vote_israel_palestine'
+        question: Does this text deal with the conflict between Israel and Hamas or Israel and Palestine?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_violence_or_repression_against_the_population_specific_country:
+        thematic: '@vote_violence_or_repression_against_the_population_specific_country'
+        question: Is this text about violence or repression against a population?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_interference:
+        thematic: '@vote_interference'
+        question: Is this text about foreign interference aimed at destabilising a country?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_global_warming:
+        thematic: '@vote_global_warming'
+        question: Does this text talk about global warming?
+        responses:
+            - 'true'
+            - 'false'
+    prompt_theme_terrorism:
+        thematic: '@vote_theme_terrorism'
+        question: Does this text talk about terrorism?
+        responses:
+            - 'true'
+            - 'false'

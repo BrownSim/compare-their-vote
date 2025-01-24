@@ -1,5 +1,16 @@
 <p class="datatable-vote-results-detail mb-0">
     <span>{{ 'global.vote.title'|trans }}</span><span>{{ resource.title }}</span>
     <span>{{ 'global.vote.ref'|trans }}</span><span>{{ resource.reference }}</span>
-    <span>{{ 'global.vote.date'|trans }} </span><small>{{ resource.voteDate|date('Y-m-d') }}</small>
+    <span>{{ 'global.vote.date'|trans }} </span><span>{{ resource.voteDate|date('Y-m-d') }}</span>
+    {% if resource.summaryLink is not null  %}
+        <span>{{ 'global.vote.link'|trans }} </span><a href="{{ resource.summaryLink }}">{{ resource.summaryLink }}</a>
+    {% endif %}
+    {% if resource.thematics is not empty %}
+        <span>Thematic</span>
+        <span>
+            {% for thematic in resource.thematics %}
+                <span class="badge bg-primary">{{ thematic.label }}</span>
+            {% endfor %}
+        </span>
+    {% endif %}
 </p>

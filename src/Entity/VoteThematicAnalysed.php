@@ -14,7 +14,7 @@ class VoteThematicAnalysed
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Vote::class)]
+    #[ORM\ManyToOne(targetEntity: Vote::class, inversedBy: 'thematicsAnalysed')]
     #[ORM\JoinColumn(name: 'vote_id', referencedColumnName: 'id')]
     private ?Vote $vote = null;
 

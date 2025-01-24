@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\VoteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: VoteRepository::class)]
 #[ORM\Table]
 #[ORM\Index(columns: ['is_featured'])]
 class Vote
@@ -47,6 +48,9 @@ class Vote
     #[ORM\JoinTable(name: 'vote_has_thematic')]
     private Collection $thematics;
 
+    #[ORM\OneToMany(targetEntity: VoteThematicAnalysed::class, mappedBy: 'vote')]
+    private Collection $thematicsAnalysed;
+
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $officialId = null;
 
@@ -74,10 +78,11 @@ class Vote
     public function __construct()
     {
         $this->geoAreas = new ArrayCollection();
-        $this->thematics = new ArrayCollection();
         $this->countries = new ArrayCollection();
         $this->membersVote = new ArrayCollection();
         $this->politicalGroupVote = new ArrayCollection();
+        $this->thematics = new ArrayCollection();
+        $this->thematicsAnalysed = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -183,6 +188,27 @@ class Vote
     public function removeThematic(VoteThematic $thematic): self
     {
         $this->thematics->removeElement($thematic);
+
+        return $this;
+    }
+
+    public function getThematicsAnalysed(): Collection
+    {
+        return $this->thematicsAnalysed;
+    }
+
+    public function getThematicAnalysed(VoteThematicAnalysed $thematic): self
+    {
+        $this->thematicsAnalysed->add($thematic);
+        $thematic->setVote($this);
+
+        return $this;
+    }
+
+    public function removeThematicAnalysed(VoteThematicAnalysed $thematic): self
+    {
+        $this->thematicsAnalysed->removeElement($thematic);
+        $thematic->setVote(null);
 
         return $this;
     }

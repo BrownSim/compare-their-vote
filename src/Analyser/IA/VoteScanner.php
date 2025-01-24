@@ -18,7 +18,7 @@ class VoteScanner
     public function analyse(string $str)
     {
         $client = new Client($this->apiKey);
-        
+
         $response = $client->withV1BetaVersion()
             ->generativeModel(ModelName::GEMINI_1_5_FLASH)
             // we need to send instruction to reply only by proposal

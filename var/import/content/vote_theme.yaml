@@ -24,6 +24,15 @@ App\Entity\VoteThematic:
         categories:
             - '@economic_regulation'
             - '@ecology'
+    vote_theme_gmo:
+        label: GMO
+        categories:
+            - '@ecology'
+    vote_theme_gmo_market:
+        label: GMO marketing authorisation
+        categories:
+            - '@ecology'
+            - '@liberalism'
     vote_theme_strengthening_human_rights:
         label: Strengthening human rights
         categories:
@@ -36,3 +45,28 @@ App\Entity\VoteThematic:
         label: War
         categories:
             - '@war'
+    vote_theme_terrorism:
+        label: Terrorism
+        categories:
+            - '@terrorism'
+    vote_russia_ukraine:
+        label: Russia - Ukraine
+        categories:
+            - '@war'
+    vote_israel_palestine:
+        label: Israel - Palestine
+        categories:
+            - '@war'
+            - '@terrorism'
+    vote_violence_or_repression_against_the_population_specific_country:
+        label: Violence against population
+        categories:
+            - '@human_rights'
+    vote_interference:
+        label: Foreign interference
+        categories:
+            - '@interference'
+    vote_global_warming:
+        label: Global Warming
+        categories:
+            - '@global_warming'
