@@ -1,6 +1,9 @@
 $blue: #3d52a0;
 
-$card-cap-bg : transparent;
+$body-bg: rgb(248, 250, 251);
+$card-bg: #fff;
+
+$card-cap-bg : #fff;
 $card-border-color: rgb(241, 241, 244);
 $card-border-radius: 16px;
 $box-shadow: rgba(0, 0, 0, 0.03) 0px 3px 4px 0px;
@@ -12,7 +15,6 @@ $pagination-active-bg: transparent;
 $pagination-disabled-bg: transparent;
 
 $nav-tabs-border-width: 0;
-
 $popover-border-color: #F1F1F4;
 
 $spacer: 1rem;
